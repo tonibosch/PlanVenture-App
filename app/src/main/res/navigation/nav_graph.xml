@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/myTripsFragment">
+
+    <fragment
+        android:id="@+id/publicTripsFragment"
+        android:name="com.example.planventure.PublicTripsFragment"
+        android:label="fragment_public_trips"
+        tools:layout="@layout/fragment_public_trips" />
+    <fragment
+        android:id="@+id/myTripsFragment"
+        android:name="com.example.planventure.MyTripsFragment"
+        android:label="fragment_my_trips"
+        tools:layout="@layout/fragment_my_trips" />
+    <fragment
+        android:id="@+id/configurationFragment"
+        android:name="com.example.planventure.ConfigurationFragment"
+        android:label="fragment_configuration"
+        tools:layout="@layout/fragment_configuration" />
+</navigation>
