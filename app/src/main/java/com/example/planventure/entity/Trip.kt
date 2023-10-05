@@ -11,8 +11,27 @@ class Trip(
     private var location: String,
     private var maxNubmerOfParticipants: Int,
     private var description: String,
-    private var participants: ArrayList<Participant>,
-    private var expences: ArrayList<Expence>,
-    tripState: TRIP_STATE
+    private var participants: ArrayList<Participant>?,
+    private var expences: ArrayList<Expence>?,
+    private var tripState: TRIP_STATE
 ) {
+
+    override fun toString(): String {
+
+        val sb = StringBuilder("")
+        sb.append("$name, $startDate, $location")
+
+        return sb.toString()
+    }
+
+
+    fun getId(): Long{return id}
+    fun getName(): String{return name}
+    fun getStartDate(): Date{return startDate}
+    fun getEndDate(): Date{return endDate}
+    fun getLocation(): String{return location}
+    fun getMaxNumberOfParticipants(): Int{return maxNubmerOfParticipants}
+    fun getDescription(): String{return description}
+
+
 }
