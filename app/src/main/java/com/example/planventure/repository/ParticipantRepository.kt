@@ -4,17 +4,14 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
 import android.os.Build
-import android.provider.Telephony.Mms.Part
 import androidx.annotation.RequiresApi
 import com.example.planventure.database.DataBaseHelper
-import com.example.planventure.database.PVRepository
+import com.example.planventure.interfaces.IRepository
 import com.example.planventure.entity.Participant
 import com.example.planventure.entity.Trip
-import com.example.planventure.enumerations.TRIP_STATE
-import java.text.SimpleDateFormat
 
 @RequiresApi(Build.VERSION_CODES.P)
-class ParticipantRepository(context: Context): DataBaseHelper(context), PVRepository<Participant> {
+class ParticipantRepository(context: Context): DataBaseHelper(context), IRepository<Participant> {
 
     fun addParticipantToDb(p: Participant, foreignKey: Int): Boolean{
 
@@ -41,9 +38,7 @@ class ParticipantRepository(context: Context): DataBaseHelper(context), PVReposi
         val cursor = db.rawQuery(queryString, null)
         if(cursor.moveToFirst()){
             p = buildParticipantFromCursor(cursor)
-        }else{
-            // failure
-        }
+        } // else failure
         cursor.close()
         return p
     }
@@ -99,16 +94,11 @@ class ParticipantRepository(context: Context): DataBaseHelper(context), PVReposi
     // helper functions
     private fun buildParticipantFromCursor(c: Cursor): Participant{
         val name = c.getString(1)
-
         return Participant(name)
     }
 
     private fun closeAndReturn(c: Cursor):Boolean{
-        return if (c.moveToFirst()){
-            c.close()
-            true
-        }else
-            false
+        return when(c.moveToFirst()){true -> {c.close(); true}else -> false}
     }
 
     private fun mapQueryToList(query: String): ArrayList<Participant> {

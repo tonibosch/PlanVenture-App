@@ -64,12 +64,6 @@ class CreateTripActivity : AppCompatActivity() {
 
             tripService.addTrip(trip)
 
-            //val intent = Intent(this, MainActivity::class.java)
-            ///val bundle = Bundle()
-            //bundle.putSerializable("TRIP", )
-            //intent.putExtra("ADD_TRIP", trip)
-            //startActivity(intent)
-
             this.finish()
         }
 

@@ -31,7 +31,10 @@ open class DataBaseHelper(
         const val COLUMN_EXPENSE_TRIP: String = "EXPENSE_TRIP"
     }
 
-    // called the first time a database is accessed. There should be code in here to create a new database
+    /**
+     * called the first time a database is accessed. There should be code in here to create a new database
+     * @param db: SQLiteDatabase to execute SQL queries
+     */
     override fun onCreate(db: SQLiteDatabase) {
         val createTripTableStatement =
             "CREATE TABLE $TRIP_TABLE (ID INTEGER PRIMARY KEY AUTOINCREMENT, $COLUMN_TRIP_NAME TEXT, " +
@@ -51,7 +54,12 @@ open class DataBaseHelper(
         db.execSQL(createExpenseTableStatement)
     }
 
-    // this is called if the database version number changes. It prevents previous apps from breaking when you change the database design
+    /**
+     * this is called if the database version number changes. It prevents previous apps from breaking when you change the database design
+     * @param db: SQLiteDatabase to execute SQL queries
+     * @param p1 old version
+     * @param p2 new version
+     */
     override fun onUpgrade(db: SQLiteDatabase, p1: Int, p2: Int) {
         TODO("Might not be implemented")
     }

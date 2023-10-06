@@ -3,17 +3,16 @@ package com.example.planventure.repository
 import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
-import android.opengl.ETC1
 import android.os.Build
 import androidx.annotation.RequiresApi
 import com.example.planventure.database.DataBaseHelper
-import com.example.planventure.database.PVRepository
+import com.example.planventure.interfaces.IRepository
 import com.example.planventure.entity.Expense
-import com.example.planventure.entity.Participant
 import com.example.planventure.entity.Trip
 
 @RequiresApi(Build.VERSION_CODES.P)
-class ExpenseRepository(private val context: Context): DataBaseHelper(context), PVRepository<Expense> {
+class ExpenseRepository(private val context: Context): DataBaseHelper(context),
+    IRepository<Expense> {
 
     fun addExpensesToDb(e: Expense, foreignKey: Int): Boolean{
 
@@ -41,9 +40,7 @@ class ExpenseRepository(private val context: Context): DataBaseHelper(context), 
         val cursor = db.rawQuery(queryString, null)
         if(cursor.moveToFirst()){
             e = buildExpenseFromCursor(cursor)
-        }else{
-            // failure
-        }
+        } // else failure
         cursor.close()
         return e
     }
@@ -105,11 +102,6 @@ class ExpenseRepository(private val context: Context): DataBaseHelper(context), 
     }
 
     private fun closeAndReturn(c: Cursor):Boolean{
-        //return if (c.moveToFirst()){
-          //  c.close()
-            //true
-        //}else
-          //  false
         return when(c.moveToFirst()){true -> {c.close(); true}else -> false}
     }
 

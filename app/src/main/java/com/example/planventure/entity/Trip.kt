@@ -9,7 +9,7 @@ class Trip(
     private var startDate: Date,
     private var endDate: Date,
     private var location: String,
-    private var maxNubmerOfParticipants: Int,
+    private var maxNumberOfParticipants: Int,
     private var description: String,
     private var participants: ArrayList<Participant>,
     private var expences: ArrayList<Expense>,
@@ -30,7 +30,7 @@ class Trip(
     fun getStartDate(): Date{return startDate}
     fun getEndDate(): Date{return endDate}
     fun getLocation(): String{return location}
-    fun getMaxNumberOfParticipants(): Int{return maxNubmerOfParticipants}
+    fun getMaxNumberOfParticipants(): Int{return maxNumberOfParticipants}
     fun getDescription(): String{return description}
     fun getState(): TRIP_STATE{return tripState}
     fun getParticipants(): ArrayList<Participant>{return participants}
