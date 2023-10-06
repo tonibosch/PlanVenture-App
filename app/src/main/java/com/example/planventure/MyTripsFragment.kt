@@ -9,6 +9,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.findFragment
 import androidx.navigation.fragment.findNavController
@@ -19,6 +21,7 @@ class MyTripsFragment : Fragment() {
 
 
     private lateinit var button: Button
+    private lateinit var scrollLayout: LinearLayout
 
     //services
     private lateinit var tripService: TripService
@@ -36,6 +39,10 @@ class MyTripsFragment : Fragment() {
 
 
             button = view.findViewById<Button>(R.id.button2)
+
+            val trips = tripService.getAllTrips()
+            for(t in trips) Log.d("TRIP", t.toString())
+
             //button = container.findViewById(R.id.button2)
             button.setOnClickListener {
                 Log.d("TEST", "Hallo")

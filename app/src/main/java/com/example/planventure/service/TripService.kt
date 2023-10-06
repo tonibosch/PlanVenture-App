@@ -2,6 +2,7 @@ package com.example.planventure.service
 
 import android.content.Context
 import android.os.Build
+import android.util.Log
 import android.view.View
 import androidx.annotation.RequiresApi
 import com.example.planventure.entity.Trip
@@ -15,17 +16,18 @@ class TripService(
 
     fun addTrip(trip: Trip){
         val tripRepository = TripRepository(applicationContext)
-        val success = tripRepository.addTripToDB(trip)
+        val success = tripRepository.addTripToDb(trip)
+        Log.d("TRIP DB INPUT", success.toString())
     }
 
     fun getAllTrips(): List<Trip>{
         val tripRepository = TripRepository(applicationContext)
-        return tripRepository.findAllTrips()
+        return tripRepository.findAll()
     }
 
     fun getTripById(id: Long): Trip?{
         val tripRepository = TripRepository(applicationContext)
-        return tripRepository.getTripById(id)
+        return tripRepository.getById(id)
     }
 
     fun getTripsByName(name: String): List<Trip>{
@@ -35,7 +37,7 @@ class TripService(
 
     fun deleteTripById(id: Long){
         val tripRepository = TripRepository(applicationContext)
-        val success = tripRepository.deleteTripById(id.toInt())
+        val success = tripRepository.deleteById(id.toInt())
     }
 
     fun deleteTripsByName(name: String){

@@ -11,8 +11,8 @@ class Trip(
     private var location: String,
     private var maxNubmerOfParticipants: Int,
     private var description: String,
-    private var participants: ArrayList<Participant>?,
-    private var expences: ArrayList<Expence>?,
+    private var participants: ArrayList<Participant>,
+    private var expences: ArrayList<Expense>,
     private var tripState: TRIP_STATE
 ) {
 
@@ -32,6 +32,11 @@ class Trip(
     fun getLocation(): String{return location}
     fun getMaxNumberOfParticipants(): Int{return maxNubmerOfParticipants}
     fun getDescription(): String{return description}
+    fun getState(): TRIP_STATE{return tripState}
+    fun getParticipants(): ArrayList<Participant>{return participants}
+    fun getExpenses(): ArrayList<Expense>{return expences}
 
+    fun setParticipants(p: ArrayList<Participant>){participants = p}
+    fun setExpenses(e: ArrayList<Expense>){expences = e}
 
 }

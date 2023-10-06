@@ -19,14 +19,16 @@ open class DataBaseHelper(
         const val COLUMN_TRIP_LOCATION: String = "TRIP_LOCATION"
         const val COLUMN_TRIP_MAX_PARTICIPANTS: String = "TRIP_MAX_PARTICIPANTS"
         const val COLUMN_TRIP_DESCRIPTION: String = "TRIP_DESCRIPTION"
-        //TODO("Participants, Expences, State")
+        const val COLUMN_TRIP_STATE: String = "TRIP_STATE"
 
         const val PARTICIPANT_TABLE: String = "PARTICIPANT_TABLE"
         const val COLUMN_PARTICIPANT_NAME: String = "PARTICIPANT_NAME"
+        const val COLUMN_PARTICIPANT_TRIP: String = "PARTICIPANT_TRIP"
 
         const val EXPENSE_TABLE: String = "EXPENSE_TABLE"
         const val COLUMN_EXPENSE_NAME: String = "EXPENSE_NAME"
         const val COLUMN_EXPENSE_AMOUNT: String = "EXPENSE_AMOUNT"
+        const val COLUMN_EXPENSE_TRIP: String = "EXPENSE_TRIP"
     }
 
     // called the first time a database is accessed. There should be code in here to create a new database
@@ -34,15 +36,18 @@ open class DataBaseHelper(
         val createTripTableStatement =
             "CREATE TABLE $TRIP_TABLE (ID INTEGER PRIMARY KEY AUTOINCREMENT, $COLUMN_TRIP_NAME TEXT, " +
                     "$COLUMN_TRIP_START_DATE TEXT, $COLUMN_TRIP_END_DATE TEXT, $COLUMN_TRIP_LOCATION TEXT, " +
-                    "$COLUMN_TRIP_MAX_PARTICIPANTS INTEGER, $COLUMN_TRIP_DESCRIPTION TEXT)"
+                    "$COLUMN_TRIP_MAX_PARTICIPANTS INTEGER, $COLUMN_TRIP_DESCRIPTION TEXT, " +
+                    "$COLUMN_TRIP_STATE)"
         db.execSQL(createTripTableStatement)
 
         val createParticipantTableStatement =
-            "CREATE TABLE $PARTICIPANT_TABLE (ID INTEGER PRIMARY KEY AUTOINCREMENT, $COLUMN_PARTICIPANT_NAME, TEXT)"
+            "CREATE TABLE $PARTICIPANT_TABLE (ID INTEGER PRIMARY KEY AUTOINCREMENT, $COLUMN_PARTICIPANT_NAME, TEXT, " +
+                    "$COLUMN_PARTICIPANT_TRIP TEXT REFERENCES $TRIP_TABLE ON DELETE CASCADE ON UPDATE CASCADE)"
         db.execSQL(createParticipantTableStatement)
 
         val createExpenseTableStatement =
-            "CREATE TABLE $EXPENSE_TABLE (ID INTEGER PRIMARY KEY AUTOINCREMENT, $COLUMN_EXPENSE_NAME TEXT, $COLUMN_EXPENSE_AMOUNT REAL)"
+            "CREATE TABLE $EXPENSE_TABLE (ID INTEGER PRIMARY KEY AUTOINCREMENT, $COLUMN_EXPENSE_NAME TEXT, " +
+                    "$COLUMN_EXPENSE_AMOUNT REAL, $COLUMN_EXPENSE_TRIP TEXT REFERENCES $TRIP_TABLE ON DELETE CASCADE ON UPDATE CASCADE)"
         db.execSQL(createExpenseTableStatement)
     }
 

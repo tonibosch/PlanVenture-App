@@ -54,19 +54,23 @@ class CreateTripActivity : AppCompatActivity() {
                 formatter.parse(endDate.text.toString()),
                 location.text.toString(),
                 maxNumberOfParts.text.toString().toInt(),
-                "",
-                null,
-                null,
+                "Beschreibung",
+                ArrayList(),
+                ArrayList(),
                 TRIP_STATE.CLOSED
                 )
 
             Log.d("OUR GLORIUS TRIP", trip.toString())
 
-            val intent = Intent(this, MainActivity::class.java)
+            tripService.addTrip(trip)
+
+            //val intent = Intent(this, MainActivity::class.java)
             ///val bundle = Bundle()
             //bundle.putSerializable("TRIP", )
             //intent.putExtra("ADD_TRIP", trip)
-            startActivity(intent)
+            //startActivity(intent)
+
+            this.finish()
         }
 
         cancelButton.setOnClickListener {
