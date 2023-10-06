@@ -13,40 +13,35 @@ class TripService(
     private val applicationContext: Context
 ) {
 
+    private val tripRepository = TripRepository(applicationContext)
 
     fun addTrip(trip: Trip){
-        val tripRepository = TripRepository(applicationContext)
+
         val success = tripRepository.addTripToDb(trip)
         Log.d("TRIP DB INPUT", success.toString())
     }
 
     fun getAllTrips(): List<Trip>{
-        val tripRepository = TripRepository(applicationContext)
         return tripRepository.findAll()
     }
 
     fun getTripById(id: Long): Trip?{
-        val tripRepository = TripRepository(applicationContext)
         return tripRepository.getById(id)
     }
 
     fun getTripsByName(name: String): List<Trip>{
-        val tripRepository = TripRepository(applicationContext)
         return tripRepository.getTripsByName(name)
     }
 
     fun deleteTripById(id: Long){
-        val tripRepository = TripRepository(applicationContext)
         val success = tripRepository.deleteById(id.toInt())
     }
 
     fun deleteTripsByName(name: String){
-        val tripRepository = TripRepository(applicationContext)
         val success = tripRepository.deleteTripByName(name)
     }
 
     fun deleteAllTrips(){
-        val tripRepository = TripRepository(applicationContext)
         val success = tripRepository.deleteAll()
     }
 

@@ -68,6 +68,11 @@ class CreateTripActivity : AppCompatActivity() {
         }
 
         cancelButton.setOnClickListener {
+            // Only for checking ... needs to be deleted later
+            tripService.deleteAllTrips()
+            val trips = tripService.getAllTrips()
+            Log.d("ALL_TRIPS", trips.size.toString())
+            for(t in trips) Log.d("TRIP", t.toString())
             this.finish()
         }
 

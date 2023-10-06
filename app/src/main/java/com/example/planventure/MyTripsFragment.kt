@@ -45,7 +45,6 @@ class MyTripsFragment : Fragment() {
 
             //button = container.findViewById(R.id.button2)
             button.setOnClickListener {
-                Log.d("TEST", "Hallo")
                 val intent = Intent(container.context, CreateTripActivity::class.java)
                 startActivity(intent)
             }
