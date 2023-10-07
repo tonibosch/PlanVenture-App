@@ -7,8 +7,10 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
 import androidx.annotation.RequiresApi
 import com.example.planventure.entity.Trip
 import com.example.planventure.enumerations.TRIP_STATE
@@ -25,6 +27,8 @@ class CreateTripActivity : AppCompatActivity() {
     private lateinit var maxNumberOfParts: EditText
     private lateinit var addButton: Button
     private lateinit var cancelButton: Button
+    private lateinit var backButton: ImageButton
+
 
     //services
     private lateinit var tripService: TripService
@@ -41,6 +45,8 @@ class CreateTripActivity : AppCompatActivity() {
         maxNumberOfParts = findViewById(R.id.maxPartNumber_editText)
         addButton = findViewById(R.id.saveButton)
         cancelButton = findViewById(R.id.cancelButton)
+        backButton = findViewById(R.id.backButton)
+
 
         tripService = TripService(applicationContext)
 
@@ -76,5 +82,10 @@ class CreateTripActivity : AppCompatActivity() {
             this.finish()
         }
 
+        backButton.setOnClickListener {
+            this.finish()
+        }
+
     }
+
 }
