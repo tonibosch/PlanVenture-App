@@ -1,6 +1,7 @@
 package com.example.planventure
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Intent
 import android.icu.util.LocaleData
 import android.os.Build
@@ -68,6 +69,7 @@ class CreateTripActivity : AppCompatActivity() {
 
             Log.d("OUR GLORIUS TRIP", trip.toString())
 
+            setResult(Activity.RESULT_OK)
             tripService.addTrip(trip)
 
             this.finish()
