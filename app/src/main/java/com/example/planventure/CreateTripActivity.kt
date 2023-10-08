@@ -12,11 +12,16 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.TextView
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import com.example.planventure.entity.Trip
 import com.example.planventure.enumerations.TRIP_STATE
 import com.example.planventure.service.TripService
+import com.google.android.material.datepicker.MaterialDatePicker
 import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 @RequiresApi(Build.VERSION_CODES.P)
 class CreateTripActivity : AppCompatActivity() {
@@ -29,7 +34,10 @@ class CreateTripActivity : AppCompatActivity() {
     private lateinit var addButton: Button
     private lateinit var cancelButton: Button
     private lateinit var backButton: ImageButton
-
+    private lateinit var DateRangePickerButton: Button
+    private lateinit var tvDateRange: TextView
+    private lateinit var tvDataComençament: TextView
+    private lateinit var tvDataFinal: TextView
 
     //services
     private lateinit var tripService: TripService
@@ -47,6 +55,10 @@ class CreateTripActivity : AppCompatActivity() {
         addButton = findViewById(R.id.saveButton)
         cancelButton = findViewById(R.id.cancelButton)
         backButton = findViewById(R.id.backButton)
+        DateRangePickerButton = findViewById(R.id.dateRangePickerButton)
+        tvDateRange = findViewById(R.id.tvDateRange)
+        tvDataComençament = findViewById(R.id.dataComençament)
+        tvDataFinal = findViewById(R.id.dataFinal)
 
 
         tripService = TripService(applicationContext)
@@ -57,8 +69,8 @@ class CreateTripActivity : AppCompatActivity() {
 
             val trip = Trip(1,
                 tripName.text.toString(),
-                formatter.parse(startDate.text.toString()),
-                formatter.parse(endDate.text.toString()),
+                formatter.parse(tvDataComençament.text.toString()),
+                formatter.parse(tvDataFinal.text.toString()),
                 location.text.toString(),
                 maxNumberOfParts.text.toString().toInt(),
                 "Beschreibung",
@@ -87,6 +99,41 @@ class CreateTripActivity : AppCompatActivity() {
         backButton.setOnClickListener {
             this.finish()
         }
+
+        DateRangePickerButton.setOnClickListener {
+            showDateRangePicker()
+        }
+
+    }
+
+    private fun showDateRangePicker() {
+        val dateRangerPicker = MaterialDatePicker.Builder.dateRangePicker().setTitleText("Select Date").build()
+
+        dateRangerPicker.show(
+            supportFragmentManager,
+            "date_range_picker"
+        )
+
+        dateRangerPicker.addOnPositiveButtonClickListener {
+            datePicked->
+                val firstDate = datePicked.first
+                val secondDate = datePicked.second
+
+                if(firstDate != null && secondDate != null) {
+                    tvDateRange.text = "StartDate:" + convertLongToDate(firstDate) + "\nEndDate:" + convertLongToDate(secondDate)
+                    tvDataComençament.text = convertLongToDate(firstDate)
+                    tvDataFinal.text = convertLongToDate(secondDate)
+                }
+        }
+    }
+
+    private fun convertLongToDate(time:Long):String{
+        val date = Date(time)
+        val format = SimpleDateFormat(
+            "yyyy-MM-dd", Locale.getDefault()
+        )
+        return format.format(date)
+
 
     }
 

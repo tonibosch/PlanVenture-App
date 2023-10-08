@@ -18,6 +18,9 @@ import androidx.annotation.RequiresApi
 import androidx.fragment.app.findFragment
 import androidx.navigation.fragment.findNavController
 import com.example.planventure.service.TripService
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 @RequiresApi(Build.VERSION_CODES.P)
 class MyTripsFragment : Fragment() {
@@ -52,7 +55,6 @@ class MyTripsFragment : Fragment() {
         refreshTripList()
     }
 
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -68,12 +70,22 @@ class MyTripsFragment : Fragment() {
         var i = 1
         for (trip in trips) {
             val textView = TextView(context)                                // Create a new TextView for each trip
-            textView.text = "Trip $i\n       Name: ${trip.getName()}\n       Location: ${trip.getLocation()}"
+            textView.text = "       Name: ${trip.getName()}\n       Location: ${trip.getLocation()}\n       from " + convertDate(trip.getStartDate()) + " to " + convertDate(trip.getEndDate())
             textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18f)
             if (i % 2 == 0) textView.setBackgroundColor(Color.WHITE)        // Set the background color based on whether i is odd or even
             else textView.setBackgroundColor(Color.LTGRAY)
             linearLayout?.addView(textView)
             ++i
+        }
+    }
+
+    private fun convertDate(date: Date): String? {
+        try {
+            val desiredFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+            return desiredFormat.format(date)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            return "Error during Date conversion"
         }
     }
 }
