@@ -27,17 +27,14 @@ import java.util.Locale
 class CreateTripActivity : AppCompatActivity() {
 
     private lateinit var tripName: EditText
-    private lateinit var startDate: EditText
-    private lateinit var endDate: EditText
     private lateinit var location: EditText
     private lateinit var maxNumberOfParts: EditText
     private lateinit var addButton: Button
     private lateinit var cancelButton: Button
     private lateinit var backButton: ImageButton
     private lateinit var DateRangePickerButton: Button
-    private lateinit var tvDateRange: TextView
-    private lateinit var tvDataComençament: TextView
-    private lateinit var tvDataFinal: TextView
+    private lateinit var tvStartDate: TextView
+    private lateinit var tvEndDate: TextView
 
     //services
     private lateinit var tripService: TripService
@@ -48,42 +45,32 @@ class CreateTripActivity : AppCompatActivity() {
         setContentView(R.layout.activity_create_trip)
 
         tripName = findViewById(R.id.tripName_editText)
-        startDate = findViewById(R.id.startDate_editText)
-        endDate = findViewById(R.id.endDate_editText)
         location = findViewById(R.id.location_editText)
         maxNumberOfParts = findViewById(R.id.maxPartNumber_editText)
         addButton = findViewById(R.id.saveButton)
         cancelButton = findViewById(R.id.cancelButton)
         backButton = findViewById(R.id.backButton)
         DateRangePickerButton = findViewById(R.id.dateRangePickerButton)
-        tvDateRange = findViewById(R.id.tvDateRange)
-        tvDataComençament = findViewById(R.id.dataComençament)
-        tvDataFinal = findViewById(R.id.dataFinal)
-
+        tvStartDate = findViewById(R.id.startDate_textView)
+        tvEndDate = findViewById(R.id.endDate_textView)
 
         tripService = TripService(applicationContext)
 
         addButton.setOnClickListener {
-
             val formatter = SimpleDateFormat("yyyy-MM-dd")
-
             val trip = Trip(1,
                 tripName.text.toString(),
-                formatter.parse(tvDataComençament.text.toString()),
-                formatter.parse(tvDataFinal.text.toString()),
+                formatter.parse(tvStartDate.text.toString()),
+                formatter.parse(tvEndDate.text.toString()),
                 location.text.toString(),
                 maxNumberOfParts.text.toString().toInt(),
                 "Beschreibung",
                 ArrayList(),
                 ArrayList(),
                 TRIP_STATE.CLOSED
-                )
-
-            Log.d("OUR GLORIUS TRIP", trip.toString())
-
+            )
             setResult(Activity.RESULT_OK)
             tripService.addTrip(trip)
-
             this.finish()
         }
 
@@ -108,33 +95,22 @@ class CreateTripActivity : AppCompatActivity() {
 
     private fun showDateRangePicker() {
         val dateRangerPicker = MaterialDatePicker.Builder.dateRangePicker().setTitleText("Select Date").build()
+        dateRangerPicker.show(supportFragmentManager,"date_range_picker")
+        dateRangerPicker.addOnPositiveButtonClickListener { datePicked->
+            val firstDate = datePicked.first
+            val secondDate = datePicked.second
 
-        dateRangerPicker.show(
-            supportFragmentManager,
-            "date_range_picker"
-        )
-
-        dateRangerPicker.addOnPositiveButtonClickListener {
-            datePicked->
-                val firstDate = datePicked.first
-                val secondDate = datePicked.second
-
-                if(firstDate != null && secondDate != null) {
-                    tvDateRange.text = "StartDate:" + convertLongToDate(firstDate) + "\nEndDate:" + convertLongToDate(secondDate)
-                    tvDataComençament.text = convertLongToDate(firstDate)
-                    tvDataFinal.text = convertLongToDate(secondDate)
-                }
+            if(firstDate != null && secondDate != null) {
+                tvStartDate.text = convertLongToDate(firstDate)
+                tvEndDate.text = convertLongToDate(secondDate)
+            }
         }
     }
 
     private fun convertLongToDate(time:Long):String{
         val date = Date(time)
-        val format = SimpleDateFormat(
-            "yyyy-MM-dd", Locale.getDefault()
-        )
+        val format = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         return format.format(date)
-
-
     }
 
 }

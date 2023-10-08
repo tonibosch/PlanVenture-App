@@ -22,31 +22,6 @@
         app:layout_constraintTop_toBottomOf="@+id/textViewNameTrip" />
 
     <EditText
-        android:id="@+id/startDate_editText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:autofillHints=""
-        android:contentDescription="EditText to enter the start date of the trip"
-        android:ems="10"
-        android:inputType="date"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewStartDateTrip" />
-
-    <EditText
-        android:id="@+id/endDate_editText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:autofillHints=""
-        android:ems="10"
-        android:inputType="date"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewEndDateTrip" />
-
-    <EditText
         android:id="@+id/location_editText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -126,7 +101,7 @@
         android:text="Start Date:"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tripName_editText" />
+        app:layout_constraintTop_toBottomOf="@+id/dateRangePickerButton" />
 
     <TextView
         android:id="@+id/textViewEndDateTrip"
@@ -137,7 +112,7 @@
         android:text="End Date:"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/startDate_editText" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewStartDateTrip" />
 
     <TextView
         android:id="@+id/textViewDestinationTrip"
@@ -148,7 +123,7 @@
         android:text="Destination:"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/endDate_editText" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewEndDateTrip" />
 
     <TextView
         android:id="@+id/textViewMaxParticipantsTrip"
@@ -173,41 +148,35 @@
         app:srcCompat="?attr/actionModeCloseDrawable" />
 
     <TextView
-        android:id="@+id/tvDateRange"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextView"
-        app:layout_constraintStart_toEndOf="@+id/backButton"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:id="@+id/startDate_textView"
+        android:layout_width="204dp"
+        android:layout_height="27dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:text="Select start date"
+        android:textSize="20sp"
+        app:layout_constraintStart_toEndOf="@+id/textViewStartDateTrip"
+        app:layout_constraintTop_toBottomOf="@+id/dateRangePickerButton" />
+
+    <TextView
+        android:id="@+id/endDate_textView"
+        android:layout_width="193dp"
+        android:layout_height="27dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:text="Select end date"
+        android:textSize="20sp"
+        app:layout_constraintStart_toEndOf="@+id/textViewEndDateTrip"
+        app:layout_constraintTop_toBottomOf="@+id/startDate_textView" />
 
     <Button
         android:id="@+id/dateRangePickerButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/dataComençament"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
         android:layout_marginTop="16dp"
-        android:text="TextView"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textViewStartDateTrip"
+        android:text="Select Dates"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tripName_editText" />
-
-    <TextView
-        android:id="@+id/dataFinal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:text="TextView"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textViewEndDateTrip"
-        app:layout_constraintTop_toBottomOf="@+id/startDate_editText" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

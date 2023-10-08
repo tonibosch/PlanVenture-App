@@ -66,6 +66,7 @@ class MyTripsFragment : Fragment() {
     private fun refreshTripList() {
         val trips = tripService.getAllTrips()
         val linearLayout = view?.findViewById<LinearLayout>(R.id.linearLayout)
+        linearLayout?.removeAllViews()
 
         var i = 1
         for (trip in trips) {
