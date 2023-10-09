@@ -5,4 +5,19 @@
     <string name="title_notifications">Notifications</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="a_button_to_go_back_to_the_home_screen">A button to go back to the Home Screen</string>
+    <string name="cancel">Cancel</string>
+    <string name="select_dates">Select Dates</string>
+    <string name="select_end_date">Select end date</string>
+    <string name="enter_your_destination">Enter your destination</string>
+    <string name="enter_the_number_of_participants">Enter the number of participants</string>
+    <string name="save">Save</string>
+    <string name="select_start_date">Select start date</string>
+    <string name="create_your_trip">Create your trip:</string>
+    <string name="destination">Destination:</string>
+    <string name="end_date">End Date:</string>
+    <string name="number_participants">Number participants:</string>
+    <string name="name">Name:</string>
+    <string name="start_date">Start Date:</string>
+    <string name="enter_the_name">Enter the name</string>
 </resources>
