@@ -12,12 +12,14 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:autofillHints=""
-        android:contentDescription="EditText to enter the name of the trip"
         android:ems="10"
         android:hint="Enter the name"
         android:inputType="text"
+        android:minWidth="300dp"
+        android:minHeight="48dp"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintHorizontal_bias="0.432"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewNameTrip" />
 
@@ -30,7 +32,11 @@
         android:ems="10"
         android:hint="Enter your destination"
         android:inputType="text"
+        android:minWidth="300dp"
+        android:minHeight="48dp"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.433"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewDestinationTrip" />
 
@@ -38,12 +44,16 @@
         android:id="@+id/maxPartNumber_editText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="12dp"
         android:autofillHints=""
         android:ems="10"
         android:hint="Enter the number of participants"
         android:inputType="numberSigned"
+        android:minWidth="300dp"
+        android:minHeight="48dp"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.432"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewMaxParticipantsTrip" />
 
@@ -71,8 +81,10 @@
 
     <TextView
         android:id="@+id/textViewCreateTrip"
-        android:layout_width="246dp"
-        android:layout_height="38dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minHeight="38dp"
+        android:minWidth="246dp"
         android:layout_marginTop="50dp"
         android:text="Create your trip:"
         android:textAlignment="center"
@@ -88,7 +100,7 @@
         android:layout_marginStart="50dp"
         android:layout_marginTop="16dp"
         android:text="Name:"
-        android:textSize="18sp"
+        android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewCreateTrip" />
 
@@ -98,8 +110,9 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
         android:layout_marginTop="16dp"
+        android:minHeight="48dp"
         android:text="Start Date:"
-        android:textSize="18sp"
+        android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dateRangePickerButton" />
 
@@ -109,8 +122,9 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
         android:layout_marginTop="16dp"
+        android:minHeight="48dp"
         android:text="End Date:"
-        android:textSize="18sp"
+        android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewStartDateTrip" />
 
@@ -121,7 +135,7 @@
         android:layout_marginStart="50dp"
         android:layout_marginTop="16dp"
         android:text="Destination:"
-        android:textSize="18sp"
+        android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewEndDateTrip" />
 
@@ -132,14 +146,14 @@
         android:layout_marginStart="50dp"
         android:layout_marginTop="16dp"
         android:text="Number participants:"
-        android:textSize="18sp"
+        android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/location_editText" />
 
     <ImageButton
         android:id="@+id/backButton"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:layout_marginStart="2dp"
         android:layout_marginTop="2dp"
         android:contentDescription="A button to go back to the Home Screen"
@@ -149,8 +163,10 @@
 
     <TextView
         android:id="@+id/startDate_textView"
-        android:layout_width="204dp"
-        android:layout_height="27dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minHeight="27dp"
+        android:minWidth="204dp"
         android:layout_marginStart="24dp"
         android:layout_marginTop="16dp"
         android:text="Select start date"
@@ -160,10 +176,12 @@
 
     <TextView
         android:id="@+id/endDate_textView"
-        android:layout_width="193dp"
-        android:layout_height="27dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="36dp"
+        android:minWidth="204dp"
+        android:minHeight="27dp"
         android:text="Select end date"
         android:textSize="20sp"
         app:layout_constraintStart_toEndOf="@+id/textViewEndDateTrip"
@@ -176,6 +194,7 @@
         android:layout_marginStart="50dp"
         android:layout_marginTop="16dp"
         android:text="Select Dates"
+        android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tripName_editText" />
 
