@@ -2,13 +2,10 @@ package com.example.planventure
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.Intent
-import android.icu.util.LocaleData
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
@@ -57,21 +54,23 @@ class CreateTripActivity : AppCompatActivity() {
         tripService = TripService(applicationContext)
 
         addButton.setOnClickListener {
-            val formatter = SimpleDateFormat("yyyy-MM-dd")
-            val trip = Trip(1,
-                tripName.text.toString(),
-                formatter.parse(tvStartDate.text.toString()),
-                formatter.parse(tvEndDate.text.toString()),
-                location.text.toString(),
-                maxNumberOfParts.text.toString().toInt(),
-                "Beschreibung",
-                ArrayList(),
-                ArrayList(),
-                TRIP_STATE.CLOSED
-            )
-            setResult(Activity.RESULT_OK)
-            tripService.addTrip(trip)
-            this.finish()
+            if(!checksNullValues()) {
+                val formatter = SimpleDateFormat("yyyy-MM-dd")
+                val trip = Trip(1,
+                    tripName.text.toString(),
+                    formatter.parse(tvStartDate.text.toString()),
+                    formatter.parse(tvEndDate.text.toString()),
+                    location.text.toString(),
+                    maxNumberOfParts.text.toString().toInt(),
+                    "Beschreibung",
+                    ArrayList(),
+                    ArrayList(),
+                    TRIP_STATE.CLOSED
+                )
+                setResult(Activity.RESULT_OK)
+                tripService.addTrip(trip)
+                this.finish()
+            }
         }
 
         cancelButton.setOnClickListener {
@@ -90,7 +89,22 @@ class CreateTripActivity : AppCompatActivity() {
         DateRangePickerButton.setOnClickListener {
             showDateRangePicker()
         }
+    }
 
+    private fun checksNullValues():Boolean {
+        if (tripName.text.isEmpty()) {
+            Toast.makeText(this, "Enter a trip name", Toast.LENGTH_SHORT).show()
+            return true
+        } else if(tvStartDate.text == "Select start date"){
+            Toast.makeText(this, "Select dates for the trip.", Toast.LENGTH_SHORT).show()
+            return true
+        } else if (location.text.isEmpty()) {
+            Toast.makeText(this, "Enter a destination", Toast.LENGTH_SHORT).show()
+            return true
+        }  else if (maxNumberOfParts.text.isEmpty()) {
+            Toast.makeText(this, "Enter the number of participants", Toast.LENGTH_SHORT).show()
+            return true
+        } else return false
     }
 
     private fun showDateRangePicker() {
