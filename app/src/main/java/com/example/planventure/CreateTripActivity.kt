@@ -14,6 +14,7 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import com.example.planventure.Exception.EmptyDataException
 import com.example.planventure.service.TripService
+import com.example.planventure.utility.DatePicker
 import com.google.android.material.datepicker.MaterialDatePicker
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -88,45 +89,11 @@ class CreateTripActivity : AppCompatActivity() {
         }
 
         dateRangePickerButton.setOnClickListener {
-            showDateRangePicker()
+            val datePicker = DatePicker(supportFragmentManager,tvStartDate, tvEndDate)
+            datePicker.showDateRangePicker()
         }
     }
 
-    /*private fun checksNullValues(): Boolean {
-        if (tripName.text.isEmpty()) {
-            Toast.makeText(this, "Enter a trip name", Toast.LENGTH_SHORT).show()
-            return true
-        } else if (tvStartDate.text == "Select start date") {
-            Toast.makeText(this, "Select dates for the trip.", Toast.LENGTH_SHORT).show()
-            return true
-        } else if (location.text.isEmpty()) {
-            Toast.makeText(this, "Enter a destination", Toast.LENGTH_SHORT).show()
-            return true
-        } else if (maxNumberOfParts.text.isEmpty()) {
-            Toast.makeText(this, "Enter the number of participants", Toast.LENGTH_SHORT).show()
-            return true
-        } else return false
-    }*/
 
-    private fun showDateRangePicker() {
-        val dateRangerPicker =
-            MaterialDatePicker.Builder.dateRangePicker().setTitleText("Select Date").build()
-        dateRangerPicker.show(supportFragmentManager, "date_range_picker")
-        dateRangerPicker.addOnPositiveButtonClickListener { datePicked ->
-            val firstDate = datePicked.first
-            val secondDate = datePicked.second
-
-            if (firstDate != null && secondDate != null) {
-                tvStartDate.text = convertLongToDate(firstDate)
-                tvEndDate.text = convertLongToDate(secondDate)
-            }
-        }
-    }
-
-    private fun convertLongToDate(time: Long): String {
-        val date = Date(time)
-        val format = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-        return format.format(date)
-    }
 
 }

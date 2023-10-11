@@ -33,6 +33,7 @@ class MyTripsFragment : Fragment() {
 
     companion object {
         private const val CREATE_TRIP_REQUEST = 1 // You can choose any integer value
+        const val TRIP_ID_TRIP_INFORMATION = "com.example.planventure.MyTripsFragment.tripID"
     }
 
     override fun onCreateView(
@@ -78,6 +79,7 @@ class MyTripsFragment : Fragment() {
 
             textView.setOnClickListener {
                 val intent = Intent(this.context, TripInformationActivity::class.java)
+                intent.putExtra(TRIP_ID_TRIP_INFORMATION,trip.getId())
                 startActivity(intent)
             }
 

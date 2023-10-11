@@ -37,7 +37,7 @@ open class DataBaseHelper(
      */
     override fun onCreate(db: SQLiteDatabase) {
         val createTripTableStatement =
-            "CREATE TABLE $TRIP_TABLE (ID INTEGER PRIMARY KEY AUTOINCREMENT, $COLUMN_TRIP_NAME TEXT, " +
+            "CREATE TABLE $TRIP_TABLE (TRIP_ID INTEGER PRIMARY KEY AUTOINCREMENT, $COLUMN_TRIP_NAME TEXT, " +
                     "$COLUMN_TRIP_START_DATE TEXT, $COLUMN_TRIP_END_DATE TEXT, $COLUMN_TRIP_LOCATION TEXT, " +
                     "$COLUMN_TRIP_MAX_PARTICIPANTS INTEGER, $COLUMN_TRIP_DESCRIPTION TEXT, " +
                     "$COLUMN_TRIP_STATE)"
