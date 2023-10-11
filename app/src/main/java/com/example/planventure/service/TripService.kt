@@ -21,6 +21,7 @@ class TripService(
     //creates Trip object and propagates Error to the Activity
     fun addTrip(myData: MutableList<String>) {
         try {
+
             checksNullValues(myData)
             val formatter = SimpleDateFormat("yyyy-MM-dd")
             val trip = Trip(
@@ -33,7 +34,7 @@ class TripService(
                 myData[5],
                 ArrayList(),
                 ArrayList(),
-                TRIP_STATE.CLOSED
+                TRIP_STATE.STARTED
             )
             val success = tripRepository.addTripToDb(trip)
             Log.d("TRIP DB INPUT", success.toString())
@@ -48,6 +49,10 @@ class TripService(
 
     fun getTripById(id: Long): Trip? {
         return tripRepository.getById(id)
+    }
+
+    fun updateTrip(t: Trip){
+        tripRepository.alterTripById(t.getId().toInt(), t)
     }
 
     fun getTripsByName(name: String): List<Trip> {

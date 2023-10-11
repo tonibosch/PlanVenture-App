@@ -144,9 +144,9 @@ class TripRepository(private val context: Context) : DataBaseHelper(context), IR
             formatter.parse(endDate), location, number, description,
             ArrayList(), ArrayList(),
             when(state){
-                "OPEN"-> TRIP_STATE.OPEN
-                "CLOSED" -> TRIP_STATE.CLOSED
-                else -> TRIP_STATE.ARCHIVED
+                "OPEN"-> TRIP_STATE.PLANNING
+                "CLOSED" -> TRIP_STATE.STARTED
+                else -> TRIP_STATE.FINISHED
             })
     }
 
