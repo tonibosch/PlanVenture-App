@@ -16,6 +16,9 @@
             android:name=".CreateExpenseActivity"
             android:exported="false" />
         <activity
+            android:name=".TripInformationActivity"
+            android:exported="false" />
+        <activity
             android:name=".CreateTripActivity"
             android:exported="false" />
         <activity

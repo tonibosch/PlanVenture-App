@@ -75,6 +75,12 @@ class MyTripsFragment : Fragment() {
             textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18f)
             if (i % 2 == 0) textView.setBackgroundColor(Color.WHITE)        // Set the background color based on whether i is odd or even
             else textView.setBackgroundColor(Color.LTGRAY)
+
+            textView.setOnClickListener {
+                val intent = Intent(this.context, TripInformationActivity::class.java)
+                startActivity(intent)
+            }
+
             linearLayout?.addView(textView)
             ++i
         }
