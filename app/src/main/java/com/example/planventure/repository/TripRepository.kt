@@ -55,6 +55,12 @@ class TripRepository(private val context: Context) : DataBaseHelper(context), IR
         return mapQueryToString(queryString)
     }
 
+    fun getSize(): Int{
+        val queryString =
+            "SELECT * FROM $TRIP_TABLE"
+        return mapQueryToString(queryString).size
+    }
+
     override fun getById(id: Long): Trip? {
         val queryString =
             "SELECT * FROM $TRIP_TABLE WHERE TRIP_ID = $id"
