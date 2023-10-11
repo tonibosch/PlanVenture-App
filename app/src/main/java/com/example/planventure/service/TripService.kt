@@ -55,6 +55,9 @@ class TripService(
         tripRepository.alterTripById(t.getId().toInt(), t)
     }
 
+    /**
+     * use it carefully, since it returns a list due to the fact that the name is no primary key and hence not unique
+     */
     fun getTripsByName(name: String): List<Trip> {
         return tripRepository.getTripsByName(name)
     }
