@@ -55,8 +55,14 @@ class TripRepository(private val context: Context) : DataBaseHelper(context), IR
 
     fun getSize(): Int{
         val queryString =
-            "SELECT * FROM $TRIP_TABLE"
-        return mapQueryToString(queryString).size
+            "SELECT COUNT(*) FROM $TRIP_TABLE"
+
+        val number: Int
+        val db = this.readableDatabase
+        val cursor = db.rawQuery(queryString, null)
+        number = if(cursor.moveToFirst()) cursor.getInt(0) else 0
+        cursor.close()
+        return number
     }
 
     override fun getById(id: Long): Trip? {
