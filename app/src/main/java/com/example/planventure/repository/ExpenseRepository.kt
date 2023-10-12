@@ -8,6 +8,7 @@ import androidx.annotation.RequiresApi
 import com.example.planventure.database.DataBaseHelper
 import com.example.planventure.interfaces.IRepository
 import com.example.planventure.entity.Expense
+import com.example.planventure.entity.Participant
 import com.example.planventure.entity.Trip
 
 @RequiresApi(Build.VERSION_CODES.P)
@@ -82,14 +83,14 @@ class ExpenseRepository(private val context: Context): DataBaseHelper(context),
         return closeAndReturn(cursor)
     }
 
-    fun alterExpenseById(id: Int, e: Expense, t: Trip){
-        deleteById(id)
-        addExpensesToDb(e, t.getId().toInt())
-    }
+    override fun updateById(id: Long, e: Expense): Boolean {
+        val db = this.writableDatabase
+        val cv = ContentValues()
 
-    fun alterExpenseByName(name: String, e: Expense, t: Trip){
-        deleteExpenseByName("name")
-        addExpensesToDb(e, t.getId().toInt())
+        cv.put(COLUMN_EXPENSE_NAME, e.getName())
+        cv.put(COLUMN_EXPENSE_AMOUNT, e.getAmount())
+
+        return when(db.update(TRIP_TABLE, cv, "TRIP_ID=?", arrayOf(id.toString()))) {-1 -> false else -> true}
     }
 
     // helper functions

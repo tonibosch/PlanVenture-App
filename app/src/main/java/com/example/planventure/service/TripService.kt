@@ -51,8 +51,13 @@ class TripService(
         return tripRepository.getById(id)
     }
 
-    fun updateTrip(t: Trip){
-        tripRepository.alterTripById(t.getId().toInt(), t)
+    fun getTripsByState(s: TRIP_STATE): ArrayList<Trip>{
+        return tripRepository.getTripsByState(s)
+    }
+
+    fun updateTrip(id: Long, t: Trip){
+        val success = tripRepository.updateById(id, t)
+        Log.d("UPDATE_TRIP", success.toString())
     }
 
     /**

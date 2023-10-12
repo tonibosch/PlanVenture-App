@@ -52,6 +52,10 @@ open class DataBaseHelper(
             "CREATE TABLE $EXPENSE_TABLE (ID INTEGER PRIMARY KEY AUTOINCREMENT, $COLUMN_EXPENSE_NAME TEXT, " +
                     "$COLUMN_EXPENSE_AMOUNT REAL, $COLUMN_EXPENSE_TRIP TEXT REFERENCES $TRIP_TABLE ON DELETE CASCADE ON UPDATE CASCADE)"
         db.execSQL(createExpenseTableStatement)
+
+        val createTripStatement =
+            "INSERT INTO $TRIP_TABLE VALUES (1, \"TEST_TRIP\", \"Wed Oct 18 00:00:00 GMT 2023\", \"Wed Oct 18 00:00:00 GMT 2023\", \"NTNU\", 5, \"Trip to the NTNU\", \"PLANNING\")"
+        db.execSQL(createTripStatement)
     }
 
     /**

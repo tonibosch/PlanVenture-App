@@ -81,14 +81,14 @@ class ParticipantRepository(context: Context): DataBaseHelper(context), IReposit
         return closeAndReturn(cursor)
     }
 
-    fun alterParticipantById(id: Int, p: Participant, t: Trip){
-        deleteById(id)
-        addParticipantToDb(p, t.getId().toInt())
-    }
+    override fun updateById(id: Long, e: Participant): Boolean {
+        val db = this.writableDatabase
+        val cv = ContentValues()
 
-    fun alterParticipantByName(name: String, p: Participant, t: Trip){
-        deleteParticipantByName("name")
-        addParticipantToDb(p, t.getId().toInt())
+        cv.put(COLUMN_PARTICIPANT_NAME, e.getName())
+
+        return when(db.update(PARTICIPANT_TABLE, cv, "PARTICIPANT_ID=?", arrayOf(id.toString()))) {-1 -> false else -> true}
+
     }
 
     // helper functions

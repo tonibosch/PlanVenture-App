@@ -19,6 +19,14 @@ interface IRepository<T> {
     fun getById(id: Long): T?
 
     /**
+     * used to update a single entity in the database
+     * @param id primary key to identify the designated entity in the table
+     * @param e new entity, that contains the updated data
+     * @return boolean that shows wether operation was successful or not
+     */
+    fun updateById(id: Long, e: T): Boolean
+
+    /**
      * used to delete every item from a table without dropping the table
      * @return boolean that shows wether operation was successful or not
      */

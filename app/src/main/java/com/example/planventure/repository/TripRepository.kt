@@ -43,8 +43,6 @@ class TripRepository(private val context: Context) : DataBaseHelper(context), IR
         val expenseRepository = ExpenseRepository(context)
         for(e in t.getExpenses()) expenseRepository.addExpensesToDb(e, t.getId().toInt())
 
-        //TODO("add expenses")
-
         return when(db.insert(TRIP_TABLE, null, cv)){-1L -> false else -> true}
     }
 
@@ -87,6 +85,12 @@ class TripRepository(private val context: Context) : DataBaseHelper(context), IR
         return mapQueryToString(queryString)
     }
 
+    fun getTripsByState(s: TRIP_STATE): ArrayList<Trip> {
+        val queryString =
+            "SELECT * FROM $TRIP_TABLE WHERE $COLUMN_TRIP_STATE = $s"
+        return mapQueryToString(queryString)
+    }
+
 
     override fun deleteAll(): Boolean{
         val db = this.writableDatabase
@@ -118,14 +122,32 @@ class TripRepository(private val context: Context) : DataBaseHelper(context), IR
         return closeAndReturn(cursor)
     }
 
-    fun alterTripById(id: Int, trip: Trip){
-        deleteById(id)
-        addTripToDb(trip)
-    }
+    override fun updateById(id: Long, e: Trip): Boolean {
+        val db = this.writableDatabase
+        /*
+        val stringQuery =
+            "UPDATE $TRIP_TABLE SET $COLUMN_TRIP_NAME = \"${e.getName()}\", " +
+                    "$COLUMN_TRIP_START_DATE = \"${e.getStartDate()}\", " +
+                    "$COLUMN_TRIP_END_DATE = \"${e.getEndDate()}\", " +
+                    "$COLUMN_TRIP_LOCATION = \"${e.getLocation()}\", " +
+                    "$COLUMN_TRIP_DESCRIPTION = \"${e.getDescription()}\", " +
+                    "$COLUMN_TRIP_MAX_PARTICIPANTS = ${e.getMaxNumberOfParticipants()}, " +
+                    "$COLUMN_TRIP_STATE = \"${e.getState()}\" " +
+                    "WHERE TRIP_ID = $id"
+        val cursor = db.rawQuery(stringQuery, null)
+        */
+        val cv = ContentValues()
 
-    fun alterTripByName(name: String, trip: Trip){
-        deleteTripByName(name)
-        addTripToDb(trip)
+        cv.put(COLUMN_TRIP_NAME, e.getName())
+        cv.put(COLUMN_TRIP_START_DATE, e.getStartDate().toString())
+        cv.put(COLUMN_TRIP_END_DATE, e.getEndDate().toString())
+        cv.put(COLUMN_TRIP_LOCATION, e.getLocation())
+        cv.put(COLUMN_TRIP_MAX_PARTICIPANTS, e.getMaxNumberOfParticipants())
+        cv.put(COLUMN_TRIP_DESCRIPTION, e.getDescription())
+        cv.put(COLUMN_TRIP_STATE, e.getState().toString())
+
+        return when(db.update(TRIP_TABLE, cv, "TRIP_ID=?", arrayOf(id.toString()))) {-1 -> false else -> true}
+
     }
 
     // helper functions

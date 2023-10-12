@@ -17,6 +17,7 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.findFragment
 import androidx.navigation.fragment.findNavController
+import com.example.planventure.entity.Trip
 import com.example.planventure.service.TripService
 import java.text.SimpleDateFormat
 import java.util.Date
