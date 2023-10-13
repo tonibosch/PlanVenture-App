@@ -5,6 +5,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.text.Html
 import android.util.Log
 import android.util.TypedValue
 import androidx.fragment.app.Fragment
@@ -73,7 +74,8 @@ class MyTripsFragment : Fragment() {
         var i = 1
         for (trip in trips) {
             val textView = TextView(context)                                // Create a new TextView for each trip
-            textView.text = "       Name: ${trip.getName()}\n       Location: ${trip.getLocation()}\n       from " + convertDate(trip.getStartDate()) + " to " + convertDate(trip.getEndDate())
+            val formattedText = "       <b>${trip.getName()}</b><br>       Location: ${trip.getLocation()}<br>       from ${convertDate(trip.getStartDate())} to ${convertDate(trip.getEndDate())}"
+            textView.text = Html.fromHtml(formattedText, Html.FROM_HTML_MODE_COMPACT)
             textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18f)
             if (i % 2 == 0) textView.setBackgroundColor(Color.WHITE)        // Set the background color based on whether i is odd or even
             else textView.setBackgroundColor(Color.LTGRAY)
