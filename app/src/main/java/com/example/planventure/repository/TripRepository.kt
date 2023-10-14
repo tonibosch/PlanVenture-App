@@ -93,7 +93,7 @@ class TripRepository(private val context: Context) : DataBaseHelper(context), IR
 
     fun getTripsByState(s: TRIP_STATE): ArrayList<Trip> {
         val queryString =
-            "SELECT * FROM $TRIP_TABLE WHERE $COLUMN_TRIP_STATE = $s"
+            "SELECT * FROM $TRIP_TABLE WHERE $COLUMN_TRIP_STATE = \"$s\""
         return mapQueryToString(queryString)
     }
 
