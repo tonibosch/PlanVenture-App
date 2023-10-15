@@ -95,11 +95,11 @@ class ExpenseRepository(private val context: Context): DataBaseHelper(context),
 
     // helper functions
     private fun buildExpenseFromCursor(c: Cursor): Expense {
-        // 0 is id
+        val id = c.getInt(0)
         val name = c.getString(1)
         val amount = c.getFloat(2)
 
-        return Expense(name, amount)
+        return Expense(id.toLong(), name, amount)
     }
 
     private fun closeAndReturn(c: Cursor):Boolean{

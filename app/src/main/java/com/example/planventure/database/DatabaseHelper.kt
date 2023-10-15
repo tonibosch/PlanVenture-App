@@ -65,7 +65,19 @@ open class DataBaseHelper(
      * @param p2 new version
      */
     override fun onUpgrade(db: SQLiteDatabase, p1: Int, p2: Int) {
-        TODO("Might not be implemented")
+        val dropTripTableStatement =
+            "DROP TABLE IF EXISTS $TRIP_TABLE"
+        db.execSQL(dropTripTableStatement)
+
+        val dropParticipantTableStatement =
+            "DROP TABLE IF EXISTS $PARTICIPANT_TABLE"
+        db.execSQL(dropParticipantTableStatement)
+
+        val dropExpenseTableStatement =
+            "DROP TABLE IF EXISTS $EXPENSE_TABLE"
+        db.execSQL(dropExpenseTableStatement)
+
+        onCreate(db)
     }
 
 }
