@@ -12,7 +12,7 @@ class ExpenseActivity : AppCompatActivity() {
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_create_expense)
+        setContentView(R.layout.activity_all_expense)
 
         backButton = findViewById(R.id.backButton_Expenses)
 
