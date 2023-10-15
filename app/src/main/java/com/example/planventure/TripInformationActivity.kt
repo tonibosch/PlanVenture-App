@@ -31,6 +31,8 @@ class TripInformationActivity : AppCompatActivity() {
     private lateinit var tvStartDate: TextView
     private lateinit var tvEndDate: TextView
     private lateinit var updateTripBtn: Button
+    private lateinit var expensesBtn: Button
+
 
     private lateinit var tripService: TripService
 
@@ -52,6 +54,7 @@ class TripInformationActivity : AppCompatActivity() {
         location = findViewById(R.id.location_editText_tripInformation)
         maxNumberOfParts = findViewById(R.id.maxPartNumber_editText_tripInformation)
         updateTripBtn = findViewById(R.id.updateTripButton)
+        expensesBtn = findViewById(R.id.ExpensesButton)
 
         tripName.text = Editable.Factory.getInstance().newEditable(trip?.getName())
 
@@ -64,7 +67,10 @@ class TripInformationActivity : AppCompatActivity() {
             datePicker.showDateRangePicker()
         }
 
-        updateTripBtn.text = "Update"
+        expensesBtn.setOnClickListener {
+            val intent = Intent(this, ExpenseActivity::class.java)
+            startActivity(intent)
+        }
 
         updateTripBtn.setOnClickListener {
 
