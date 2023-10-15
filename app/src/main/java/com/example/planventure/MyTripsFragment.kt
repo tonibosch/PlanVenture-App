@@ -67,7 +67,7 @@ class MyTripsFragment : Fragment() {
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
                 statusSelected = spinnerStatus.selectedItem.toString()
                 Log.d("statusSelected", statusSelected)
-                //refreshTripList()
+                refreshTripList()
             }
             override fun onNothingSelected(p0: AdapterView<*>?) {
 
@@ -95,6 +95,7 @@ class MyTripsFragment : Fragment() {
         else if(statusSelected == TRIP_STATE.STARTED.toString()) trips = tripService.getTripsByState(TRIP_STATE.STARTED)
         else if(statusSelected == TRIP_STATE.FINISHED.toString()) trips = tripService.getTripsByState(TRIP_STATE.FINISHED)
         else trips = tripService.getAllTrips()
+        for(t in trips) Log.d("TRIP_WITH_FILTER: $statusSelected", "$t")
         val linearLayout = view?.findViewById<LinearLayout>(R.id.linearLayout)
         linearLayout?.removeAllViews()
 

@@ -93,8 +93,9 @@ class ParticipantRepository(context: Context): DataBaseHelper(context), IReposit
 
     // helper functions
     private fun buildParticipantFromCursor(c: Cursor): Participant{
+        val id = c.getInt(0)
         val name = c.getString(1)
-        return Participant(name)
+        return Participant(id.toLong(), name)
     }
 
     private fun closeAndReturn(c: Cursor):Boolean{
