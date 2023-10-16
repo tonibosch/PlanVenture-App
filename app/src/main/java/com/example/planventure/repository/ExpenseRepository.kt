@@ -52,7 +52,10 @@ class ExpenseRepository(private val context: Context): DataBaseHelper(context),
         return mapQueryToList(queryString)
     }
 
-    fun getParticipantsByName(name: String): ArrayList<Expense> {
+    /**
+     * do not use this function except for emergencies use getTripById() instead
+     */
+    fun getExpenseByName(name: String): ArrayList<Expense> {
         val queryString =
             "SELECT * FROM $EXPENSE_TABLE WHERE $COLUMN_EXPENSE_NAME = $name"
         return mapQueryToList(queryString)
@@ -75,6 +78,9 @@ class ExpenseRepository(private val context: Context): DataBaseHelper(context),
         return closeAndReturn(cursor)
     }
 
+    /**
+     * do not use this function except for emergencies use getTripById() instead
+     */
     fun deleteExpenseByName(name: String): Boolean {
         val db = this.writableDatabase
         val stringQuery =

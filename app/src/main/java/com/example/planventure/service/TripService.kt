@@ -79,6 +79,10 @@ class TripService(
         val success = tripRepository.deleteAll()
     }
 
+    fun getNumberOfColumns(): Int{
+        return tripRepository.getNumberOfColumns()
+    }
+
 
     //checks for Null values and throws EmptyDataException
     private fun checksNullValues(myData: MutableList<String>){

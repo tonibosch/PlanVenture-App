@@ -65,6 +65,18 @@ class TripRepository(private val context: Context) : DataBaseHelper(context), IR
         return number
     }
 
+    fun getNumberOfColumns(): Int{
+        val queryString =
+            "SELECT COUNT(*) FROM pragma_table_info(\"$TRIP_TABLE\")"
+
+        val number: Int
+        val db = this.readableDatabase
+        val cursor = db.rawQuery(queryString, null)
+        number = if(cursor.moveToFirst()) cursor.getInt(0) else 0
+        cursor.close()
+        return number
+    }
+
     override fun getById(id: Long): Trip? {
         val queryString =
             "SELECT * FROM $TRIP_TABLE WHERE TRIP_ID = $id"
@@ -82,6 +94,7 @@ class TripRepository(private val context: Context) : DataBaseHelper(context), IR
 
     /**
      * used to get a specific object from the database by name
+     * but do not use this function except for emergencies use getTripById() instead
      * @param name name attribute of the object
      * @return List of objects mapped from the database via ER mapping that have designated name
      */
@@ -117,6 +130,7 @@ class TripRepository(private val context: Context) : DataBaseHelper(context), IR
 
     /**
      * used to delete specific objects from a table by name
+     * but do not use this function except for emergencies use delete TripById() instead
      * @return boolean that shows wether operation was successful or not
      * @param name attribute of the object
      */
