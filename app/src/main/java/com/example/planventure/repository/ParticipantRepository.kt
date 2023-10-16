@@ -57,7 +57,7 @@ class ParticipantRepository(context: Context): DataBaseHelper(context), IReposit
      */
     fun getParticipantsByName(name: String): ArrayList<Participant> {
         val queryString =
-            "SELECT * FROM $PARTICIPANT_TABLE WHERE $COLUMN_PARTICIPANT_NAME = $name"
+            "SELECT * FROM $PARTICIPANT_TABLE WHERE $COLUMN_PARTICIPANT_NAME = \"$name\""
         return mapQueryToList(queryString)
     }
 
@@ -82,10 +82,11 @@ class ParticipantRepository(context: Context): DataBaseHelper(context), IReposit
     /**
      * do not use this function except for emergencies use deleteParticipantById() instead
      */
+    @Deprecated("Do not use")
     fun deleteParticipantByName(name: String): Boolean {
         val db = this.writableDatabase
         val stringQuery =
-            "DELETE FROM $PARTICIPANT_TABLE WHERE $COLUMN_PARTICIPANT_NAME = $name"
+            "DELETE FROM $PARTICIPANT_TABLE WHERE $COLUMN_PARTICIPANT_NAME = \"$name\""
         val cursor = db.rawQuery(stringQuery, null)
         return closeAndReturn(cursor)
     }

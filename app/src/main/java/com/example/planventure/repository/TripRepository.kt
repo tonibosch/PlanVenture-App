@@ -100,7 +100,7 @@ class TripRepository(private val context: Context) : DataBaseHelper(context), IR
      */
     fun getTripsByName(name: String): ArrayList<Trip> {
         val queryString =
-            "SELECT * FROM $TRIP_TABLE WHERE $COLUMN_TRIP_NAME = $name"
+            "SELECT * FROM $TRIP_TABLE WHERE $COLUMN_TRIP_NAME = \"$name\""
         return mapQueryToString(queryString)
     }
 
@@ -134,10 +134,11 @@ class TripRepository(private val context: Context) : DataBaseHelper(context), IR
      * @return boolean that shows wether operation was successful or not
      * @param name attribute of the object
      */
+    @Deprecated("Do not use")
     fun deleteTripByName(name: String): Boolean {
         val db = this.writableDatabase
         val stringQuery =
-            "DELETE FROM $TRIP_TABLE WHERE $COLUMN_TRIP_NAME = $name"
+            "DELETE FROM $TRIP_TABLE WHERE $COLUMN_TRIP_NAME = \"$name\""
         val cursor = db.rawQuery(stringQuery, null)
         return closeAndReturn(cursor)
     }
