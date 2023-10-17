@@ -34,7 +34,7 @@ class TripService(
                 myData[5],
                 ArrayList(),
                 ArrayList(),
-                TRIP_STATE.STARTED
+                TRIP_STATE.PLANNING
             )
             val success = tripRepository.addTripToDb(trip)
             Log.d("TRIP DB INPUT", success.toString())

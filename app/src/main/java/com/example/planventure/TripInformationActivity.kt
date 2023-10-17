@@ -7,6 +7,7 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
@@ -32,6 +33,7 @@ class TripInformationActivity : AppCompatActivity() {
     private lateinit var tvEndDate: TextView
     private lateinit var updateTripBtn: Button
     private lateinit var expensesBtn: Button
+    private lateinit var changeStateBtn: Button
 
 
     private lateinit var tripService: TripService
@@ -44,7 +46,6 @@ class TripInformationActivity : AppCompatActivity() {
 
         val idTrip = intent.getLongExtra(MyTripsFragment.TRIP_ID_TRIP_INFORMATION,0)
         val trip = tripService.getTripById(idTrip)
-        println("SDASDSADSADSA" + idTrip)
 
         backButton = findViewById(R.id.backButton_TripInfo)
         dateRangePickerButton = findViewById(R.id.dateRangePickerButton_tripInformation)
@@ -55,11 +56,39 @@ class TripInformationActivity : AppCompatActivity() {
         maxNumberOfParts = findViewById(R.id.maxPartNumber_editText_tripInformation)
         updateTripBtn = findViewById(R.id.updateTripButton)
         expensesBtn = findViewById(R.id.ExpensesButton)
+        changeStateBtn = findViewById(R.id.buttonChangeState)
 
         tripName.text = Editable.Factory.getInstance().newEditable(trip?.getName())
 
         backButton.setOnClickListener{
             this.finish()
+        }
+
+        val currentStatus = trip?.getState()
+        Log.d("CURRENT STATUS", "$currentStatus")
+
+        when (currentStatus) {
+            TRIP_STATE.PLANNING -> changeStateBtn.text = "START"
+            TRIP_STATE.STARTED -> changeStateBtn.text = "FINISH"
+            else -> changeStateBtn.text = "FINISHED"
+        }
+
+        changeStateBtn.setOnClickListener {
+            val formatter = SimpleDateFormat("yyyy-MM-dd")
+            if(currentStatus == TRIP_STATE.PLANNING) {
+                changeStateBtn.text = "FINISH"
+                tripService.updateTrip(idTrip, Trip(1, tripName.text.toString(), formatter.parse(tvStartDate.text.toString()),
+                    formatter.parse(tvEndDate.text.toString()), location.text.toString(), maxNumberOfParts.text.toString().toInt(),
+                    "Description", ArrayList(), ArrayList(),TRIP_STATE.STARTED))
+                Toast.makeText(this, "You have started the trip", Toast.LENGTH_SHORT).show()
+            }
+            else if(currentStatus == TRIP_STATE.STARTED){
+                changeStateBtn.text = "FINISHED"
+                tripService.updateTrip(idTrip, Trip(1, tripName.text.toString(), formatter.parse(tvStartDate.text.toString()),
+                    formatter.parse(tvEndDate.text.toString()), location.text.toString(), maxNumberOfParts.text.toString().toInt(),
+                    "Description", ArrayList(), ArrayList(),TRIP_STATE.FINISHED))
+                Toast.makeText(this, "You have finished the trip", Toast.LENGTH_SHORT).show()
+            }
         }
 
         dateRangePickerButton.setOnClickListener {
@@ -76,10 +105,12 @@ class TripInformationActivity : AppCompatActivity() {
 
             setResult(Activity.RESULT_OK)
             try {
+                var tripState = tripService.getTripById(idTrip)!!.getState()
+
                 val formatter = SimpleDateFormat("yyyy-MM-dd")
                 tripService.updateTrip(idTrip, Trip(1, tripName.text.toString(), formatter.parse(tvStartDate.text.toString()),
                     formatter.parse(tvEndDate.text.toString()), location.text.toString(), maxNumberOfParts.text.toString().toInt(),
-                    "Description", ArrayList(), ArrayList(), TRIP_STATE.PLANNING))
+                    "Description", ArrayList(), ArrayList(),tripState))
                 val intent = Intent(applicationContext, MainActivity::class.java)
                 startActivity(intent)
             } catch (e: EmptyDataException) { // catches Exception and makes toast out of it
