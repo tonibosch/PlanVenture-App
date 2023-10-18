@@ -22,7 +22,7 @@ class TripRepository(private val context: Context) : DataBaseHelper(context), IR
     /**
      * adds the attributes of a Trip object to the database
      * @param t: Trip object whose attributes are to be stored
-     * @return boolean to check wether operation was successful
+     * @return boolean to check whether operation was successful
      */
     fun addTripToDb(t: Trip): Boolean {
 
@@ -117,7 +117,7 @@ class TripRepository(private val context: Context) : DataBaseHelper(context), IR
 
     /**
      * used to delete specific objects from a table by name
-     * @return boolean that shows wether operation was successful or not
+     * @return boolean that shows whether operation was successful or not
      * @param name attribute of the object
      */
     fun deleteTripByName(name: String): Boolean {

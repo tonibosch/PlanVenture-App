@@ -7,21 +7,32 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
+import android.util.Log
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import com.example.planventure.Exception.EmptyDataException
+import com.example.planventure.entity.Participant
 import com.example.planventure.entity.Trip
 import com.example.planventure.enumerations.TRIP_STATE
+import com.example.planventure.service.ParicipantService
 import com.example.planventure.service.TripService
 import com.example.planventure.utility.DatePicker
 import java.text.SimpleDateFormat
 
 @RequiresApi(Build.VERSION_CODES.P)
 class TripInformationActivity : AppCompatActivity() {
+
+    companion object {
+        const val TRIP_ID_TRIP_PARTICIPANTS = "com.example.planventure.TripInformation.TripId"
+    }
 
     private lateinit var tripName: EditText
     private lateinit var location: EditText
@@ -31,20 +42,23 @@ class TripInformationActivity : AppCompatActivity() {
     private lateinit var tvStartDate: TextView
     private lateinit var tvEndDate: TextView
     private lateinit var updateTripBtn: Button
+    private lateinit var gotoParticipants: Button
 
     private lateinit var tripService: TripService
+    private lateinit var participantService: ParicipantService
+
+
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_trip_information)
         tripService = TripService(applicationContext)
+        participantService = ParicipantService(applicationContext)
 
-        val idTrip = intent.getLongExtra(MyTripsFragment.TRIP_ID_TRIP_INFORMATION,0)
-        val trip = tripService.getTripById(idTrip)
-        println("SDASDSADSADSA" + idTrip)
+        val tripId = intent.getLongExtra(MyTripsFragment.TRIP_ID_TRIP_INFORMATION, 0)
+        val trip = tripService.getTripById(tripId)
 
-        backButton = findViewById(R.id.backButton_TripInfo)
         dateRangePickerButton = findViewById(R.id.dateRangePickerButton_tripInformation)
         tvStartDate = findViewById(R.id.startDate_textView_tripInformation)
         tvEndDate = findViewById(R.id.endDate_textView_tripInformation)
@@ -52,15 +66,17 @@ class TripInformationActivity : AppCompatActivity() {
         location = findViewById(R.id.location_editText_tripInformation)
         maxNumberOfParts = findViewById(R.id.maxPartNumber_editText_tripInformation)
         updateTripBtn = findViewById(R.id.updateTripButton)
+        backButton = findViewById(R.id.backButton_TripInfo)
+        gotoParticipants = findViewById(R.id.gotoParticipants_Button_tripInformation)
 
         tripName.text = Editable.Factory.getInstance().newEditable(trip?.getName())
 
-        backButton.setOnClickListener{
+        backButton.setOnClickListener {
             this.finish()
         }
 
         dateRangePickerButton.setOnClickListener {
-            val datePicker = DatePicker(supportFragmentManager,tvStartDate, tvEndDate)
+            val datePicker = DatePicker(supportFragmentManager, tvStartDate, tvEndDate)
             datePicker.showDateRangePicker()
         }
 
@@ -71,15 +87,33 @@ class TripInformationActivity : AppCompatActivity() {
             setResult(Activity.RESULT_OK)
             try {
                 val formatter = SimpleDateFormat("yyyy-MM-dd")
-                tripService.updateTrip(idTrip, Trip(1, tripName.text.toString(), formatter.parse(tvStartDate.text.toString()),
-                    formatter.parse(tvEndDate.text.toString()), location.text.toString(), maxNumberOfParts.text.toString().toInt(),
-                    "Description", ArrayList(), ArrayList(), TRIP_STATE.PLANNING))
+                tripService.updateTrip(
+                    tripId, Trip(
+                        1,
+                        tripName.text.toString(),
+                        formatter.parse(tvStartDate.text.toString()),
+                        formatter.parse(tvEndDate.text.toString()),
+                        location.text.toString(),
+                        maxNumberOfParts.text.toString().toInt(),
+                        "Description",
+                        ArrayList(),
+                        ArrayList(),
+                        TRIP_STATE.PLANNING
+                    )
+                )
                 val intent = Intent(applicationContext, MainActivity::class.java)
                 startActivity(intent)
             } catch (e: EmptyDataException) { // catches Exception and makes toast out of it
                 Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
             }
         }
+
+        gotoParticipants.setOnClickListener {
+            val intent = Intent(applicationContext, TripParticipantsActivity::class.java)
+            intent.putExtra(TRIP_ID_TRIP_PARTICIPANTS, tripId)
+            startActivity(intent)
+        }
+
 
     }
 }

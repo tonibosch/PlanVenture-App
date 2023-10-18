@@ -15,7 +15,7 @@
         android:inputType="text"
         android:text="Name"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.517"
+        app:layout_constraintHorizontal_bias="0.894"
         app:layout_constraintStart_toEndOf="@+id/textView4"
         app:layout_constraintTop_toBottomOf="@+id/tripInformationHeader" />
 
@@ -28,7 +28,7 @@
         android:inputType="text"
         android:text="Name"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.658"
+        app:layout_constraintHorizontal_bias="0.852"
         app:layout_constraintStart_toEndOf="@+id/textView4"
         app:layout_constraintTop_toBottomOf="@+id/tripInformationHeader" />
 
@@ -177,6 +177,17 @@
         android:layout_marginTop="105dp"
         android:text="Button"
         app:layout_constraintBottom_toTopOf="@+id/tripName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView9" />
+
+    <Button
+        android:id="@+id/gotoParticipants_Button_tripInformation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="41dp"
+        android:text="participants"
+        app:layout_constraintBottom_toTopOf="@+id/updateTripButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView9" />

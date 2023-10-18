@@ -41,7 +41,7 @@ class MyTripsFragment : Fragment() {
 
     companion object {
         private const val CREATE_TRIP_REQUEST = 1 // You can choose any integer value
-        const val TRIP_ID_TRIP_INFORMATION = "com.example.planventure.MyTripsFragment.tripID"
+        const val TRIP_ID_TRIP_INFORMATION = "com.example.planventure.MyTripsFragment.tripId"
     }
 
     override fun onCreateView(
@@ -60,15 +60,22 @@ class MyTripsFragment : Fragment() {
 
         //Configure Spinner Trip Status
         spinnerStatus = view.findViewById(R.id.spinnerStatus)
-        val listTripStatus = arrayOf("ALL",TRIP_STATE.PLANNING.toString(), TRIP_STATE.STARTED.toString(),TRIP_STATE.FINISHED.toString())
-        var adapter: ArrayAdapter<String> = ArrayAdapter(container!!.context, android.R.layout.simple_spinner_item,listTripStatus)
-        spinnerStatus.adapter=adapter
-        spinnerStatus?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+        val listTripStatus = arrayOf(
+            "ALL",
+            TRIP_STATE.PLANNING.toString(),
+            TRIP_STATE.STARTED.toString(),
+            TRIP_STATE.FINISHED.toString()
+        )
+        var adapter: ArrayAdapter<String> =
+            ArrayAdapter(container!!.context, android.R.layout.simple_spinner_item, listTripStatus)
+        spinnerStatus.adapter = adapter
+        spinnerStatus?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
                 statusSelected = spinnerStatus.selectedItem.toString()
                 Log.d("statusSelected", statusSelected)
                 refreshTripList()
             }
+
             override fun onNothingSelected(p0: AdapterView<*>?) {
 
             }
@@ -91,19 +98,27 @@ class MyTripsFragment : Fragment() {
 
     private fun refreshTripList() {
         var trips: List<Trip>? = null
-        if(statusSelected == TRIP_STATE.PLANNING.toString()) trips = tripService.getTripsByState(TRIP_STATE.PLANNING)
-        else if(statusSelected == TRIP_STATE.STARTED.toString()) trips = tripService.getTripsByState(TRIP_STATE.STARTED)
-        else if(statusSelected == TRIP_STATE.FINISHED.toString()) trips = tripService.getTripsByState(TRIP_STATE.FINISHED)
+        if (statusSelected == TRIP_STATE.PLANNING.toString()) trips =
+            tripService.getTripsByState(TRIP_STATE.PLANNING)
+        else if (statusSelected == TRIP_STATE.STARTED.toString()) trips =
+            tripService.getTripsByState(TRIP_STATE.STARTED)
+        else if (statusSelected == TRIP_STATE.FINISHED.toString()) trips =
+            tripService.getTripsByState(TRIP_STATE.FINISHED)
         else trips = tripService.getAllTrips()
-        for(t in trips) Log.d("TRIP_WITH_FILTER: $statusSelected", "$t")
+        for (t in trips) Log.d("TRIP_WITH_FILTER: $statusSelected", "$t")
         val linearLayout = view?.findViewById<LinearLayout>(R.id.linearLayout)
         linearLayout?.removeAllViews()
 
         var i = 1
         if (trips != null) {
             for (trip in trips) {
-                val textView = TextView(context)                                // Create a new TextView for each trip
-                val formattedText = "       <b>${trip.getName()}</b><br>       Location: ${trip.getLocation()}<br>       from ${convertDate(trip.getStartDate())} to ${convertDate(trip.getEndDate())}"
+                val textView =
+                    TextView(context)                                // Create a new TextView for each trip
+                val formattedText =
+                    "       <b>${trip.getName()}</b><br>" +
+                            "       Location: ${trip.getLocation()}<br>" +
+                            "       from ${convertDate(trip.getStartDate())} to" +
+                            " ${convertDate(trip.getEndDate())}"
                 textView.text = Html.fromHtml(formattedText, Html.FROM_HTML_MODE_COMPACT)
                 textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18f)
                 if (i % 2 == 0) textView.setBackgroundColor(Color.WHITE)        // Set the background color based on whether i is odd or even
@@ -111,7 +126,7 @@ class MyTripsFragment : Fragment() {
 
                 textView.setOnClickListener {
                     val intent = Intent(this.context, TripInformationActivity::class.java)
-                    intent.putExtra(TRIP_ID_TRIP_INFORMATION,trip.getId())
+                    intent.putExtra(TRIP_ID_TRIP_INFORMATION, trip.getId())
                     startActivity(intent)
                 }
 
@@ -122,12 +137,12 @@ class MyTripsFragment : Fragment() {
     }
 
     private fun convertDate(date: Date): String? {
-        try {
+        return try {
             val desiredFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-            return desiredFormat.format(date)
+            desiredFormat.format(date)
         } catch (e: Exception) {
             e.printStackTrace()
-            return "Error during Date conversion"
+            "Error during Date conversion"
         }
     }
 }

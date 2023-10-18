@@ -13,6 +13,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import com.example.planventure.Exception.EmptyDataException
+import com.example.planventure.Exception.MaxParticipantsOverflow
 import com.example.planventure.service.TripService
 import com.example.planventure.utility.DatePicker
 import com.google.android.material.datepicker.MaterialDatePicker
@@ -70,6 +71,8 @@ class CreateTripActivity : AppCompatActivity() {
                 )
                 this.finish()
             } catch (e: EmptyDataException) { // catches Exception and makes toast out of it
+                Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
+            } catch (e: MaxParticipantsOverflow){
                 Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
             }
         }

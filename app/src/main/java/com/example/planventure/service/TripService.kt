@@ -4,9 +4,12 @@ import android.content.Context
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
+import com.example.planventure.Exception.MaxParticipantsOverflow
 import com.example.planventure.Exception.EmptyDataException
+import com.example.planventure.entity.Participant
 import com.example.planventure.entity.Trip
 import com.example.planventure.enumerations.TRIP_STATE
+import com.example.planventure.repository.ParticipantRepository
 import com.example.planventure.repository.TripRepository
 import java.text.SimpleDateFormat
 import kotlin.collections.ArrayList
@@ -17,11 +20,14 @@ class TripService(
 ) {
 
     private val tripRepository = TripRepository(applicationContext)
+    private val participantRepository = ParticipantRepository(applicationContext)
 
-    //creates Trip object and propagates Error to the Activity
+    /**
+     * creates Trip object and propagates Error to the Activity
+     */
     fun addTrip(myData: MutableList<String>) {
         try {
-
+            checkMaxParticipants(myData[4].toInt())
             checksNullValues(myData)
             val formatter = SimpleDateFormat("yyyy-MM-dd")
             val trip = Trip(
@@ -51,11 +57,11 @@ class TripService(
         return tripRepository.getById(id)
     }
 
-    fun getTripsByState(s: TRIP_STATE): ArrayList<Trip>{
+    fun getTripsByState(s: TRIP_STATE): ArrayList<Trip> {
         return tripRepository.getTripsByState(s)
     }
 
-    fun updateTrip(id: Long, t: Trip){
+    fun updateTrip(id: Long, t: Trip) {
         val success = tripRepository.updateById(id, t)
         Log.d("UPDATE_TRIP", success.toString())
     }
@@ -80,8 +86,11 @@ class TripService(
     }
 
 
-    //checks for Null values and throws EmptyDataException
-    private fun checksNullValues(myData: MutableList<String>){
+    /**
+     * checks for Null values and throws EmptyDataException
+     */
+
+    private fun checksNullValues(myData: MutableList<String>) {
         if (myData[0].isEmpty()) {
             throw EmptyDataException("Enter a trip name")
         } else if (myData[1] == "Select start date") {
@@ -90,6 +99,12 @@ class TripService(
             throw EmptyDataException("Enter a destination")
         } else if (myData[4].isEmpty()) {
             throw EmptyDataException("Enter the number of participants")
+        }
+    }
+
+    private fun checkMaxParticipants(maxParticipants: Int) {
+        if (maxParticipants >= 20) {
+            throw MaxParticipantsOverflow("A trip cannot have more than 20 participants!")
         }
     }
 
