@@ -13,10 +13,10 @@
         android:theme="@style/Theme.PlanVenture"
         tools:targetApi="31">
         <activity
-            android:name=".TripParticipantsActivity"
+            android:name=".ExpenseActivity"
             android:exported="false" />
         <activity
-            android:name=".CreateExpenseActivity"
+            android:name=".TripParticipantsActivity"
             android:exported="false" />
         <activity
             android:name=".TripInformationActivity"

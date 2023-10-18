@@ -56,6 +56,7 @@ class MyTripsFragment : Fragment() {
         button.setOnClickListener {
             val intent = Intent(container!!.context, CreateTripActivity::class.java)
             startActivityForResult(intent, CREATE_TRIP_REQUEST)
+            Log.d("Columns in trip_table", "Number: ${tripService.getNumberOfColumns()}")
         }
 
         //Configure Spinner Trip Status

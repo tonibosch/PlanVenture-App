@@ -49,6 +49,9 @@ class ParticipantRepository(context: Context): DataBaseHelper(context), IReposit
         return p
     }
 
+    /**
+     * be careful with this function since it returns a List due to the fact that name is no primary key
+     */
     fun getParticipantsByTrip(t : Trip): ArrayList<Participant> {
         val queryString =
             "SELECT * FROM $PARTICIPANT_TABLE WHERE $COLUMN_PARTICIPANT_TRIP = ${t.getId()}"
@@ -61,6 +64,9 @@ class ParticipantRepository(context: Context): DataBaseHelper(context), IReposit
         return mapQueryToList(queryString)
     }
 
+    /**
+     * do not use this function except for emergencies use getTripById() instead
+     */
     fun getParticipantsByName(name: String): ArrayList<Participant> {
         val queryString =
             "SELECT * FROM $PARTICIPANT_TABLE WHERE $COLUMN_PARTICIPANT_NAME = \"$name\""
@@ -102,10 +108,14 @@ class ParticipantRepository(context: Context): DataBaseHelper(context), IReposit
         return closeAndReturn(cursor)
     }
 
+    /**
+     * do not use this function except for emergencies use deleteParticipantById() instead
+     */
+    @Deprecated("Do not use")
     fun deleteParticipantByName(name: String): Boolean {
         val db = this.writableDatabase
         val stringQuery =
-            "DELETE FROM $PARTICIPANT_TABLE WHERE PARTICIPANT_NAME = $name"
+            "DELETE FROM $PARTICIPANT_TABLE WHERE $COLUMN_PARTICIPANT_NAME = \"$name\""
         val cursor = db.rawQuery(stringQuery, null)
         return closeAndReturn(cursor)
     }
@@ -155,6 +165,5 @@ class ParticipantRepository(context: Context): DataBaseHelper(context), IReposit
         cursor.close()
         return l
     }
-
 
 }
