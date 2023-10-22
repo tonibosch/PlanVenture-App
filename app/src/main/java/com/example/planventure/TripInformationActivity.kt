@@ -82,12 +82,13 @@ class TripInformationActivity : AppCompatActivity() {
         }
 
         val currentStatus = trip?.getState()
-        Log.d("CURRENT STATUS", "$currentStatus")
+        Log.d("CURRENT STATUS", "${currentStatus.toString()}")
 
         when (currentStatus) {
             TRIP_STATE.PLANNING -> changeStateBtn.text = "START"
             TRIP_STATE.STARTED -> changeStateBtn.text = "FINISH"
-            else -> changeStateBtn.text = "FINISHED"
+            TRIP_STATE.FINISHED -> changeStateBtn.text = "FINISHED"
+            else -> changeStateBtn.text = "ELSE"
         }
 
         changeStateBtn.setOnClickListener {
@@ -115,6 +116,7 @@ class TripInformationActivity : AppCompatActivity() {
 
         expensesBtn.setOnClickListener {
             val intent = Intent(this, ExpenseActivity::class.java)
+            intent.putExtra(TRIP_ID_TRIP_PARTICIPANTS, tripId)
             startActivity(intent)
         }
 

@@ -8,7 +8,6 @@ import androidx.annotation.RequiresApi
 import com.example.planventure.database.DataBaseHelper
 import com.example.planventure.interfaces.IRepository
 import com.example.planventure.entity.Expense
-import com.example.planventure.entity.Participant
 import com.example.planventure.entity.Trip
 
 @RequiresApi(Build.VERSION_CODES.P)
@@ -127,5 +126,10 @@ class ExpenseRepository(private val context: Context): DataBaseHelper(context),
         cursor.close()
         return l
     }
+
+    fun getSize(): Long{
+        return "SELECT * FROM $EXPENSE_TABLE".length.toLong()
+    }
+
 }
 
