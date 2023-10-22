@@ -65,7 +65,7 @@ class CreateTripActivity : AppCompatActivity() {
                 myData.add(tvEndDate.text.toString())
                 myData.add(location.text.toString())
                 myData.add(maxNumberOfParts.text.toString())
-                myData.add("Description")
+                myData.add("Enter a description")
                 tripService.addTrip(
                     myData
                 )

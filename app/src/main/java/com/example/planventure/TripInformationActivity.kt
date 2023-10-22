@@ -26,6 +26,7 @@ import com.example.planventure.service.ParicipantService
 import com.example.planventure.service.TripService
 import com.example.planventure.utility.DatePicker
 import java.text.SimpleDateFormat
+import java.util.Locale
 
 @RequiresApi(Build.VERSION_CODES.P)
 class TripInformationActivity : AppCompatActivity() {
@@ -35,6 +36,8 @@ class TripInformationActivity : AppCompatActivity() {
     }
 
     private lateinit var tripName: EditText
+    private lateinit var description: EditText
+
     private lateinit var location: EditText
     private lateinit var maxNumberOfParts: EditText
     private lateinit var backButton: ImageButton
@@ -67,6 +70,8 @@ class TripInformationActivity : AppCompatActivity() {
         tvStartDate = findViewById(R.id.startDate_textView_tripInformation)
         tvEndDate = findViewById(R.id.endDate_textView_tripInformation)
         tripName = findViewById(R.id.tripName_editText_tripInformation)
+        description = findViewById(R.id.tripDescription_editText_tripInformation)
+
         location = findViewById(R.id.location_editText_tripInformation)
         maxNumberOfParts = findViewById(R.id.maxPartNumber_editText_tripInformation)
         updateTripBtn = findViewById(R.id.updateTripButton)
@@ -76,6 +81,11 @@ class TripInformationActivity : AppCompatActivity() {
         changeStateBtn = findViewById(R.id.buttonChangeState)
 
         tripName.text = Editable.Factory.getInstance().newEditable(trip?.getName())
+        tvStartDate.text = Editable.Factory.getInstance().newEditable(convertDate(trip?.getStartDate().toString()))
+        tvEndDate.text = Editable.Factory.getInstance().newEditable(convertDate(trip?.getEndDate().toString()))
+        location.text = Editable.Factory.getInstance().newEditable(trip?.getLocation())
+        maxNumberOfParts.text = Editable.Factory.getInstance().newEditable(trip?.getMaxNumberOfParticipants().toString())
+        description.text = Editable.Factory.getInstance().newEditable(trip?.getDescription())
 
         backButton.setOnClickListener {
             this.finish()
@@ -97,14 +107,14 @@ class TripInformationActivity : AppCompatActivity() {
                 changeStateBtn.text = "FINISH"
                 tripService.updateTrip(tripId, Trip(1, tripName.text.toString(), formatter.parse(tvStartDate.text.toString()),
                     formatter.parse(tvEndDate.text.toString()), location.text.toString(), maxNumberOfParts.text.toString().toInt(),
-                    "Description", ArrayList(), ArrayList(),TRIP_STATE.STARTED))
+                    description.text.toString(), ArrayList(), ArrayList(),TRIP_STATE.STARTED))
                 Toast.makeText(this, "You have started the trip", Toast.LENGTH_SHORT).show()
             }
             else if(currentStatus == TRIP_STATE.STARTED){
                 changeStateBtn.text = "FINISHED"
                 tripService.updateTrip(tripId, Trip(1, tripName.text.toString(), formatter.parse(tvStartDate.text.toString()),
                     formatter.parse(tvEndDate.text.toString()), location.text.toString(), maxNumberOfParts.text.toString().toInt(),
-                    "Description", ArrayList(), ArrayList(),TRIP_STATE.FINISHED))
+                    description.text.toString(), ArrayList(), ArrayList(),TRIP_STATE.FINISHED))
                 Toast.makeText(this, "You have finished the trip", Toast.LENGTH_SHORT).show()
             }
         }
@@ -125,7 +135,7 @@ class TripInformationActivity : AppCompatActivity() {
             setResult(Activity.RESULT_OK)
             try {
                 var tripState = tripService.getTripById(tripId)!!.getState()
-
+                //println("DESCRIPTION" + description.text.toString())
                 val formatter = SimpleDateFormat("yyyy-MM-dd")
                 tripService.updateTrip(
                     tripId, Trip(
@@ -135,15 +145,12 @@ class TripInformationActivity : AppCompatActivity() {
                         formatter.parse(tvEndDate.text.toString()),
                         location.text.toString(),
                         maxNumberOfParts.text.toString().toInt(),
-                        "Description",
+                        description.text.toString(),
                         ArrayList(),
                         ArrayList(),
-                        TRIP_STATE.PLANNING
+                        tripState
                     )
                 )
-                tripService.updateTrip(tripId, Trip(1, tripName.text.toString(), formatter.parse(tvStartDate.text.toString()),
-                    formatter.parse(tvEndDate.text.toString()), location.text.toString(), maxNumberOfParts.text.toString().toInt(),
-                    "Description", ArrayList(), ArrayList(),tripState))
                 val intent = Intent(applicationContext, MainActivity::class.java)
                 startActivity(intent)
             } catch (e: EmptyDataException) { // catches Exception and makes toast out of it
@@ -159,4 +166,12 @@ class TripInformationActivity : AppCompatActivity() {
 
 
     }
+}
+
+fun convertDate (inputDate: String): String {
+    val inputFormat = SimpleDateFormat("E MMM dd HH:mm:ss z yyyy", Locale.US)
+    val outputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+    val date = inputFormat.parse(inputDate)
+    val formattedDate = outputFormat.format(date)
+    return formattedDate
 }
