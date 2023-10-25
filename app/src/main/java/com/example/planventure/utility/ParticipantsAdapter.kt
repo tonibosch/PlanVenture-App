@@ -32,7 +32,7 @@ class ParticipantsAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ParticipantsViewHolder {
         return ParticipantsViewHolder(
             LayoutInflater.from(parent.context).inflate(
-                R.layout.fragment_trip_particicpant,
+                R.layout.fragment_trip_participants,
                 parent,
                 false
             )
