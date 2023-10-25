@@ -93,21 +93,20 @@ class MyTripsFragment : Fragment() {
                 statusSelected = spinnerStatus.selectedItem.toString()
                 Log.d("statusSelected", statusSelected)
                 refreshTripList()
+                tripAdapter = TripAdapter(trips)
+                recyclerView.adapter = tripAdapter
             }
 
-            override fun onNothingSelected(p0: AdapterView<*>?) {
-
-            }
+            override fun onNothingSelected(p0: AdapterView<*>?) {}
         }
-
-        tripAdapter = TripAdapter(trips)
-        recyclerView.adapter = tripAdapter
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         refreshTripList()
+        tripAdapter = TripAdapter(trips)
+        recyclerView.adapter = tripAdapter
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -115,6 +114,8 @@ class MyTripsFragment : Fragment() {
 
         if (requestCode == CREATE_TRIP_REQUEST && resultCode == Activity.RESULT_OK) {
             refreshTripList()           //When a new trip has been created, refresh the list of trips
+            tripAdapter = TripAdapter(trips)
+            recyclerView.adapter = tripAdapter
         }
     }
 
