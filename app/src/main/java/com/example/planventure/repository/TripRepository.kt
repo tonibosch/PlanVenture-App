@@ -5,11 +5,16 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
 import android.os.Build
+import android.util.Log
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import com.example.planventure.database.DataBaseHelper
 import com.example.planventure.interfaces.IRepository
 import com.example.planventure.entity.Trip
 import com.example.planventure.enumerations.TRIP_STATE
+import com.google.firebase.firestore.firestore
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import java.text.SimpleDateFormat
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
@@ -25,6 +30,7 @@ class TripRepository(private val context: Context) : DataBaseHelper(context), IR
      * @return boolean to check whether operation was successful
      */
     fun addTripToDb(t: Trip): Boolean {
+
 
         val db = this.writableDatabase
         val cv = ContentValues()
@@ -44,12 +50,71 @@ class TripRepository(private val context: Context) : DataBaseHelper(context), IR
         for(e in t.getExpenses()) expenseRepository.addExpensesToDb(e, t.getId().toInt())
 
         return when(db.insert(TRIP_TABLE, null, cv)){-1L -> false else -> true}
+
+
+/*
+        val db = Firebase.firestore
+        val trip = hashMapOf(
+            "TRIP_ID" to 3,
+            COLUMN_TRIP_NAME to t.getName(),
+            COLUMN_TRIP_START_DATE to t.getStartDate().toString(),
+            COLUMN_TRIP_END_DATE to t.getEndDate().toString(),
+            COLUMN_TRIP_LOCATION to t.getLocation(),
+            COLUMN_TRIP_DESCRIPTION to t.getDescription(),
+            COLUMN_TRIP_MAX_PARTICIPANTS to t.getMaxNumberOfParticipants(),
+            COLUMN_TRIP_STATE to t.getState().toString()
+        )
+        db.collection("trip")
+            .add(trip)
+            .addOnSuccessListener { documentReference ->
+                Toast.makeText(context, "DocumentSnapshot added with ID: ${documentReference.id}", Toast.LENGTH_SHORT).show()
+                //return@addOnSuccessListener true
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(context, "Error adding document", Toast.LENGTH_SHORT).show()
+                //return@addOnFailureListener false
+            }
+        return true*/
     }
 
 
     override fun findAll(): ArrayList<Trip>{
         val queryString =
             "SELECT * FROM $TRIP_TABLE"
+/*
+        val trips = ArrayList<Trip>()
+
+        val db = Firebase.firestore
+        db.collection("trip")
+            .get()
+            .addOnSuccessListener { result ->
+                val formatter = SimpleDateFormat("yyyy-MM-dd")
+                for (document in result) {
+                    Log.d("SELECT * FROM FIREBASE", "${document.id} => ${document.data}")
+                    trips.add(Trip(
+                        document.data["TRIP_ID"].toString().toLong(),
+                        document.data[COLUMN_TRIP_NAME].toString(),
+                        formatter.parse(parseDateString(document.data.get(COLUMN_TRIP_START_DATE).toString())),
+                        formatter.parse(parseDateString(document.data.get(COLUMN_TRIP_END_DATE).toString())),
+                        document.data[COLUMN_TRIP_LOCATION].toString(),
+                        document.data[COLUMN_TRIP_MAX_PARTICIPANTS].toString().toInt(),
+                        document.data[COLUMN_TRIP_DESCRIPTION].toString(),
+                        ArrayList(), ArrayList(),
+                        when(document.data[COLUMN_TRIP_STATE]){
+                            "OPEN"-> TRIP_STATE.PLANNING
+                            "CLOSED" -> TRIP_STATE.STARTED
+                            else -> TRIP_STATE.FINISHED
+                        }
+                    ))
+                    Log.d("Trips list", trips.toString())
+                }
+                Log.d("Trips list", trips.toString())
+            }
+            .addOnFailureListener { exception ->
+                Log.w("SELECT * FROM FIREBASE", "Error getting documents.", exception)
+            }
+
+        return trips*/
         return mapQueryToString(queryString)
     }
 
@@ -187,8 +252,8 @@ class TripRepository(private val context: Context) : DataBaseHelper(context), IR
             formatter.parse(endDate), location, number, description,
             ArrayList(), ArrayList(),
             when(state){
-                "OPEN"-> TRIP_STATE.PLANNING
-                "CLOSED" -> TRIP_STATE.STARTED
+                "PLANNING"-> TRIP_STATE.PLANNING
+                "STARTED" -> TRIP_STATE.STARTED
                 else -> TRIP_STATE.FINISHED
             })
     }
