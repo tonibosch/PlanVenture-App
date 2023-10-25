@@ -6,6 +6,7 @@ import android.content.Context
 import android.database.Cursor
 import android.os.Build
 import android.util.Log
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import com.example.planventure.database.DataBaseHelper
 import com.example.planventure.interfaces.IRepository
@@ -37,7 +38,6 @@ class TripRepository(private val context: Context) : DataBaseHelper(context), IR
         cv.put(COLUMN_TRIP_MAX_PARTICIPANTS, t.getMaxNumberOfParticipants())
         cv.put(COLUMN_TRIP_DESCRIPTION, t.getDescription())
         cv.put(COLUMN_TRIP_STATE, t.getState().toString())
-        Log.d("Trip STATE", t.getState().toString())
 
         val participantRepository = ParticipantRepository(context)
         for(p in t.getParticipants()) participantRepository.addParticipantToDb(p, t.getId().toInt())
