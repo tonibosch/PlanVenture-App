@@ -38,7 +38,6 @@ import java.util.Locale
 class MyTripsFragment : Fragment() {
 
     private lateinit var button: Button
-    private lateinit var scrollLayout: LinearLayout
     private lateinit var spinnerStatus: Spinner
     private var statusSelected = "ALL"
 
@@ -67,8 +66,6 @@ class MyTripsFragment : Fragment() {
         recyclerView.setHasFixedSize(true)
         recyclerView.layoutManager = LinearLayoutManager(view.context)
 
-
-
         //Configure button Create Trip
         button = view.findViewById(R.id.button2)
         button.setOnClickListener {
@@ -93,20 +90,13 @@ class MyTripsFragment : Fragment() {
                 statusSelected = spinnerStatus.selectedItem.toString()
                 Log.d("statusSelected", statusSelected)
                 refreshTripList()
-                tripAdapter = TripAdapter(trips)
-                recyclerView.adapter = tripAdapter
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {}
         }
-        return view
-    }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
         refreshTripList()
-        tripAdapter = TripAdapter(trips)
-        recyclerView.adapter = tripAdapter
+        return view
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -114,8 +104,6 @@ class MyTripsFragment : Fragment() {
 
         if (requestCode == CREATE_TRIP_REQUEST && resultCode == Activity.RESULT_OK) {
             refreshTripList()           //When a new trip has been created, refresh the list of trips
-            tripAdapter = TripAdapter(trips)
-            recyclerView.adapter = tripAdapter
         }
     }
 
@@ -124,7 +112,15 @@ class MyTripsFragment : Fragment() {
         else if (statusSelected == TRIP_STATE.STARTED.toString()) trips = tripService.getTripsByState(TRIP_STATE.STARTED)
         else if (statusSelected == TRIP_STATE.FINISHED.toString()) trips = tripService.getTripsByState(TRIP_STATE.FINISHED)
         else trips = tripService.getAllTrips() as ArrayList<Trip>
-        for (t in trips) Log.d("TRIP_WITH_FILTER: $statusSelected", "$t")
+
+        tripAdapter = TripAdapter(trips)
+        recyclerView.adapter = tripAdapter
+        println(trips.toString())
+        tripAdapter.onItemClick = {
+            val intent = Intent(this.context, TripInformationActivity::class.java)
+            intent.putExtra(TRIP_ID_TRIP_INFORMATION, it.getId())
+            startActivity(intent)
+        }
     }
 
 }

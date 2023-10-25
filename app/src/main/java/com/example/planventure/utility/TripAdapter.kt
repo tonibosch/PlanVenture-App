@@ -20,6 +20,8 @@ class TripAdapter(var mList: List<Trip>): RecyclerView.Adapter<TripAdapter.TripV
         val location: TextView = itemView.findViewById(R.id.locationTv)
     }
 
+    var onItemClick : ((Trip) -> Unit)? = null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TripViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.fragment_each_trip,parent,false)
         return TripViewHolder(view)
@@ -30,9 +32,16 @@ class TripAdapter(var mList: List<Trip>): RecyclerView.Adapter<TripAdapter.TripV
     }
 
     override fun onBindViewHolder(holder: TripViewHolder, position: Int) {
-        holder.name.text = "        ${mList[position].getName()}"
-        holder.dates.text = "        From " + convertDate(mList[position].getStartDate())+" to " + convertDate(mList[position].getEndDate())
-        holder.location.text = "        Location: ${mList[position].getLocation()}"
+        val trip = mList[position]
+        holder.name.text = "        ${trip.getName()}"
+        holder.dates.text = "        From " + convertDate(trip.getStartDate())+" to " + convertDate(trip.getEndDate())
+        holder.location.text = "        Location: ${trip.getLocation()}"
+
+        holder.itemView.setOnClickListener {
+            println("QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ")
+            println(trip.getId().toString())
+            onItemClick?.invoke(trip)
+        }
     }
 
     private fun convertDate(date: Date): String? {
