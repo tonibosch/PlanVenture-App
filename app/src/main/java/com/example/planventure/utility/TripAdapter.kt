@@ -1,18 +1,24 @@
 package com.example.planventure.utility
 
+import android.content.Context
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.example.planventure.R
 import com.example.planventure.entity.Trip
+import com.example.planventure.service.TripService
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+@RequiresApi(Build.VERSION_CODES.P)
+class TripAdapter(var mList: ArrayList<Trip>, private val applicationContext: Context): RecyclerView.Adapter<TripAdapter.TripViewHolder>() {
 
-class TripAdapter(var mList: List<Trip>): RecyclerView.Adapter<TripAdapter.TripViewHolder>() {
+    private val tripService = TripService(applicationContext)
 
     inner class TripViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         val name: TextView = itemView.findViewById(R.id.titleTv)
@@ -38,8 +44,6 @@ class TripAdapter(var mList: List<Trip>): RecyclerView.Adapter<TripAdapter.TripV
         holder.location.text = "        Location: ${trip.getLocation()}"
 
         holder.itemView.setOnClickListener {
-            println("QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ")
-            println(trip.getId().toString())
             onItemClick?.invoke(trip)
         }
     }
@@ -53,5 +57,13 @@ class TripAdapter(var mList: List<Trip>): RecyclerView.Adapter<TripAdapter.TripV
             "Error during Date conversion"
         }
     }
+
+    fun deleteItem(position: Int){
+        val id = mList[position].getId()
+        mList.removeAt(position)
+        tripService.deleteTripById(id)
+        notifyDataSetChanged()
+    }
+
 
 }
