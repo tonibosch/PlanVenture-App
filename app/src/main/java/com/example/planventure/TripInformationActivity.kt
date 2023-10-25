@@ -8,18 +8,13 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.util.Log
-import android.view.View
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
-import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import com.example.planventure.Exception.EmptyDataException
-import com.example.planventure.entity.Participant
 import com.example.planventure.entity.Trip
 import com.example.planventure.enumerations.TRIP_STATE
 import com.example.planventure.service.ParicipantService
@@ -58,12 +53,14 @@ class TripInformationActivity : AppCompatActivity() {
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_trip_information)
         tripService = TripService(applicationContext)
         participantService = ParicipantService(applicationContext)
 
         val tripId = intent.getLongExtra(MyTripsFragment.TRIP_ID_TRIP_INFORMATION,0)
         val trip = tripService.getTripById(tripId)
+
+        setContentView(R.layout.activity_trip_information)
+
 
         backButton = findViewById(R.id.backButton_TripInfo)
         dateRangePickerButton = findViewById(R.id.dateRangePickerButton_tripInformation)

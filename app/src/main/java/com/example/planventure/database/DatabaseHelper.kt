@@ -29,6 +29,11 @@ open class DataBaseHelper(
         const val COLUMN_EXPENSE_NAME: String = "EXPENSE_NAME"
         const val COLUMN_EXPENSE_AMOUNT: String = "EXPENSE_AMOUNT"
         const val COLUMN_EXPENSE_TRIP: String = "EXPENSE_TRIP"
+
+        const val PARTICIPANT_EXPENSE_TABLE: String = "PARTICIPANT_EXPENSE_TABLE"
+        const val COLUMN_PARTICIPANT_ID: String = "PARTICIPANT_ID"
+        const val COLUMN_EXPENSE_ID: String = "EXPENSE_ID"
+        const val COLUMN_SPENT_AMOUNT: String = "AMOUNT"
     }
 
     /**
@@ -40,7 +45,7 @@ open class DataBaseHelper(
             "CREATE TABLE $TRIP_TABLE (TRIP_ID INTEGER PRIMARY KEY AUTOINCREMENT, $COLUMN_TRIP_NAME TEXT, " +
                     "$COLUMN_TRIP_START_DATE TEXT, $COLUMN_TRIP_END_DATE TEXT, $COLUMN_TRIP_LOCATION TEXT, " +
                     "$COLUMN_TRIP_MAX_PARTICIPANTS INTEGER, $COLUMN_TRIP_DESCRIPTION TEXT, " +
-                    "$COLUMN_TRIP_STATE)"
+                    "$COLUMN_TRIP_STATE TEXT)"
         db.execSQL(createTripTableStatement)
 
         val createParticipantTableStatement =
@@ -52,6 +57,12 @@ open class DataBaseHelper(
             "CREATE TABLE $EXPENSE_TABLE (EXPENSE_ID INTEGER PRIMARY KEY AUTOINCREMENT, $COLUMN_EXPENSE_NAME TEXT, " +
                     "$COLUMN_EXPENSE_AMOUNT REAL, $COLUMN_EXPENSE_TRIP TEXT REFERENCES $TRIP_TABLE ON DELETE CASCADE ON UPDATE CASCADE)"
         db.execSQL(createExpenseTableStatement)
+
+        val createExpenseParticipantTable =
+            "CREATE TABLE $PARTICIPANT_EXPENSE_TABLE ($COLUMN_PARTICIPANT_ID INTEGER REFERENCES $PARTICIPANT_TABLE ON DELETE CASCADE ON UPDATE CASCADE, " +
+                    "$COLUMN_EXPENSE_ID INTEGER REFERENCES $EXPENSE_TABLE ON DELETE CASCADE ON UPDATE CASCADE, " +
+                    "$COLUMN_SPENT_AMOUNT NUMBER)"
+        db.execSQL(createExpenseParticipantTable)
 
         val createTripStatement =
             "INSERT INTO $TRIP_TABLE VALUES (1, \"TEST_TRIP\", \"Wed Oct 18 00:00:00 GMT 2023\", \"Wed Oct 18 00:00:00 GMT 2023\", \"NTNU\", 5, \"Trip to the NTNU\", \"PLANNING\")"
@@ -76,6 +87,10 @@ open class DataBaseHelper(
         val dropExpenseTableStatement =
             "DROP TABLE IF EXISTS $EXPENSE_TABLE"
         db.execSQL(dropExpenseTableStatement)
+
+        val dropExpPartTable =
+            "DROP TABLE IF EXISTS $PARTICIPANT_EXPENSE_TABLE"
+        db.execSQL(dropExpPartTable)
 
         onCreate(db)
     }

@@ -5,6 +5,8 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
 import android.os.Build
+import android.util.Log
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import com.example.planventure.database.DataBaseHelper
 import com.example.planventure.interfaces.IRepository
@@ -187,8 +189,8 @@ class TripRepository(private val context: Context) : DataBaseHelper(context), IR
             formatter.parse(endDate), location, number, description,
             ArrayList(), ArrayList(),
             when(state){
-                "OPEN"-> TRIP_STATE.PLANNING
-                "CLOSED" -> TRIP_STATE.STARTED
+                "PLANNING"-> TRIP_STATE.PLANNING
+                "STARTED" -> TRIP_STATE.STARTED
                 else -> TRIP_STATE.FINISHED
             })
     }

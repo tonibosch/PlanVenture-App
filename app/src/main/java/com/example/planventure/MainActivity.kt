@@ -1,23 +1,28 @@
 package com.example.planventure
 
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.widget.Button
+import androidx.annotation.RequiresApi
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.example.planventure.database.DataBaseHelper
 import com.example.planventure.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
+    @RequiresApi(Build.VERSION_CODES.P)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         initializeNavigationBar(layoutInflater)
+
     }
 
     private fun initializeNavigationBar(layoutInflater: LayoutInflater) {

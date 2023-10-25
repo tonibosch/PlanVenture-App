@@ -66,6 +66,8 @@ class MyTripsFragment : Fragment() {
         recyclerView.setHasFixedSize(true)
         recyclerView.layoutManager = LinearLayoutManager(view.context)
 
+        //tripService.upgrade()
+
         //Configure button Create Trip
         button = view.findViewById(R.id.button2)
         button.setOnClickListener {
@@ -73,6 +75,7 @@ class MyTripsFragment : Fragment() {
             startActivityForResult(intent, CREATE_TRIP_REQUEST)
             Log.d("Columns in trip_table", "Number: ${tripService.getNumberOfColumns()}")
         }
+
 
         //Configure Spinner Trip Status
         spinnerStatus = view.findViewById(R.id.spinnerStatus)
@@ -115,7 +118,6 @@ class MyTripsFragment : Fragment() {
 
         tripAdapter = TripAdapter(trips)
         recyclerView.adapter = tripAdapter
-        println(trips.toString())
         tripAdapter.onItemClick = {
             val intent = Intent(this.context, TripInformationActivity::class.java)
             intent.putExtra(TRIP_ID_TRIP_INFORMATION, it.getId())
