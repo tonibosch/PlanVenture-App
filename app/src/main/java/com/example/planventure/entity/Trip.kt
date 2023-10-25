@@ -19,7 +19,7 @@ class Trip(
     override fun toString(): String {
 
         val sb = StringBuilder("")
-        sb.append("$id, $name, $startDate, $location")
+        sb.append("$id, $name, $startDate, $location", "$tripState")
 
         return sb.toString()
     }

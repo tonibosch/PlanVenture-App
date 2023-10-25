@@ -42,6 +42,7 @@ class TripService(
                 ArrayList(),
                 TRIP_STATE.PLANNING
             )
+            Log.d("TRIP STATE", trip.getState().toString())
             val success = tripRepository.addTripToDb(trip)
             Log.d("TRIP DB INPUT", success.toString())
         } catch (e: EmptyDataException) {

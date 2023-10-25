@@ -115,7 +115,6 @@ class MyTripsFragment : Fragment() {
 
         tripAdapter = TripAdapter(trips)
         recyclerView.adapter = tripAdapter
-        println(trips.toString())
         tripAdapter.onItemClick = {
             val intent = Intent(this.context, TripInformationActivity::class.java)
             intent.putExtra(TRIP_ID_TRIP_INFORMATION, it.getId())
