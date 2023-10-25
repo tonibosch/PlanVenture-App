@@ -88,20 +88,27 @@ class TripInformationActivity : AppCompatActivity() {
             this.finish()
         }
 
-        val currentStatus = trip?.getState()
+        var currentStatus = trip?.getState()
         Log.d("CURRENT STATUS", "${currentStatus.toString()}")
 
         when (currentStatus) {
             TRIP_STATE.PLANNING -> changeStateBtn.text = "START"
-            TRIP_STATE.STARTED -> changeStateBtn.text = "FINISH"
-            TRIP_STATE.FINISHED -> changeStateBtn.text = "FINISHED"
-            else -> changeStateBtn.text = "ELSE"
+            TRIP_STATE.STARTED -> {
+                changeStateBtn.text = "FINISH"
+                disableEditText()
+            }
+            else -> {
+                changeStateBtn.text = "FINISHED"
+                disableEditText()
+            }
         }
 
         changeStateBtn.setOnClickListener {
             val formatter = SimpleDateFormat("yyyy-MM-dd")
             if(currentStatus == TRIP_STATE.PLANNING) {
                 changeStateBtn.text = "FINISH"
+                currentStatus = TRIP_STATE.STARTED
+                disableEditText()
                 tripService.updateTrip(tripId, Trip(1, tripName.text.toString(), formatter.parse(tvStartDate.text.toString()),
                     formatter.parse(tvEndDate.text.toString()), location.text.toString(), maxNumberOfParts.text.toString().toInt(),
                     description.text.toString(), ArrayList(), ArrayList(),TRIP_STATE.STARTED))
@@ -109,6 +116,7 @@ class TripInformationActivity : AppCompatActivity() {
             }
             else if(currentStatus == TRIP_STATE.STARTED){
                 changeStateBtn.text = "FINISHED"
+                currentStatus = TRIP_STATE.FINISHED
                 tripService.updateTrip(tripId, Trip(1, tripName.text.toString(), formatter.parse(tvStartDate.text.toString()),
                     formatter.parse(tvEndDate.text.toString()), location.text.toString(), maxNumberOfParts.text.toString().toInt(),
                     description.text.toString(), ArrayList(), ArrayList(),TRIP_STATE.FINISHED))
@@ -131,7 +139,6 @@ class TripInformationActivity : AppCompatActivity() {
 
             setResult(Activity.RESULT_OK)
             try {
-                var tripState = tripService.getTripById(tripId)!!.getState()
                 //println("DESCRIPTION" + description.text.toString())
                 val formatter = SimpleDateFormat("yyyy-MM-dd")
                 tripService.updateTrip(
@@ -145,7 +152,7 @@ class TripInformationActivity : AppCompatActivity() {
                         description.text.toString(),
                         ArrayList(),
                         ArrayList(),
-                        tripState
+                        currentStatus!!
                     )
                 )
                 val intent = Intent(applicationContext, MainActivity::class.java)
@@ -161,8 +168,17 @@ class TripInformationActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-
     }
+
+    private fun disableEditText() {
+        tripName.isEnabled = false
+        tvStartDate.isEnabled = false
+        tvEndDate.isEnabled = false
+        location.isEnabled = false
+        maxNumberOfParts.isEnabled = false
+        description.isEnabled = false
+    }
+
 }
 
 fun convertDate (inputDate: String): String {
@@ -172,3 +188,4 @@ fun convertDate (inputDate: String): String {
     val formattedDate = outputFormat.format(date)
     return formattedDate
 }
+
