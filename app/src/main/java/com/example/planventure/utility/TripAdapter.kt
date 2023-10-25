@@ -58,10 +58,16 @@ class TripAdapter(var mList: ArrayList<Trip>, private val applicationContext: Co
         }
     }
 
-    fun deleteItem(position: Int){
+    fun deleteTrip(position: Int){
         val id = mList[position].getId()
         mList.removeAt(position)
         tripService.deleteTripById(id)
+        notifyDataSetChanged()
+    }
+
+    fun archiveTrip(position: Int){
+        val id = mList[position].getId()
+        //TODO
         notifyDataSetChanged()
     }
 

@@ -124,22 +124,17 @@ class MyTripsFragment : Fragment() {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 when(direction){
                     ItemTouchHelper.LEFT -> {
-                        tripAdapter.deleteItem(viewHolder.adapterPosition)
+                        tripAdapter.deleteTrip(viewHolder.adapterPosition)
                     }
                     ItemTouchHelper.RIGHT -> {
-                        //val archive = trips[viewHolder.adapterPosition]
-                        //tripAdapter.deleteItem(viewHolder.adapterPosition)
+                        tripAdapter.archiveTrip(viewHolder.adapterPosition)
                     }
 
                 }
             }
         }
-
-
         val touchHelper = ItemTouchHelper(swipegesture)
-       touchHelper.attachToRecyclerView(recyclerView)
-
-
+        touchHelper.attachToRecyclerView(recyclerView)
         recyclerView.adapter = tripAdapter
         tripAdapter.onItemClick = {
             val intent = Intent(this.context, TripInformationActivity::class.java)
