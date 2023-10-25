@@ -22,12 +22,14 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.findFragment
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.planventure.databinding.FragmentMyTripsBinding
 import com.example.planventure.entity.Trip
 import com.example.planventure.enumerations.TRIP_STATE
 import com.example.planventure.service.TripService
+import com.example.planventure.utility.SwipeGesture
 import com.example.planventure.utility.TripAdapter
 import java.text.SimpleDateFormat
 import java.util.ArrayList
@@ -116,7 +118,23 @@ class MyTripsFragment : Fragment() {
         else if (statusSelected == TRIP_STATE.FINISHED.toString()) trips = tripService.getTripsByState(TRIP_STATE.FINISHED)
         else trips = tripService.getAllTrips() as ArrayList<Trip>
 
-        tripAdapter = TripAdapter(trips)
+        tripAdapter = TripAdapter(trips, this.requireContext())
+
+        val swipegesture = object : SwipeGesture(this.requireContext()){
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                when(direction){
+                    ItemTouchHelper.LEFT -> {
+                        tripAdapter.deleteTrip(viewHolder.adapterPosition)
+                    }
+                    ItemTouchHelper.RIGHT -> {
+                        tripAdapter.archiveTrip(viewHolder.adapterPosition)
+                    }
+
+                }
+            }
+        }
+        val touchHelper = ItemTouchHelper(swipegesture)
+        touchHelper.attachToRecyclerView(recyclerView)
         recyclerView.adapter = tripAdapter
         tripAdapter.onItemClick = {
             val intent = Intent(this.context, TripInformationActivity::class.java)
