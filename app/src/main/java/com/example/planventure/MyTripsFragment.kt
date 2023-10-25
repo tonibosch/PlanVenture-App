@@ -19,12 +19,18 @@ import android.widget.LinearLayout
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.annotation.RequiresApi
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.findFragment
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.planventure.databinding.FragmentMyTripsBinding
 import com.example.planventure.entity.Trip
 import com.example.planventure.enumerations.TRIP_STATE
 import com.example.planventure.service.TripService
+import com.example.planventure.utility.TripAdapter
 import java.text.SimpleDateFormat
+import java.util.ArrayList
 import java.util.Date
 import java.util.Locale
 
@@ -32,12 +38,16 @@ import java.util.Locale
 class MyTripsFragment : Fragment() {
 
     private lateinit var button: Button
-    private lateinit var scrollLayout: LinearLayout
     private lateinit var spinnerStatus: Spinner
     private var statusSelected = "ALL"
 
     //services
     private lateinit var tripService: TripService
+
+    private lateinit var recyclerView: RecyclerView
+    private var trips: ArrayList<Trip> = ArrayList()
+    private lateinit var tripAdapter: TripAdapter
+
 
     companion object {
         private const val CREATE_TRIP_REQUEST = 1 // You can choose any integer value
@@ -50,6 +60,11 @@ class MyTripsFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_my_trips, container, false)
         tripService = TripService(view.context)
+
+
+        recyclerView = view.findViewById(R.id.recyclerView)
+        recyclerView.setHasFixedSize(true)
+        recyclerView.layoutManager = LinearLayoutManager(view.context)
 
         //Configure button Create Trip
         button = view.findViewById(R.id.button2)
@@ -77,16 +92,11 @@ class MyTripsFragment : Fragment() {
                 refreshTripList()
             }
 
-            override fun onNothingSelected(p0: AdapterView<*>?) {
-
-            }
+            override fun onNothingSelected(p0: AdapterView<*>?) {}
         }
-        return view
-    }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
         refreshTripList()
+        return view
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -98,52 +108,19 @@ class MyTripsFragment : Fragment() {
     }
 
     private fun refreshTripList() {
-        var trips: List<Trip>? = null
-        if (statusSelected == TRIP_STATE.PLANNING.toString()) trips =
-            tripService.getTripsByState(TRIP_STATE.PLANNING)
-        else if (statusSelected == TRIP_STATE.STARTED.toString()) trips =
-            tripService.getTripsByState(TRIP_STATE.STARTED)
-        else if (statusSelected == TRIP_STATE.FINISHED.toString()) trips =
-            tripService.getTripsByState(TRIP_STATE.FINISHED)
-        else trips = tripService.getAllTrips()
-        for (t in trips) Log.d("TRIP_WITH_FILTER: $statusSelected", "$t")
-        val linearLayout = view?.findViewById<LinearLayout>(R.id.linearLayout)
-        linearLayout?.removeAllViews()
+        if (statusSelected == TRIP_STATE.PLANNING.toString()) trips = tripService.getTripsByState(TRIP_STATE.PLANNING)
+        else if (statusSelected == TRIP_STATE.STARTED.toString()) trips = tripService.getTripsByState(TRIP_STATE.STARTED)
+        else if (statusSelected == TRIP_STATE.FINISHED.toString()) trips = tripService.getTripsByState(TRIP_STATE.FINISHED)
+        else trips = tripService.getAllTrips() as ArrayList<Trip>
 
-        var i = 1
-        if (trips != null) {
-            for (trip in trips) {
-                val textView =
-                    TextView(context)                                // Create a new TextView for each trip
-                val formattedText =
-                    "       <b>${trip.getName()}</b><br>" +
-                            "       Location: ${trip.getLocation()}<br>" +
-                            "       from ${convertDate(trip.getStartDate())} to" +
-                            " ${convertDate(trip.getEndDate())}"
-                textView.text = Html.fromHtml(formattedText, Html.FROM_HTML_MODE_COMPACT)
-                textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18f)
-                if (i % 2 == 0) textView.setBackgroundColor(Color.WHITE)        // Set the background color based on whether i is odd or even
-                else textView.setBackgroundColor(Color.LTGRAY)
-
-                textView.setOnClickListener {
-                    val intent = Intent(this.context, TripInformationActivity::class.java)
-                    intent.putExtra(TRIP_ID_TRIP_INFORMATION, trip.getId())
-                    startActivity(intent)
-                }
-
-                linearLayout?.addView(textView)
-                ++i
-            }
+        tripAdapter = TripAdapter(trips)
+        recyclerView.adapter = tripAdapter
+        println(trips.toString())
+        tripAdapter.onItemClick = {
+            val intent = Intent(this.context, TripInformationActivity::class.java)
+            intent.putExtra(TRIP_ID_TRIP_INFORMATION, it.getId())
+            startActivity(intent)
         }
     }
 
-    private fun convertDate(date: Date): String? {
-        return try {
-            val desiredFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-            desiredFormat.format(date)
-        } catch (e: Exception) {
-            e.printStackTrace()
-            "Error during Date conversion"
-        }
-    }
 }
