@@ -9,7 +9,7 @@ import androidx.annotation.RequiresApi
 @RequiresApi(Build.VERSION_CODES.P)
 open class DataBaseHelper(
     context: Context
-) : SQLiteOpenHelper(context, "planventure.db", null, 2) {
+) : SQLiteOpenHelper(context, "planventure.db", null, 3) {
 
     companion object {
         const val TRIP_TABLE: String = "TRIP_TABLE"
