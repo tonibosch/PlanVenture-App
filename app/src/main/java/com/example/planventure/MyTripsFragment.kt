@@ -2,12 +2,9 @@ package com.example.planventure
 
 import android.app.Activity
 import android.content.Intent
-import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
-import android.text.Html
 import android.util.Log
-import android.util.TypedValue
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -15,26 +12,17 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
-import android.widget.LinearLayout
 import android.widget.Spinner
-import android.widget.TextView
 import androidx.annotation.RequiresApi
-import androidx.appcompat.widget.SearchView
-import androidx.fragment.app.findFragment
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.planventure.databinding.FragmentMyTripsBinding
 import com.example.planventure.entity.Trip
 import com.example.planventure.enumerations.TRIP_STATE
 import com.example.planventure.service.TripService
 import com.example.planventure.utility.SwipeGesture
 import com.example.planventure.utility.TripAdapter
-import java.text.SimpleDateFormat
 import java.util.ArrayList
-import java.util.Date
-import java.util.Locale
 
 @RequiresApi(Build.VERSION_CODES.P)
 class MyTripsFragment : Fragment() {
@@ -127,7 +115,7 @@ class MyTripsFragment : Fragment() {
                         tripAdapter.deleteTrip(viewHolder.adapterPosition)
                     }
                     ItemTouchHelper.RIGHT -> {
-                        tripAdapter.archiveTrip(viewHolder.adapterPosition)
+                        tripAdapter.archiveTrip(viewHolder.adapterPosition, statusSelected)
                     }
 
                 }

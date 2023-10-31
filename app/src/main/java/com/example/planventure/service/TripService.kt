@@ -86,6 +86,10 @@ class TripService(
         val success = tripRepository.deleteAll()
     }
 
+    fun finishTripById(id:Long) {
+        val succes = tripRepository.finishTripById(id.toInt())
+    }
+
     fun getNumberOfColumns(): Int{
         return tripRepository.getNumberOfColumns()
     }

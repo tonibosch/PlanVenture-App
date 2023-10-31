@@ -173,6 +173,14 @@ class TripRepository(private val context: Context) : DataBaseHelper(context), IR
 
     }
 
+    fun finishTripById(id:Int): Boolean {
+        val db = this.writableDatabase
+        val stringQuery =
+            "UPDATE $TRIP_TABLE SET $COLUMN_TRIP_STATE = 'FINISHED' WHERE TRIP_ID = $id"
+        val cursor = db.rawQuery(stringQuery, null)
+        return closeAndReturn(cursor)
+    }
+
     // helper functions
     private fun buildTripFromCursor(c: Cursor): Trip{
         val id = c.getInt(0)

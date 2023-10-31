@@ -5,7 +5,6 @@ import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
@@ -65,9 +64,10 @@ class TripAdapter(var mList: ArrayList<Trip>, private val applicationContext: Co
         notifyDataSetChanged()
     }
 
-    fun archiveTrip(position: Int){
+    fun archiveTrip(position: Int, statusSelected: String){
         val id = mList[position].getId()
-        //TODO
+        if(statusSelected == "PLANNING" || statusSelected == "STARTED") mList.removeAt(position)
+        tripService.finishTripById(id)
         notifyDataSetChanged()
     }
 
