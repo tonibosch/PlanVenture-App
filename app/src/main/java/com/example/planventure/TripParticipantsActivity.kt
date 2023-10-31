@@ -13,14 +13,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.planventure.Exception.EmptyDataException
 import com.example.planventure.Exception.MaxParticipantsOverflow
 import com.example.planventure.entity.Participant
-import com.example.planventure.service.ParicipantService
+import com.example.planventure.service.ParticipantService
 import com.example.planventure.service.TripService
 import com.example.planventure.utility.ParticipantsAdapter
 import java.util.ArrayList
 
 class TripParticipantsActivity : AppCompatActivity() {
 
-    private lateinit var participantService: ParicipantService
+    private lateinit var participantService: ParticipantService
     private lateinit var tripService: TripService
     private lateinit var participantsAdapter: ParticipantsAdapter
     private lateinit var addButton: Button
@@ -37,7 +37,7 @@ class TripParticipantsActivity : AppCompatActivity() {
         val tripId = intent.getLongExtra(TripInformationActivity.TRIP_ID_TRIP_PARTICIPANTS, 0)
 
         participantsAdapter = ParticipantsAdapter(ArrayList<Participant>(), applicationContext)
-        participantService = ParicipantService(applicationContext, participantsAdapter)
+        participantService = ParticipantService(applicationContext, participantsAdapter)
 
         participantsAdapter.updateParticipants(tripId)
         tripService = TripService(applicationContext)

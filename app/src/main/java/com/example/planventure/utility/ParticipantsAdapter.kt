@@ -11,7 +11,7 @@ import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.example.planventure.R
 import com.example.planventure.entity.Participant
-import com.example.planventure.service.ParicipantService
+import com.example.planventure.service.ParticipantService
 import com.example.planventure.service.TripService
 
 @RequiresApi(Build.VERSION_CODES.P)
@@ -23,7 +23,7 @@ class ParticipantsAdapter(
     private val applicationContext: Context
 ) : RecyclerView.Adapter<ParticipantsAdapter.ParticipantsViewHolder>() {
 
-    private val participantService = ParicipantService(applicationContext, this)
+    private val participantService = ParticipantService(applicationContext, this)
     private val tripService = TripService(applicationContext)
 
     class ParticipantsViewHolder(view: View) : RecyclerView.ViewHolder(view)

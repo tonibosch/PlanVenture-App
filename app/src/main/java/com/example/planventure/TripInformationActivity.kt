@@ -17,7 +17,7 @@ import androidx.annotation.RequiresApi
 import com.example.planventure.Exception.EmptyDataException
 import com.example.planventure.entity.Trip
 import com.example.planventure.enumerations.TRIP_STATE
-import com.example.planventure.service.ParicipantService
+import com.example.planventure.service.ParticipantService
 import com.example.planventure.service.TripService
 import com.example.planventure.utility.DatePicker
 import java.text.SimpleDateFormat
@@ -46,15 +46,13 @@ class TripInformationActivity : AppCompatActivity() {
     private lateinit var gotoParticipants: Button
 
     private lateinit var tripService: TripService
-    private lateinit var participantService: ParicipantService
-
-
+    private lateinit var participantService: ParticipantService
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         tripService = TripService(applicationContext)
-        participantService = ParicipantService(applicationContext)
+        participantService = ParticipantService(applicationContext)
 
         val tripId = intent.getLongExtra(MyTripsFragment.TRIP_ID_TRIP_INFORMATION,0)
         val trip = tripService.getTripById(tripId)

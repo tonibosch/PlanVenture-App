@@ -11,7 +11,7 @@ import com.example.planventure.repository.ParticipantRepository
 import com.example.planventure.utility.ParticipantsAdapter
 
 @RequiresApi(Build.VERSION_CODES.P)
-class ParicipantService(
+class ParticipantService(
     private val applicationContext: Context,
     private val participantsAdapter: ParticipantsAdapter? = null
 ) {
