@@ -9,7 +9,7 @@ import androidx.annotation.RequiresApi
 @RequiresApi(Build.VERSION_CODES.P)
 open class DataBaseHelper(
     context: Context
-) : SQLiteOpenHelper(context, "planventure.db", null, 3) {
+) : SQLiteOpenHelper(context, "planventure.db", null, 4) {
 
     companion object {
         const val TRIP_TABLE: String = "TRIP_TABLE"
@@ -67,6 +67,10 @@ open class DataBaseHelper(
         val createTripStatement =
             "INSERT INTO $TRIP_TABLE VALUES (1, \"TEST_TRIP\", \"Wed Oct 18 00:00:00 GMT 2023\", \"Wed Oct 18 00:00:00 GMT 2023\", \"NTNU\", 5, \"Trip to the NTNU\", \"PLANNING\")"
         db.execSQL(createTripStatement)
+
+        val createExpenseStatement =
+            "INSERT INTO $EXPENSE_TABLE VALUES (\"MUSEUM\", 15, 1)"
+        db.execSQL(createExpenseStatement)
     }
 
     /**
