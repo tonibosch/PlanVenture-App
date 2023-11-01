@@ -21,6 +21,10 @@ class ExpenseService(applicationContext: Context) {
         return expenseRepository.findAll()
     }
 
+    fun getAllExpences(): ArrayList<Expense>{
+        return expenseRepository.findAll()
+    }
+
     fun addExpenseToDb(expense: Expense, trip: Trip?) {
         TODO("Not yet implemented")
     }

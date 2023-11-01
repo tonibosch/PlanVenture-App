@@ -69,7 +69,7 @@ open class DataBaseHelper(
         db.execSQL(createTripStatement)
 
         val createExpenseStatement =
-            "INSERT INTO $EXPENSE_TABLE VALUES (\"MUSEUM\", 15, 1)"
+            "INSERT INTO $EXPENSE_TABLE VALUES (1, \"MUSEUM\", 15, 1)"
         db.execSQL(createExpenseStatement)
     }
 

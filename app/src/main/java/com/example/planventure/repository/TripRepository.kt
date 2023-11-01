@@ -5,6 +5,7 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
 import android.os.Build
+import android.os.Handler
 import android.util.Log
 import android.widget.Toast
 import androidx.annotation.RequiresApi
@@ -12,10 +13,28 @@ import com.example.planventure.database.DataBaseHelper
 import com.example.planventure.interfaces.IRepository
 import com.example.planventure.entity.Trip
 import com.example.planventure.enumerations.TRIP_STATE
+import com.google.android.gms.tasks.Task
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlinx.coroutines.tasks.await
 import java.text.SimpleDateFormat
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.util.Locale
+import kotlin.coroutines.coroutineContext
+import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
+import kotlin.coroutines.suspendCoroutine
+
+class Person(var name: String, var age: Int)
 
 @RequiresApi(Build.VERSION_CODES.P)
 @SuppressLint("SimpleDateFormat")
@@ -27,6 +46,30 @@ class TripRepository(private val context: Context) : DataBaseHelper(context), IR
      * @return boolean to check whether operation was successful
      */
     fun addTripToDb(t: Trip): Boolean {
+/*
+        val f = Firebase.firestore
+
+        val trip = hashMapOf(
+            COLUMN_TRIP_NAME to t.getName(),
+            "TRIP_ID" to t.getId(),
+            COLUMN_TRIP_START_DATE to t.getStartDate().toString(),
+            COLUMN_TRIP_END_DATE to t.getEndDate().toString(),
+            COLUMN_TRIP_DESCRIPTION to t.getDescription(),
+            COLUMN_TRIP_LOCATION to t.getLocation(),
+            COLUMN_TRIP_MAX_PARTICIPANTS to t.getMaxNumberOfParticipants().toString(),
+            COLUMN_TRIP_STATE to t.getState().toString()
+        )
+
+        f.collection("trip")
+            .add(trip)
+            .addOnSuccessListener { documentReference ->
+                Log.d("TRIP TO FIREBASE", "DocumentSnapshot added with ID: ${documentReference.id}")
+            }
+            .addOnFailureListener { e ->
+                Log.w("TRIP TO FIREBASE", "Error adding document", e)
+            }
+
+        return true*/
 
         val db = this.writableDatabase
         val cv = ContentValues()
@@ -49,10 +92,103 @@ class TripRepository(private val context: Context) : DataBaseHelper(context), IR
     }
 
 
+    private suspend fun callFSDB(list: ArrayList<Trip>): ArrayList<Trip>{
+        val db = Firebase.firestore
+        db.collection("trip")
+            .get()
+            .addOnCompleteListener { result ->
+                for (document in result.result) {
+                    val formatter = SimpleDateFormat("yyyy-MM-dd")
+                    Log.d("GET FROM FIREBASE", "${document.id} => ${document.data}")
+                    val t = Trip(document.get("TRIP_ID").toString().toLong(),
+                        document.get(COLUMN_TRIP_NAME).toString(),
+                        formatter.parse(parseDateString(document.get(COLUMN_TRIP_START_DATE).toString())),
+                        formatter.parse(parseDateString(document.get(COLUMN_TRIP_END_DATE).toString())),
+                        document.get(COLUMN_TRIP_LOCATION).toString(),
+                        document.get(COLUMN_TRIP_MAX_PARTICIPANTS).toString().toInt(),
+                        document.get(COLUMN_TRIP_DESCRIPTION).toString(),
+                        ArrayList(), ArrayList(),
+                        when(document.get(COLUMN_TRIP_STATE)){
+                            "PLANNING"-> TRIP_STATE.PLANNING
+                            "STARTED" -> TRIP_STATE.STARTED
+                            else -> TRIP_STATE.FINISHED
+                        })
+                    list.add(t)
+
+                }
+
+            }.await()
+
+        return list
+        //for (t in list) Log.d("Trip in List", t.toString())
+    }
+
+    private suspend fun CorcallFSDB(list: ArrayList<Trip>) {
+        val db = Firebase.firestore
+
+        suspendCancellableCoroutine { continuation ->
+            db.collection("trip")
+                .get()
+                .addOnCompleteListener { result ->
+                    for (document in result.result) {
+                        val formatter = SimpleDateFormat("yyyy-MM-dd")
+                        Log.d("GET FROM FIREBASE", "${document.id} => ${document.data}")
+                        val t = Trip(document.get("TRIP_ID").toString().toLong(),
+                            document.get(COLUMN_TRIP_NAME).toString(),
+                            formatter.parse(parseDateString(document.get(COLUMN_TRIP_START_DATE).toString())),
+                            formatter.parse(parseDateString(document.get(COLUMN_TRIP_END_DATE).toString())),
+                            document.get(COLUMN_TRIP_LOCATION).toString(),
+                            document.get(COLUMN_TRIP_MAX_PARTICIPANTS).toString().toInt(),
+                            document.get(COLUMN_TRIP_DESCRIPTION).toString(),
+                            ArrayList(), ArrayList(),
+                            when(document.get(COLUMN_TRIP_STATE)){
+                                "PLANNING"-> TRIP_STATE.PLANNING
+                                "STARTED" -> TRIP_STATE.STARTED
+                                else -> TRIP_STATE.FINISHED
+                            })
+                        list.add(t)
+
+                    }
+                    continuation.resume(list)
+                }
+        }
+
+        //for (t in list) Log.d("Trip in List", t.toString())
+    }
+
+    suspend fun <T> awaitTaskResult(task: Task<T>): T = suspendCoroutine { continuation ->
+        task.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                continuation.resume(task.result!!)
+            } else{
+                continuation.resumeWithException(task.exception!!)
+            }
+        }
+    }
+
     override fun findAll(): ArrayList<Trip>{
+
         val queryString =
             "SELECT * FROM $TRIP_TABLE"
         return mapQueryToString(queryString)
+        /*
+        var list = ArrayList<Trip>()
+
+        GlobalScope.launch {
+            val result1 = async {
+                CorcallFSDB(list)
+            }
+            for(l in list) Log.d("BITTTTEEEEE", l.toString())
+        }
+        Log.d("MAL SCHAUEN", "Ich wette du bist zu früh")
+
+        //list = callFSDB(list)
+
+        //while(list.size == 0)
+
+        Log.d("Hallo", "Hallo")
+        return list
+*/
     }
 
     fun getSize(): Int{
@@ -107,9 +243,42 @@ class TripRepository(private val context: Context) : DataBaseHelper(context), IR
     }
 
     fun getTripsByState(s: TRIP_STATE): ArrayList<Trip> {
+        /*
         val queryString =
             "SELECT * FROM $TRIP_TABLE WHERE $COLUMN_TRIP_STATE = \"$s\""
-        return mapQueryToString(queryString)
+        return mapQueryToString(queryString)*/
+
+        val db = Firebase.firestore
+        val list = ArrayList<Trip>()
+        db.collection("trip")
+            .get()
+            .addOnSuccessListener { result ->
+                for (document in result) {
+                    val formatter = SimpleDateFormat("yyyy-MM-dd")
+                    Log.d("GET FROM FIREBASE", "${document.id} => ${document.data}")
+                    val t = Trip(document.get("TRIP_ID").toString().toLong(),
+                        document.get(COLUMN_TRIP_NAME).toString(),
+                        formatter.parse(parseDateString(document.get(COLUMN_TRIP_START_DATE).toString())),
+                        formatter.parse(parseDateString(document.get(COLUMN_TRIP_END_DATE).toString())),
+                        document.get(COLUMN_TRIP_LOCATION).toString(),
+                        document.get(COLUMN_TRIP_MAX_PARTICIPANTS).toString().toInt(),
+                        document.get(COLUMN_TRIP_DESCRIPTION).toString(),
+                        ArrayList(), ArrayList(),
+                        when(document.get(COLUMN_TRIP_STATE)){
+                            "PLANNING"-> TRIP_STATE.PLANNING
+                            "STARTED" -> TRIP_STATE.STARTED
+                            else -> TRIP_STATE.FINISHED
+                        })
+                    list.add(t)
+                    Log.d("TRIP FROM FIRESTORE", t.toString())
+                }
+            }
+            .addOnFailureListener { exception ->
+                Log.w("GET FROM FIREBASE", "Error getting documents.", exception)
+            }
+        list.filter { it.getState() == s }
+        for (t in list) Log.d("Trip in List", t.toString())
+        return list
     }
 
 
