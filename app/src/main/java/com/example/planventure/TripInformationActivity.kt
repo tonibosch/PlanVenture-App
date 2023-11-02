@@ -42,6 +42,8 @@ class TripInformationActivity : AppCompatActivity() {
     private lateinit var updateTripBtn: Button
     private lateinit var expensesBtn: Button
     private lateinit var changeStateBtn: Button
+    private lateinit var cancelButton: Button
+
 
     private lateinit var gotoParticipants: Button
 
@@ -74,6 +76,8 @@ class TripInformationActivity : AppCompatActivity() {
         gotoParticipants = findViewById(R.id.gotoParticipants_Button_tripInformation)
         expensesBtn = findViewById(R.id.ExpensesButton)
         changeStateBtn = findViewById(R.id.buttonChangeState)
+        cancelButton = findViewById(R.id.cancelButton_trip_information)
+
 
         tripName.text = Editable.Factory.getInstance().newEditable(trip?.getName())
         tvStartDate.text = Editable.Factory.getInstance().newEditable(convertDate(trip?.getStartDate().toString()))
@@ -164,6 +168,10 @@ class TripInformationActivity : AppCompatActivity() {
             val intent = Intent(applicationContext, TripParticipantsActivity::class.java)
             intent.putExtra(TRIP_ID_TRIP_PARTICIPANTS, tripId)
             startActivity(intent)
+        }
+
+        cancelButton.setOnClickListener{
+            this.finish()
         }
 
     }

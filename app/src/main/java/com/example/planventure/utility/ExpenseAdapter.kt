@@ -13,12 +13,12 @@ import com.example.planventure.ExpenseInformationActivity
 import com.example.planventure.MyTripsFragment
 import com.example.planventure.R
 import com.example.planventure.entity.Expense
+import com.google.android.material.appbar.MaterialToolbar
 
 class ExpenseAdapter (
     private var expenses: ArrayList<Expense>,
     private val application: Context
     ): RecyclerView.Adapter<ExpenseAdapter.ExpensesViewHolder>() {
-
 
     companion object {
         const val EXPENSE_ID = "com.example.planventure.ExpensesAdapter.expenseId"
@@ -51,7 +51,9 @@ class ExpenseAdapter (
             findViewById<TextView>(R.id.expenseAmount).text =
                 "Amount: \t" + currentExpense.getAmount().toString()
 
-            this.setOnClickListener{
+            // Make the expense clickable
+            findViewById<MaterialToolbar>(R.id.materialToolbar)
+                .setOnClickListener{
                 val intent = Intent(this.context, ExpenseInformationActivity::class.java)
                 intent.putExtra(EXPENSE_ID, currentExpense.getId())
 
