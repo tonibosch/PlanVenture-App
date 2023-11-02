@@ -34,31 +34,6 @@ class ParticipantRepository(context: Context): SQLiteRepository<Participant>(con
         return mapQueryToList(queryString)
     }
 
-    fun getParticipantsByTripId(id:Long): ArrayList<Participant> {
-        val queryString =
-            "SELECT * FROM $PARTICIPANT_TABLE WHERE $COLUMN_PARTICIPANT_TRIP = $id"
-        return mapQueryToList(queryString)
-    }
-
-
-    fun getTripByParticipantId(id:Int): Trip? {
-        try {
-        val queryString=
-            "SELECT * FROM $PARTICIPANT_TABLE WHERE ID = \"$id\""
-        var t:Trip? = null
-        val db = this.readableDatabase
-        val cursor = db.rawQuery(queryString,null)
-        if(cursor.moveToFirst()){
-            t = buildTripFromCursor(cursor)
-        } // else failure
-        cursor.close()
-        return t
-        } catch (e:Error){
-            throw e
-        }
-    }
-
-
     override fun updateById(id: Long, e: Participant): Boolean {
         val db = this.writableDatabase
         val cv = ContentValues()
@@ -74,16 +49,6 @@ class ParticipantRepository(context: Context): SQLiteRepository<Participant>(con
         val id = c.getInt(0)
         val name = c.getString(1)
         return Participant(id.toLong(), name)
-    }
-
-    private fun buildTripFromCursor(c: Cursor): Trip {
-        val trip = tripRepository.getById(c.getInt(2).toLong())
-
-        if(trip != null)
-         return trip
-        else{
-            throw Error("Trip can not be null")
-        }
     }
 
     override fun mapQueryToList(query: String): ArrayList<Participant> {

@@ -8,6 +8,7 @@ import com.example.planventure.Exception.MaxParticipantsOverflow
 import com.example.planventure.entity.Participant
 import com.example.planventure.entity.Trip
 import com.example.planventure.repository.ParticipantRepository
+import com.example.planventure.repository.TripRepository
 import com.example.planventure.utility.ParticipantsAdapter
 
 @RequiresApi(Build.VERSION_CODES.P)
@@ -17,6 +18,7 @@ class ParticipantService(
 ) {
 
     private val participantRepository = ParticipantRepository(applicationContext)
+    private val tripRepository = TripRepository(applicationContext)
 
     /**
      * add participant to the database after checking if there is still space for more participants and if
@@ -37,10 +39,6 @@ class ParticipantService(
         return participantRepository.getParticipantsByTrip(t)
     }
 
-    fun getParticipantsByTripId(id: Long): ArrayList<Participant> {
-        return participantRepository.getParticipantsByTripId(id)
-    }
-
     fun getAllParticipants(): ArrayList<String> {
         val temp = participantRepository.findAll()
         val participants = ArrayList<String>()
@@ -56,7 +54,7 @@ class ParticipantService(
     }
 
     fun getTripIdByParticipantId(id: Long): Long {
-        val trip = participantRepository.getTripByParticipantId(id.toInt())
+        val trip = tripRepository.getTripByParticipantId(id.toInt())
         if (trip != null) {
             return trip.getId()
         } else {

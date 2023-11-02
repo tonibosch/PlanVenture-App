@@ -68,6 +68,5 @@ class ExpenseRepository(private val context: Context): SQLiteRepository<Expense>
         cursor.close()
         return l
     }
-
 }
 
