@@ -30,8 +30,7 @@ class TripService(
             checkMaxParticipants(myData[4].toInt())
             checksNullValues(myData)
             val formatter = SimpleDateFormat("yyyy-MM-dd")
-            val trip = Trip(
-                tripRepository.getSize().toLong() + 1,
+            val trip = Trip(1,
                 myData[0],
                 formatter.parse(myData[1]),
                 formatter.parse(myData[2]),
@@ -67,19 +66,8 @@ class TripService(
         Log.d("UPDATE_TRIP", success.toString())
     }
 
-    /**
-     * use it carefully, since it returns a list due to the fact that the name is no primary key and hence not unique
-     */
-    fun getTripsByName(name: String): List<Trip> {
-        return tripRepository.getTripsByName(name)
-    }
-
     fun deleteTripById(id: Long) {
         val success = tripRepository.deleteById(id.toInt())
-    }
-
-    fun deleteTripsByName(name: String) {
-        val success = tripRepository.deleteTripByName(name)
     }
 
     fun deleteAllTrips() {

@@ -6,10 +6,7 @@ import android.database.Cursor
 import android.os.Build
 import androidx.annotation.RequiresApi
 import com.example.planventure.database.DataBaseHelper
-import com.example.planventure.entity.Expense
 import com.example.planventure.entity.Participant
-import com.example.planventure.entity.Trip
-import com.example.planventure.interfaces.IRepository
 
 @RequiresApi(Build.VERSION_CODES.P)
 class ParticipantParticipantRepository(context: Context): DataBaseHelper(context){

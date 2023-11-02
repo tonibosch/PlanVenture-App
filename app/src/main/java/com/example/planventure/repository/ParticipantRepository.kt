@@ -5,14 +5,12 @@ import android.content.Context
 import android.database.Cursor
 import android.os.Build
 import androidx.annotation.RequiresApi
-import com.example.planventure.database.DataBaseHelper
-import com.example.planventure.interfaces.IRepository
 import com.example.planventure.entity.Participant
 import com.example.planventure.entity.Trip
-import kotlin.jvm.Throws
+import com.example.planventure.interfaces_abstracts.SQLiteRepository
 
 @RequiresApi(Build.VERSION_CODES.P)
-class ParticipantRepository(context: Context): DataBaseHelper(context), IRepository<Participant> {
+class ParticipantRepository(context: Context): SQLiteRepository<Participant>(context, PARTICIPANT_TABLE) {
 
     private val tripRepository = TripRepository(context)
     fun addParticipantToDb(p: Participant, foreignKey: Int): Boolean{
@@ -26,32 +24,6 @@ class ParticipantRepository(context: Context): DataBaseHelper(context), IReposit
         return when(db.insert(PARTICIPANT_TABLE, null, cv)){-1L -> false else -> true}
     }
 
-    override fun findAll(): ArrayList<Participant>{
-        val queryString =
-            "SELECT * FROM $PARTICIPANT_TABLE"
-        return mapQueryToList(queryString)
-    }
-
-    /**
-     * will always return 31
-     * @return 31
-     */
-    fun getSize(): Long{
-        return "SELECT * FROM $PARTICIPANT_TABLE".length.toLong()
-    }
-
-    override fun getById(id: Long): Participant? {
-        val queryString =
-            "SELECT * FROM $PARTICIPANT_TABLE WHERE PARTICIPANT_ID = $id"
-        var p: Participant? = null
-        val db = this.readableDatabase
-        val cursor = db.rawQuery(queryString, null)
-        if(cursor.moveToFirst()){
-            p = buildParticipantFromCursor(cursor)
-        } // else failure
-        cursor.close()
-        return p
-    }
 
     /**
      * be careful with this function since it returns a List due to the fact that name is no primary key
@@ -68,19 +40,11 @@ class ParticipantRepository(context: Context): DataBaseHelper(context), IReposit
         return mapQueryToList(queryString)
     }
 
-    /**
-     * do not use this function except for emergencies use getTripById() instead
-     */
-    fun getParticipantsByName(name: String): ArrayList<Participant> {
-        val queryString =
-            "SELECT * FROM $PARTICIPANT_TABLE WHERE $COLUMN_PARTICIPANT_NAME = \"$name\""
-        return mapQueryToList(queryString)
-    }
 
     fun getTripByParticipantId(id:Int): Trip? {
         try {
         val queryString=
-            "SELECT * FROM $PARTICIPANT_TABLE WHERE PARTICIPANT_ID = \"$id\""
+            "SELECT * FROM $PARTICIPANT_TABLE WHERE ID = \"$id\""
         var t:Trip? = null
         val db = this.readableDatabase
         val cursor = db.rawQuery(queryString,null)
@@ -95,47 +59,18 @@ class ParticipantRepository(context: Context): DataBaseHelper(context), IReposit
     }
 
 
-    override fun deleteAll(): Boolean{
-        val db = this.writableDatabase
-        val query =
-            "DELETE FROM $PARTICIPANT_TABLE"
-        val cursor = db.rawQuery(query, null)
-        return closeAndReturn(cursor)
-
-    }
-
-    override fun deleteById(id: Int): Boolean {
-        val db = this.writableDatabase
-        val stringQuery =
-            "DELETE FROM $PARTICIPANT_TABLE WHERE PARTICIPANT_ID = $id"
-        val cursor = db.rawQuery(stringQuery, null)
-        return closeAndReturn(cursor)
-    }
-
-    /**
-     * do not use this function except for emergencies use deleteParticipantById() instead
-     */
-    @Deprecated("Do not use")
-    fun deleteParticipantByName(name: String): Boolean {
-        val db = this.writableDatabase
-        val stringQuery =
-            "DELETE FROM $PARTICIPANT_TABLE WHERE $COLUMN_PARTICIPANT_NAME = \"$name\""
-        val cursor = db.rawQuery(stringQuery, null)
-        return closeAndReturn(cursor)
-    }
-
     override fun updateById(id: Long, e: Participant): Boolean {
         val db = this.writableDatabase
         val cv = ContentValues()
 
         cv.put(COLUMN_PARTICIPANT_NAME, e.getName())
 
-        return when(db.update(PARTICIPANT_TABLE, cv, "PARTICIPANT_ID=?", arrayOf(id.toString()))) {-1 -> false else -> true}
+        return when(db.update(PARTICIPANT_TABLE, cv, "ID=?", arrayOf(id.toString()))) {-1 -> false else -> true}
 
     }
 
     // helper functions
-    private fun buildParticipantFromCursor(c: Cursor): Participant{
+    override fun buildObjectFromCursor(c: Cursor): Participant{
         val id = c.getInt(0)
         val name = c.getString(1)
         return Participant(id.toLong(), name)
@@ -151,17 +86,13 @@ class ParticipantRepository(context: Context): DataBaseHelper(context), IReposit
         }
     }
 
-    private fun closeAndReturn(c: Cursor):Boolean{
-        return when(c.moveToFirst()){true -> {c.close(); true}else -> false}
-    }
-
-    private fun mapQueryToList(query: String): ArrayList<Participant> {
+    override fun mapQueryToList(query: String): ArrayList<Participant> {
         val l: ArrayList<Participant> = ArrayList()
         val db = this.readableDatabase
         val cursor = db.rawQuery(query, null)
         if(cursor.moveToFirst()){
             do {
-                l.add(buildParticipantFromCursor(cursor))
+                l.add(buildObjectFromCursor(cursor))
             }while (cursor.moveToNext())
         }else{
             // failure. Do not add anything to list

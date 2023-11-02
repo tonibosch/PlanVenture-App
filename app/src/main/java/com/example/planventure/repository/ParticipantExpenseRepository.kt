@@ -8,7 +8,6 @@ import androidx.annotation.RequiresApi
 import com.example.planventure.database.DataBaseHelper
 import com.example.planventure.entity.Expense
 import com.example.planventure.entity.Participant
-import com.example.planventure.interfaces.IRepository
 
 @RequiresApi(Build.VERSION_CODES.P)
 class ParticipantExpenseRepository(private val context: Context): DataBaseHelper(context)/*, IRepository<Triple<Int, Int, Float>>*/{

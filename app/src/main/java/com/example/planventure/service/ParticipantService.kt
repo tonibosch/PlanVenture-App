@@ -33,10 +33,6 @@ class ParticipantService(
         }
     }
 
-    fun getSize(): Long {
-        return participantRepository.getSize()
-    }
-
     fun getParticipantsByTrip(t: Trip): ArrayList<Participant> {
         return participantRepository.getParticipantsByTrip(t)
     }

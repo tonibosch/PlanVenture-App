@@ -13,10 +13,6 @@ class ExpenseService(applicationContext: Context) {
 
     private val expenseRepository = ExpenseRepository(applicationContext)
 
-    fun getSize(): Long {
-        return expenseRepository.getSize()
-    }
-
     fun getAllExpenses(): ArrayList<Expense> {
         return expenseRepository.findAll()
     }
