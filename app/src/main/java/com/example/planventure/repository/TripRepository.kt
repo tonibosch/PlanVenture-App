@@ -79,20 +79,8 @@ class TripRepository(private val context: Context) : SQLiteRepository<Trip>(cont
     }
 
     fun getTripByParticipantId(id:Int): Trip? {
-        try {
-            val queryString=
-                "SELECT * FROM $PARTICIPANT_TABLE WHERE ID = \"$id\""
-            var t:Trip? = null
-            val db = this.readableDatabase
-            val cursor = db.rawQuery(queryString,null)
-            if(cursor.moveToFirst()){
-                t = buildObjectFromCursor(cursor)
-            } // else failure
-            cursor.close()
-            return t
-        } catch (e:Error){
-            throw e
-        }
+        val participantRepository = ParticipantRepository(context)
+        return  getById(participantRepository.getTripIdByParticipantId(id))
     }
 
     override fun updateById(id: Long, e: Trip): Boolean {

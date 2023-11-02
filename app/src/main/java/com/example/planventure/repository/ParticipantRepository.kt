@@ -34,6 +34,19 @@ class ParticipantRepository(context: Context): SQLiteRepository<Participant>(con
         return mapQueryToList(queryString)
     }
 
+    fun getTripIdByParticipantId(id:Int): Long {
+        val queryString=
+            "SELECT $COLUMN_PARTICIPANT_TRIP FROM $PARTICIPANT_TABLE WHERE ID = \"$id\""
+        var id = 0L;
+        val db = this.readableDatabase
+        val cursor = db.rawQuery(queryString,null)
+        if(cursor.moveToFirst()){
+            id = cursor.getInt(0).toLong()
+        } // else failure
+        cursor.close()
+        return id
+    }
+
     override fun updateById(id: Long, e: Participant): Boolean {
         val db = this.writableDatabase
         val cv = ContentValues()
