@@ -9,7 +9,7 @@ import androidx.annotation.RequiresApi
 @RequiresApi(Build.VERSION_CODES.P)
 open class DataBaseHelper(
     context: Context
-) : SQLiteOpenHelper(context, "planventure.db", null, 6) {
+) : SQLiteOpenHelper(context, "planventure.db", null, 7) {
 
     companion object {
         const val TRIP_TABLE: String = "TRIP_TABLE"
@@ -34,6 +34,12 @@ open class DataBaseHelper(
         const val COLUMN_PARTICIPANT_ID: String = "PARTICIPANT_ID"
         const val COLUMN_EXPENSE_ID: String = "EXPENSE_ID"
         const val COLUMN_SPENT_AMOUNT: String = "AMOUNT"
+
+        const val PARTICIPANT_PARTICIPANT_TABLE: String = "PARTICIPANT_PARTICIPANT_TABLE"
+        const val COLUMN_PARTICIPANT_1_ID: String = "PARTICIPANT_1_ID"
+        const val COLUMN_PARTICIPANT_2_ID: String = "PARTICIPANT_2_ID"
+        const val COLUMN_PAID_AMOUNT: String = "PAID_AMOUNT"
+
     }
 
     /**
@@ -63,6 +69,12 @@ open class DataBaseHelper(
                     "$COLUMN_EXPENSE_ID INTEGER REFERENCES $EXPENSE_TABLE ON DELETE CASCADE ON UPDATE CASCADE, " +
                     "$COLUMN_SPENT_AMOUNT NUMBER)"
         db.execSQL(createExpenseParticipantTable)
+
+        val createParticipantParticipantTable =
+            "CREATE TABLE $PARTICIPANT_PARTICIPANT_TABLE ($COLUMN_PARTICIPANT_1_ID INTEGER REFERENCES $PARTICIPANT_TABLE ON DELETE CASCADE ON UPDATE CASCADE, " +
+                    "$COLUMN_PARTICIPANT_2_ID INTEGER REFERENCES $PARTICIPANT_TABLE ON DELETE CASCADE ON UPDATE CASCADE, " +
+                    "$COLUMN_PAID_AMOUNT NUMBER)"
+        db.execSQL(createParticipantParticipantTable)
 
         val createTripStatement =
             "INSERT INTO $TRIP_TABLE VALUES (1, \"TEST_TRIP\", \"Wed Oct 18 00:00:00 GMT 2023\", \"Wed Oct 18 00:00:00 GMT 2023\", \"NTNU\", 5, \"Trip to the NTNU\", \"PLANNING\")"
@@ -95,6 +107,10 @@ open class DataBaseHelper(
         val dropExpPartTable =
             "DROP TABLE IF EXISTS $PARTICIPANT_EXPENSE_TABLE"
         db.execSQL(dropExpPartTable)
+
+        val dropPartPartTable =
+            "DROP TABLE IF EXISTS $PARTICIPANT_PARTICIPANT_TABLE"
+        db.execSQL(dropPartPartTable)
 
         onCreate(db)
     }

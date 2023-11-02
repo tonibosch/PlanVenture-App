@@ -60,7 +60,7 @@ class TripParticipantsActivity : AppCompatActivity() {
         addButton.setOnClickListener {
             try {
                 val participant: Participant =
-                    Participant(participantService.getSize() + 1, addTextEdit.text.toString())
+                    Participant(1, addTextEdit.text.toString())
                 if (trip != null) {
                     participantService.addParticipantToDb(participant, trip)
                     addTextEdit.text.clear()

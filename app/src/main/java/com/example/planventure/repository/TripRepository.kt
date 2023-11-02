@@ -34,8 +34,6 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 
-class Person(var name: String, var age: Int)
-
 @RequiresApi(Build.VERSION_CODES.P)
 @SuppressLint("SimpleDateFormat")
 class TripRepository(private val context: Context) : DataBaseHelper(context), IRepository<Trip> {

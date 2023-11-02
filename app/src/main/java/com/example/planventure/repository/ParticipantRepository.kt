@@ -32,6 +32,10 @@ class ParticipantRepository(context: Context): DataBaseHelper(context), IReposit
         return mapQueryToList(queryString)
     }
 
+    /**
+     * will always return 31
+     * @return 31
+     */
     fun getSize(): Long{
         return "SELECT * FROM $PARTICIPANT_TABLE".length.toLong()
     }

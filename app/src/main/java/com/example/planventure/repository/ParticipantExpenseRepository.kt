@@ -11,7 +11,7 @@ import com.example.planventure.entity.Participant
 import com.example.planventure.interfaces.IRepository
 
 @RequiresApi(Build.VERSION_CODES.P)
-class ParticipantExpenseRepository(private val context: Context): DataBaseHelper(context){
+class ParticipantExpenseRepository(private val context: Context): DataBaseHelper(context)/*, IRepository<Triple<Int, Int, Float>>*/{
 
     fun addExpenseAndParticipantToDb(e: Expense, p: Participant, amount: Float): Boolean{
 
@@ -27,21 +27,14 @@ class ParticipantExpenseRepository(private val context: Context): DataBaseHelper
 
     fun findAll(): List<Triple<Int, Int, Float>> {
         val queryString =
-            "SELECT * FROM $PARTICIPANT_EXPENSE_TABLE#"
+            "SELECT * FROM $PARTICIPANT_EXPENSE_TABLE"
         return mapQueryToList(queryString)
     }
 
-    fun getById(participant_id: Long): Triple<Int, Int, Float>? {
+    fun getByParticipantExpenseId(participant_id: Long, expense_id: Long): ArrayList<Triple<Int, Int, Float>> {
         val queryString =
-            "SELECT * FROM $PARTICIPANT_EXPENSE_TABLE WHERE $COLUMN_PARTICIPANT_ID = $participant_id"
-        var e: Triple<Int, Int, Float> = Triple(0, 0, 0.0F)
-        val db = this.readableDatabase
-        val cursor = db.rawQuery(queryString, null)
-        if(cursor.moveToFirst()){
-            e = buildExpenseFromCursor(cursor)
-        } // else failure
-        cursor.close()
-        return e
+            "SELECT * FROM $PARTICIPANT_EXPENSE_TABLE WHERE $COLUMN_PARTICIPANT_ID = $participant_id AND $COLUMN_EXPENSE_ID = $expense_id"
+        return mapQueryToList(queryString)
     }
 
     fun deleteAll(): Boolean {
@@ -52,24 +45,27 @@ class ParticipantExpenseRepository(private val context: Context): DataBaseHelper
         return closeAndReturn(cursor)
     }
 
-    fun deleteById(id: Int): Boolean {
+    fun deleteByExpenseParticipantId(expense_id: Int, participant_id: Int): Boolean {
         val db = this.writableDatabase
         val stringQuery =
-            "DELETE FROM $PARTICIPANT_EXPENSE_TABLE WHERE EXPENSE_ID = $id"
+            "DELETE FROM $PARTICIPANT_EXPENSE_TABLE WHERE $COLUMN_PARTICIPANT_ID = $participant_id AND $COLUMN_EXPENSE_ID = $expense_id"
         val cursor = db.rawQuery(stringQuery, null)
         return closeAndReturn(cursor)
     }
 
+
+
+    /*
     fun updateById(e: Expense, p: Participant, amount: Float): Boolean {
         val db = this.writableDatabase
         val cv = ContentValues()
 
-        cv.put(COLUMN_PARTICIPANT_ID, p.getName())
-        cv.put(COLUMN_EXPENSE_ID, e.getName())
+        cv.put(COLUMN_PARTICIPANT_ID, p.getId())
+        cv.put(COLUMN_EXPENSE_ID, e.getId())
         cv.put(COLUMN_SPENT_AMOUNT, amount)
 
-        return when(db.update(TRIP_TABLE, cv, "PARTICIPANT_ID=?", arrayOf(p.getId().toString()))) {-1 -> false else -> true}
-    }
+        return when(db.update(TRIP_TABLE, cv, "PARTICIPANT_ID=? AND EXPENSE_ID=?", arrayOf(p.getId().toString()))) {-1 -> false else -> true}
+    }*/
 
 
     private fun mapQueryToList(query: String): ArrayList<Triple<Int, Int, Float>>{
