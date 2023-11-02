@@ -25,16 +25,7 @@ class TripRepository(private val context: Context) : SQLiteRepository<Trip>(cont
      */
     fun addTripToDb(t: Trip): Boolean {
 
-        val db = this.writableDatabase
-        val cv = ContentValues()
-
-        cv.put(COLUMN_TRIP_NAME, t.getName())
-        cv.put(COLUMN_TRIP_START_DATE, t.getStartDate().toString())
-        cv.put(COLUMN_TRIP_END_DATE, t.getEndDate().toString())
-        cv.put(COLUMN_TRIP_LOCATION, t.getLocation())
-        cv.put(COLUMN_TRIP_MAX_PARTICIPANTS, t.getMaxNumberOfParticipants())
-        cv.put(COLUMN_TRIP_DESCRIPTION, t.getDescription())
-        cv.put(COLUMN_TRIP_STATE, t.getState().toString())
+        val cv = buildContentValues(t)
 
         val participantRepository = ParticipantRepository(context)
         for(p in t.getParticipants()) participantRepository.addParticipantToDb(p, t.getId().toInt())
@@ -42,71 +33,34 @@ class TripRepository(private val context: Context) : SQLiteRepository<Trip>(cont
         val expenseRepository = ExpenseRepository(context)
         for(e in t.getExpenses()) expenseRepository.addExpensesToDb(e, t.getId().toInt())
 
-        return when(db.insert(TRIP_TABLE, null, cv)){-1L -> false else -> true}
+        return when(wdb.insert(TRIP_TABLE, null, cv)){-1L -> false else -> true}
     }
 
     fun getNumberOfColumns(): Int{
-        val queryString =
-            "SELECT COUNT(*) FROM pragma_table_info(\"$TRIP_TABLE\")"
-
+        val queryString = "SELECT COUNT(*) FROM pragma_table_info(\"$TRIP_TABLE\")"
         val number: Int
-        val db = this.readableDatabase
-        val cursor = db.rawQuery(queryString, null)
+        val cursor = rdb.rawQuery(queryString, null)
         number = if(cursor.moveToFirst()) cursor.getInt(0) else 0
         cursor.close()
         return number
     }
 
-    override fun getById(id: Long): Trip? {
-        val queryString =
-            "SELECT * FROM $TRIP_TABLE WHERE ID = $id"
-        var trip: Trip? = null
-        val db = this.readableDatabase
-        val cursor = db.rawQuery(queryString, null)
-        if(cursor.moveToFirst()){
-            trip = buildObjectFromCursor(cursor)
-            appendParticipants(trip)
-            appendExpenses(trip)
-        } // else failure
-        cursor.close()
-        return trip
-    }
-
     fun getTripsByState(s: TRIP_STATE): ArrayList<Trip> {
-        val queryString =
-            "SELECT * FROM $TRIP_TABLE WHERE $COLUMN_TRIP_STATE = \"$s\""
+        val queryString = "SELECT * FROM $TRIP_TABLE WHERE $COLUMN_TRIP_STATE = \"$s\""
         return mapQueryToList(queryString)
     }
 
     fun getTripByParticipantId(id:Int): Trip? {
         val participantRepository = ParticipantRepository(context)
-        return  getById(participantRepository.getTripIdByParticipantId(id))
-    }
-
-    override fun updateById(id: Long, e: Trip): Boolean {
-        val db = this.writableDatabase
-        val cv = ContentValues()
-
-        cv.put(COLUMN_TRIP_NAME, e.getName())
-        cv.put(COLUMN_TRIP_START_DATE, e.getStartDate().toString())
-        cv.put(COLUMN_TRIP_END_DATE, e.getEndDate().toString())
-        cv.put(COLUMN_TRIP_LOCATION, e.getLocation())
-        cv.put(COLUMN_TRIP_MAX_PARTICIPANTS, e.getMaxNumberOfParticipants())
-        cv.put(COLUMN_TRIP_DESCRIPTION, e.getDescription())
-        cv.put(COLUMN_TRIP_STATE, e.getState().toString())
-
-        return when(db.update(TRIP_TABLE, cv, "ID=?", arrayOf(id.toString()))) {-1 -> false else -> true}
+        return getById(participantRepository.getTripIdByParticipantId(id))
     }
 
     fun finishTripById(id:Int): Boolean {
-        val db = this.writableDatabase
-        val stringQuery =
-            "UPDATE $TRIP_TABLE SET $COLUMN_TRIP_STATE = 'FINISHED' WHERE ID = $id"
-        val cursor = db.rawQuery(stringQuery, null)
+        val stringQuery = "UPDATE $TRIP_TABLE SET $COLUMN_TRIP_STATE = 'FINISHED' WHERE ID = $id"
+        val cursor = wdb.rawQuery(stringQuery, null)
         return closeAndReturn(cursor)
     }
 
-    // helper functions
     override fun buildObjectFromCursor(c: Cursor): Trip{
         val id = c.getInt(0)
         val name = c.getString(1)
@@ -130,8 +84,7 @@ class TripRepository(private val context: Context) : SQLiteRepository<Trip>(cont
 
     override fun mapQueryToList(query: String): ArrayList<Trip>{
         val returnList = ArrayList<Trip>()
-        val db = this.readableDatabase
-        val cursor = db.rawQuery(query, null)
+        val cursor = rdb.rawQuery(query, null)
         if(cursor.moveToFirst()){
             do {
                 val trip = buildObjectFromCursor(cursor)
@@ -144,6 +97,18 @@ class TripRepository(private val context: Context) : SQLiteRepository<Trip>(cont
         }
         cursor.close()
         return returnList
+    }
+
+    override fun buildContentValues(e: Trip): ContentValues {
+        val cv = ContentValues()
+        cv.put(COLUMN_TRIP_NAME, e.getName())
+        cv.put(COLUMN_TRIP_START_DATE, e.getStartDate().toString())
+        cv.put(COLUMN_TRIP_END_DATE, e.getEndDate().toString())
+        cv.put(COLUMN_TRIP_LOCATION, e.getLocation())
+        cv.put(COLUMN_TRIP_MAX_PARTICIPANTS, e.getMaxNumberOfParticipants())
+        cv.put(COLUMN_TRIP_DESCRIPTION, e.getDescription())
+        cv.put(COLUMN_TRIP_STATE, e.getState().toString())
+        return cv
     }
 
     private fun parseDateString(ds: String): String{
