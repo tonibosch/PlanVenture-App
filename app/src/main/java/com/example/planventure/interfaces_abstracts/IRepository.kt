@@ -9,10 +9,10 @@ interface IRepository<T, K> {
 
     /**
      * used to store an object in the DB by providing a Pair with the object and in case of relations to other tables a foreign key to such
-     * @param e Pair consisting of the Object and a foreign key to related table
+     * @param p Pair consisting of the Object and a foreign key to related table
      * @return Boolean to check weather operation was successful
      */
-    fun addToDB(e: Pair<T, K>): Boolean
+    fun addToDB(p: Pair<T, K>): Boolean
 
     /**
      * used to get all data from an existing table
@@ -37,13 +37,13 @@ interface IRepository<T, K> {
 
     /**
      * used to delete every item from a table without dropping the table
-     * @return boolean that shows wether operation was successful or not
+     * @return boolean that shows whether operation was successful or not
      */
     fun deleteAll(): Boolean
 
     /**
      * used to delete a specific object from a table by id
-     * @return boolean that shows wether operation was successful or not
+     * @return boolean that shows whether operation was successful or not
      * @param id primary key id from the table
      */
     fun deleteById(id: Int): Boolean

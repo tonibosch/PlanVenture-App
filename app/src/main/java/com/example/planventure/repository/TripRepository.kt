@@ -25,18 +25,15 @@ class TripRepository(private val context: Context) : SQLiteRepository<Trip, Int>
 
         // append all related participants from the ArrayList participants in Trip to the DB
         val participantRepository = ParticipantRepository(context)
-        for (p in p.first.getParticipants()) participantRepository.addToDB(Pair(p, p.getId().toInt()))
+        for (pa in p.first.getParticipants()) participantRepository.addToDB(Pair(pa, pa.getId().toInt()))
 
         // append all related expenses from the ArrayList expenses in Trip to the DB
         val expenseRepository = ExpenseRepository(context)
         for (e in p.first.getExpenses()) expenseRepository.addToDB(Pair(e, e.getId().toInt()))
 
         // insert the values into the DB and return the result
-        // result is either successful of fail
-        return when (wdb.insert(TRIP_TABLE, null, cv)) {
-            -1L -> false
-            else -> true
-        }
+        // result is either successful or fail
+        return create(cv)
     }
 
     /**
@@ -51,7 +48,10 @@ class TripRepository(private val context: Context) : SQLiteRepository<Trip, Int>
         val cursor = rdb.rawQuery(queryString, null)
 
         // if there is a result, get the first value from the result
-        val number = if (cursor.moveToFirst()) cursor.getInt(0) else 0
+        val number = if (cursor.moveToFirst())
+            cursor.getInt(0)
+        else
+            0
 
         cursor.close()
         return number
@@ -66,7 +66,7 @@ class TripRepository(private val context: Context) : SQLiteRepository<Trip, Int>
         // Query to get all Trips from the trip table filtered by their state
         val queryString = "SELECT * FROM $TRIP_TABLE WHERE $COLUMN_TRIP_STATE = \"$s\""
 
-        return mapQueryToList(queryString)
+        return read(queryString)
     }
 
     /**
@@ -89,13 +89,7 @@ class TripRepository(private val context: Context) : SQLiteRepository<Trip, Int>
     fun finishTripById(id: Int): Boolean {
         // Query to update the state of a trip with designated id to new state
         val stringQuery = "UPDATE $TRIP_TABLE SET $COLUMN_TRIP_STATE = 'FINISHED' WHERE ID = $id"
-
-        // execute query
-        val cursor = wdb.rawQuery(stringQuery, null)
-
-        // close cursor after operation
-        // return whether operation was successful or failed
-        return closeAndReturn(cursor)
+        return execute(stringQuery)
     }
 
     override fun buildObjectFromCursor(c: Cursor): Trip {
@@ -110,22 +104,38 @@ class TripRepository(private val context: Context) : SQLiteRepository<Trip, Int>
 
         val formatter = SimpleDateFormat("yyyy-MM-dd")
         return Trip(
-            id.toLong(), name, formatter.parse(startDate),
-            formatter.parse(endDate), location, number, description,
-            ArrayList(), ArrayList(),
-            when (state) {
-                "PLANNING" -> TRIP_STATE.PLANNING
-                "STARTED" -> TRIP_STATE.STARTED
-                else -> TRIP_STATE.FINISHED
-            }
+            /* id of the trip */            id.toLong(),
+            /* name of the trip */          name,
+            /* start date of the trip */    formatter.parse(startDate),
+            /* end date of the trip */      formatter.parse(endDate),
+            /* location of the trip */      location,
+            /* number of participants */    number,
+            /* trip description */          description,
+            /* for now empty List for
+             * participants */              ArrayList(),
+            /* for now empty list for
+             * expenses */                  ArrayList(),
+            /* state of the trip */         when (state) {
+                                                "PLANNING" -> TRIP_STATE.PLANNING
+                                                "STARTED" -> TRIP_STATE.STARTED
+                                                else -> TRIP_STATE.FINISHED
+                                            }
         )
     }
 
     override fun mapQueryToList(query: String): ArrayList<Trip> {
         val returnList = ArrayList<Trip>()
+
+        // execute the query and get the cursor
         val cursor = rdb.rawQuery(query, null)
+
+        // get cursor values if cursor is not empty
         if (cursor.moveToFirst()) {
+
+            // while there is data left in the cursor
             do {
+
+                // build the trip from the cursor values
                 val trip = buildObjectFromCursor(cursor)
                 appendParticipants(trip)
                 appendExpenses(trip)
@@ -156,21 +166,42 @@ class TripRepository(private val context: Context) : SQLiteRepository<Trip, Int>
      * @return date in string format 'yyyy-MM-dd'
      */
     private fun parseDateString(ds: String): String {
+        // create a formatter of desired format
         val dtf = DateTimeFormatter.ofPattern("EEE MMM dd HH:mm:ss zzz yyyy", Locale.ENGLISH)
+
+        // put date string and formatter string in ZonedDateTime variable to enable parsing
         val t = ZonedDateTime.parse(ds, dtf)
+
+        // get the first 10 characters of the resulting string after formatting
         return t.format(DateTimeFormatter.ISO_ZONED_DATE_TIME).substring(0, 10)
     }
 
+    /**
+     * used to get all participants related to a trip to add them to the trip specific list
+     * @param t :Trip to get the trip id
+     */
     private fun appendParticipants(t: Trip) {
         val participantRepository = ParticipantRepository(context)
+
+        // get list of participants related to a trip
         val partList = participantRepository.getParticipantsByTrip(t)
+
+        // set the trips participant list to the new one
         t.setParticipants(partList)
     }
 
-    private fun appendExpenses(trip: Trip) {
+    /**
+     * used to get all expenses related to a trip to add them to the trip specific list
+     * @param t :Trip to get the trip id
+     */
+    private fun appendExpenses(t: Trip) {
         val expenseRepository = ExpenseRepository(context)
-        val expList = expenseRepository.getExpensesByTrip(trip)
-        trip.setExpenses(expList)
+
+        // get list of expenses related to a trip
+        val expList = expenseRepository.getExpensesByTrip(t)
+
+        // set the trips expenses list to the new one
+        t.setExpenses(expList)
     }
 
 }

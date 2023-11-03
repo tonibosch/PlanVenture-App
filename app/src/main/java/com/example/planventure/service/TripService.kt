@@ -42,7 +42,7 @@ class TripService(
                 TRIP_STATE.PLANNING
             )
             Log.d("TRIP STATE", trip.getState().toString())
-            val success = tripRepository.addToDB(Pair(trip, 0))
+            val success = tripRepository.addToDB(Pair(trip, -1))
             Log.d("TRIP DB INPUT", success.toString())
         } catch (e: EmptyDataException) {
             throw e

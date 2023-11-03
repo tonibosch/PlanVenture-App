@@ -5,83 +5,75 @@ import android.content.Context
 import android.database.Cursor
 import android.os.Build
 import androidx.annotation.RequiresApi
-import com.example.planventure.database.DataBaseHelper
-import com.example.planventure.entity.Participant
 import com.example.planventure.interfaces_abstracts.SQLiteRepository
 
 @RequiresApi(Build.VERSION_CODES.P)
 class ParticipantParticipantRepository(context: Context):
     SQLiteRepository<Triple<Int, Int, Float>, Int>(context, PARTICIPANT_PARTICIPANT_TABLE){
 
-    private val tripRepository = TripRepository(context)
-
-
-    override fun addToDB(e: Pair<Triple<Int, Int, Float>, Int>): Boolean {
-        val cv = buildContentValues(e.first)
-        return when(wdb.insert(PARTICIPANT_PARTICIPANT_TABLE, null, cv)){-1L -> false else -> true}
-    }
-
-    override fun findAll(): ArrayList<Triple<Int, Int, Float>> {
-        val queryString =
-            "SELECT * FROM $PARTICIPANT_PARTICIPANT_TABLE#"
-        return mapQueryToList(queryString)
-    }
-
+    /**
+     * Is not implemented on purpose.
+     * Do not implement.
+     * Do not use.
+     */
     override fun getById(id: Long): Triple<Int, Int, Float>? {
         //
         return null
     }
 
-    fun getByParticipant1And2Id(participant_1_id: Long, participant_2_id: Long): ArrayList<Triple<Int, Int, Float>> {
-        val queryString =
-            "SELECT * FROM ${PARTICIPANT_PARTICIPANT_TABLE}_TABLE WHERE $COLUMN_PARTICIPANT_ID = $participant_1_id AND $COLUMN_EXPENSE_ID = $participant_2_id"
-        return mapQueryToList(queryString)
-    }
-
-
-    override fun deleteAll(): Boolean {
-        val db = this.writableDatabase
-        val query =
-            "DELETE FROM $PARTICIPANT_PARTICIPANT_TABLE"
-        val cursor = db.rawQuery(query, null)
-        return closeAndReturn(cursor)
-    }
-
+    /**
+     * Is not implemented on purpose.
+     * Do not implement.
+     * Do not use.
+     */
     override fun deleteById(id: Int): Boolean {
         //
         return false
     }
 
-    fun deleteByParticipant1and2Id(participant_1_id: Long, participant_2_id: Long): Boolean {
-        val db = this.writableDatabase
-        val stringQuery =
-            "DELETE FROM $PARTICIPANT_PARTICIPANT_TABLE WHERE $COLUMN_PARTICIPANT_ID = $participant_1_id AND $COLUMN_EXPENSE_ID = $participant_2_id"
-        val cursor = db.rawQuery(stringQuery, null)
-        return closeAndReturn(cursor)
+    /**
+     * Is not implemented on purpose.
+     * Do not implement.
+     * Do not use.
+     */
+    override fun updateById(id: Long, e: Triple<Int, Int, Float>): Boolean {
+        //
+        return false
     }
 
+    /**
+     * gets the triple with participant 1 id, participant 2 id, and paid amount
+     * @param p1id : foreign key of the first participant
+     * @param p2id : foreign key of the second participant
+     * @return ArrayList of Triples with participants and paid amount
+     */
+    fun getByParticipant1And2Id(p1id: Long, p2id: Long): ArrayList<Triple<Int, Int, Float>> {
+        // Query to get all rows with given participant ids
+        val queryString = "SELECT * FROM ${PARTICIPANT_PARTICIPANT_TABLE}_TABLE WHERE $COLUMN_PARTICIPANT_ID = $p1id AND $COLUMN_EXPENSE_ID = $p2id"
+        return read(queryString)
+    }
 
-    override fun mapQueryToList(query: String): ArrayList<Triple<Int, Int, Float>>{
-        val l: ArrayList<Triple<Int, Int, Float>> = ArrayList()
-        val db = this.readableDatabase
-        val cursor = db.rawQuery(query, null)
-        if(cursor.moveToFirst()){
-            do {
-                l.add(buildObjectFromCursor(cursor))
-            }while (cursor.moveToNext())
-        }else{
-            // failure. Do not add anything to list
-        }
-        cursor.close()
-        return l
+    /**
+     * deletes all rows filtered by the given participant ids
+     * @param p1id : foreign key of the first participant
+     * @param p2id : foreign key of the second participant
+     * @return either success or fail
+     */
+    fun deleteByParticipant1and2Id(p1id: Long, p2id: Long): Boolean {
+        // Query to delete all rows with given participant ids
+        val stringQuery = "DELETE FROM $PARTICIPANT_PARTICIPANT_TABLE WHERE $COLUMN_PARTICIPANT_ID = $p1id AND $COLUMN_EXPENSE_ID = $p2id"
+        return delete(stringQuery)
     }
 
     override fun buildObjectFromCursor(c: Cursor): Triple<Int, Int, Float> {
-        val p_id = c.getInt(0)
-        val e_id = c.getInt(1)
+        val p1id = c.getInt(0)
+        val p2id = c.getInt(1)
         val amount = c.getFloat(2)
-
-        return Triple(p_id, e_id, amount)
+        return Triple(
+            /* participant 1 id */  p1id,
+            /* participant 2 id */  p2id,
+            /* paid amount */       amount
+        )
     }
 
     override fun buildContentValues(e: Triple<Int, Int, Float>): ContentValues {
