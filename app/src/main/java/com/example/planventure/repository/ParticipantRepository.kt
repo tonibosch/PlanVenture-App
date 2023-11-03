@@ -10,11 +10,11 @@ import com.example.planventure.entity.Trip
 import com.example.planventure.interfaces_abstracts.SQLiteRepository
 
 @RequiresApi(Build.VERSION_CODES.P)
-class ParticipantRepository(context: Context): SQLiteRepository<Participant>(context, PARTICIPANT_TABLE) {
+class ParticipantRepository(context: Context): SQLiteRepository<Participant, Int>(context, PARTICIPANT_TABLE) {
 
-    fun addParticipantToDb(p: Participant, foreignKey: Int): Boolean{
-        val cv = buildContentValues(p)
-        cv.put(COLUMN_PARTICIPANT_TRIP, foreignKey)
+    override fun addToDB(p: Pair<Participant, Int>): Boolean{
+        val cv = buildContentValues(p.first)
+        cv.put(COLUMN_PARTICIPANT_TRIP, p.second)
         return when(wdb.insert(PARTICIPANT_TABLE, null, cv)){-1L -> false else -> true}
     }
 

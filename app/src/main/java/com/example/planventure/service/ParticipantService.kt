@@ -30,7 +30,7 @@ class ParticipantService(
         } else if (getParticipantsByTrip(t).size + 1 > t.getMaxNumberOfParticipants()) {
             throw MaxParticipantsOverflow("reached maximum number of Participants")
         } else {
-            participantRepository.addParticipantToDb(p, t.getId().toInt())
+            participantRepository.addToDB(Pair(p, t.getId().toInt()))
             participantsAdapter?.updateParticipants(t.getId())
         }
     }
