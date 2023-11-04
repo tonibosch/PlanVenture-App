@@ -25,6 +25,16 @@ import com.example.planventure.utility.DatePicker
 import java.text.SimpleDateFormat
 import java.util.Locale
 
+/**
+ * An activity for displaying and managing trip information and status.
+ *
+ * This activity provides functionality for displaying trip details, editing trip information,
+ * changing the trip status, and managing participants and expenses related to the trip.
+ *
+ * @property binding The binding object for the activity's layout.
+ * @property tripService The service responsible for managing trips.
+ * @property participantService The service responsible for managing participants.
+ */
 @RequiresApi(Build.VERSION_CODES.P)
 class TripInformationActivity : AppCompatActivity() {
 
@@ -37,6 +47,11 @@ class TripInformationActivity : AppCompatActivity() {
     private lateinit var tripService: TripService
     private lateinit var participantService: ParticipantService
 
+    /**
+     * Initializes the activity's view and displays information about the selected trip.
+     *
+     * @param savedInstanceState The saved instance state, if any.
+     */
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,6 +73,8 @@ class TripInformationActivity : AppCompatActivity() {
         binding.tripDescriptionEditTextTripInformation.text = Editable.Factory.getInstance().newEditable(trip?.getDescription())
 
         //Define buttons behavior
+
+        //Configure the "Back" button to navigate to the previous screen when the user presses it.
         binding.backButtonTripInfo.setOnClickListener {
             this.finish()
         }
@@ -146,6 +163,9 @@ class TripInformationActivity : AppCompatActivity() {
         }
 
     }
+    /**
+     * Disables the editing of trip information fields.
+     */
     private fun disableEditText() {
         binding.tripNameEditTextTripInformation.isEnabled = false
         binding.startDateTextViewTripInformation.isEnabled = false
@@ -156,11 +176,16 @@ class TripInformationActivity : AppCompatActivity() {
     }
 }
 
+/**
+ * Converts a date from one format to another.
+ *
+ * @param inputDate The input date string in the original format.
+ * @return The date string converted to the desired format (yyyy-MM-dd).
+ */
 fun convertDate (inputDate: String): String {
     val inputFormat = SimpleDateFormat("E MMM dd HH:mm:ss z yyyy", Locale.US)
     val outputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
     val date = inputFormat.parse(inputDate)
-    val formattedDate = outputFormat.format(date)
-    return formattedDate
+    return outputFormat.format(date)
 }
 

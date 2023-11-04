@@ -65,6 +65,7 @@ class CreateTripActivity : AppCompatActivity() {
             this.finish()
         }
 
+        //Configure the "Back" button to navigate to the previous screen when the user presses it.
         binding.backButton.setOnClickListener {
             this.finish()
         }

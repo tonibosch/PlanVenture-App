@@ -48,6 +48,8 @@ class TripParticipantsActivity : AppCompatActivity() {
         val trip = tripService.getTripById(tripId)
 
         //Define buttons behavior
+
+        //Configure the "Back" button to navigate to the previous screen when the user presses it.
         binding.backButtonTripParticipants.setOnClickListener {
             this.finish()
         }

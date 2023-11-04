@@ -41,6 +41,7 @@ class ExpenseActivity : AppCompatActivity() {
         binding.recyclerViewAllExpenses.adapter = expenseAdapter
         binding.recyclerViewAllExpenses.layoutManager = LinearLayoutManager(this)
 
+        //Configure the "Back" button to navigate to the previous screen when the user presses it.
         binding.backButtonExpenses.setOnClickListener{
             this.finish()
         }

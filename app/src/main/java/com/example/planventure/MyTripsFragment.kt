@@ -25,6 +25,19 @@ import com.example.planventure.utility.SwipeGesture
 import com.example.planventure.utility.TripAdapter
 import java.util.ArrayList
 
+/**
+ * A fragment to display a list of trips with filtering options.
+ *
+ * This fragment is responsible for displaying a list of trips and allows users to filter
+ * trips based on their status. It also provides options to create new trips and view trip
+ * information.
+ *
+ * @property binding The binding object for the fragment's layout.
+ * @property statusSelected The currently selected trip status filter. "ALL" by default.
+ * @property trips A list of trips to display.
+ * @property tripService The service responsible for managing trips.
+ * @property tripAdapter The adapter for displaying trips in a RecyclerView.
+ */
 @RequiresApi(Build.VERSION_CODES.P)
 class MyTripsFragment : Fragment() {
 
@@ -41,6 +54,14 @@ class MyTripsFragment : Fragment() {
         const val TRIP_ID_TRIP_INFORMATION = "com.example.planventure.MyTripsFragment.tripId"
     }
 
+    /**
+     * Initializes the fragment's view and sets up UI components.
+     *
+     * @param inflater The layout inflater to inflate the fragment's layout.
+     * @param container The parent view that the fragment's UI should be attached to.
+     * @param savedInstanceState The saved instance state, if any.
+     * @return The root view of the fragment.
+     */
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -50,19 +71,16 @@ class MyTripsFragment : Fragment() {
 
         tripService = TripService(view.context)
 
-
         binding.recyclerView.setHasFixedSize(true)
         binding.recyclerView.layoutManager = LinearLayoutManager(view.context)
 
         //tripService.upgrade()
 
-        //Configure button Create Trip
+        //Configure the button to navigate to the screen to create a new trip.
         binding.button2.setOnClickListener {
             val intent = Intent(container!!.context, CreateTripActivity::class.java)
             startActivityForResult(intent, CREATE_TRIP_REQUEST)
-            //Log.d("Columns in trip_table", "Number: ${tripService.getNumberOfColumns()}")
         }
-
 
         //Configure Spinner Trip Status
         val listTripStatus = arrayOf(
@@ -86,14 +104,22 @@ class MyTripsFragment : Fragment() {
         return view
     }
 
+    /**
+     * Handles the result of an activity launched for creating a new trip.
+     *
+     * @param requestCode The request code for the activity result.
+     * @param resultCode The result code of the activity.
+     * @param data The data returned by the activity.
+     */
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-
         if (requestCode == CREATE_TRIP_REQUEST && resultCode == Activity.RESULT_OK) {
             refreshTripList()           //When a new trip has been created, refresh the list of trips
         }
     }
-
+    /**
+     * Refreshes the list of trips based on the selected trip status filter.
+     */
     private fun refreshTripList() {
         if (statusSelected == TRIP_STATE.PLANNING.toString()) trips = tripService.getTripsByState(TRIP_STATE.PLANNING)
         else if (statusSelected == TRIP_STATE.STARTED.toString()) trips = tripService.getTripsByState(TRIP_STATE.STARTED)
@@ -102,6 +128,7 @@ class MyTripsFragment : Fragment() {
 
         tripAdapter = TripAdapter(trips, this.requireContext())
 
+        //Configure the swipe actions
         val swipegesture = object : SwipeGesture(this.requireContext()){
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 when(direction){
