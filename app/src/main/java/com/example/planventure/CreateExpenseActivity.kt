@@ -20,6 +20,7 @@ import com.example.planventure.service.TripService
 class CreateExpenseActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityCreateExpenseBinding
+    //Services
     private lateinit var expenseService: ExpenseService
     private lateinit var tripService: TripService
 
@@ -36,6 +37,7 @@ class CreateExpenseActivity : AppCompatActivity() {
         val tripId = intent.getLongExtra(TripInformationActivity.TRIP_ID_TRIP_PARTICIPANTS, 0)
         val trip = tripService.getTripById(tripId)
 
+        //Define buttons behavior
         binding.backButtonCreateExpenses.setOnClickListener{
             this.finish()
         }

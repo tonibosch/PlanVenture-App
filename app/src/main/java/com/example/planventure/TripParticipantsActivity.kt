@@ -23,8 +23,10 @@ import java.util.ArrayList
 class TripParticipantsActivity : AppCompatActivity() {
 
     private lateinit var binding:ActivityTripParticipantsBinding
+    //Services
     private lateinit var participantService: ParticipantService
     private lateinit var tripService: TripService
+    //Adapters
     private lateinit var participantsAdapter: ParticipantsAdapter
 
     @RequiresApi(Build.VERSION_CODES.P)
@@ -38,14 +40,14 @@ class TripParticipantsActivity : AppCompatActivity() {
 
         participantsAdapter = ParticipantsAdapter(ArrayList<Participant>(), applicationContext)
         participantService = ParticipantService(applicationContext, participantsAdapter)
-
         participantsAdapter.updateParticipants(tripId)
-        tripService = TripService(applicationContext)
-        val trip = tripService.getTripById(tripId)
-
         binding.participantRecyclerViewParticipants.adapter = participantsAdapter
         binding.participantRecyclerViewParticipants.layoutManager = LinearLayoutManager(this)
 
+        tripService = TripService(applicationContext)
+        val trip = tripService.getTripById(tripId)
+
+        //Define buttons behavior
         binding.backButtonTripParticipants.setOnClickListener {
             this.finish()
         }

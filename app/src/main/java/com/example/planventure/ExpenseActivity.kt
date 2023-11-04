@@ -19,9 +19,10 @@ import com.example.planventure.utility.ExpenseAdapter
 class ExpenseActivity : AppCompatActivity() {
 
     private lateinit var binding:ActivityAllExpenseBinding
-    private lateinit var expenseAdapter: ExpenseAdapter
     // Services
     private lateinit var expenseService: ExpenseService
+    //Adapters
+    private lateinit var expenseAdapter: ExpenseAdapter
 
     @RequiresApi(Build.VERSION_CODES.P)
     @SuppressLint("MissingInflatedId")
@@ -37,6 +38,7 @@ class ExpenseActivity : AppCompatActivity() {
         binding.recyclerViewAllExpenses.adapter = expenseAdapter
         binding.recyclerViewAllExpenses.layoutManager = LinearLayoutManager(this)
 
+        //Define buttons behavior
         binding.backButtonExpenses.setOnClickListener{
             this.finish()
         }

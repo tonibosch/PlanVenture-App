@@ -13,6 +13,7 @@ import com.example.planventure.utility.ExpenseAdapter.Companion.EXPENSE_ID
 class ExpenseInformationActivity : AppCompatActivity() {
 
     private lateinit var binding:ActivityExpenseInformationBinding
+    //Services
     private lateinit var expenseService: ExpenseService
     @RequiresApi(Build.VERSION_CODES.P)
     override fun onCreate(savedInstanceState: Bundle?) {

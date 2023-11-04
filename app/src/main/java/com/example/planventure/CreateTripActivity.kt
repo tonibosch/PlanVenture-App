@@ -26,7 +26,7 @@ import java.util.Locale
 class CreateTripActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityCreateTripBinding
-    //services
+    //Services
     private lateinit var tripService: TripService
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
@@ -39,6 +39,7 @@ class CreateTripActivity : AppCompatActivity() {
 
         tripService = TripService(applicationContext)
 
+        //Define buttons behavior
         binding.saveButton.setOnClickListener {
 
             setResult(Activity.RESULT_OK)
