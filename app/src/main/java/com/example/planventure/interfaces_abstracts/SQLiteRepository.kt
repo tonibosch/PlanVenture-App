@@ -37,10 +37,11 @@ abstract class SQLiteRepository<T, K>(context: Context, table: String):
 
         val foreignKey = p.second.toString().toInt()
 
-        if(foreignKey >= 0){
-            // add the foreign key for the related trip
-            cv.put(COLUMN_PARTICIPANT_TRIP, foreignKey)
-        }
+        /*
+         * add the foreign key for the related trip
+         */
+        if(foreignKey >= 0)
+            cv.put(COLUMN_TRIP_FOREIGN_KEY, foreignKey)
 
         /*
          * insert the values into the DB and return the result

@@ -9,7 +9,7 @@ import androidx.annotation.RequiresApi
 @RequiresApi(Build.VERSION_CODES.P)
 open class DataBaseHelper(
     context: Context
-) : SQLiteOpenHelper(context, "planventure.db", null, 7) {
+) : SQLiteOpenHelper(context, "planventure.db", null, 8) {
 
     companion object {
         const val TRIP_TABLE: String = "TRIP_TABLE"
@@ -23,12 +23,12 @@ open class DataBaseHelper(
 
         const val PARTICIPANT_TABLE: String = "PARTICIPANT_TABLE"
         const val COLUMN_PARTICIPANT_NAME: String = "PARTICIPANT_NAME"
-        const val COLUMN_PARTICIPANT_TRIP: String = "PARTICIPANT_TRIP"
 
         const val EXPENSE_TABLE: String = "EXPENSE_TABLE"
         const val COLUMN_EXPENSE_NAME: String = "EXPENSE_NAME"
         const val COLUMN_EXPENSE_AMOUNT: String = "EXPENSE_AMOUNT"
-        const val COLUMN_EXPENSE_TRIP: String = "EXPENSE_TRIP"
+
+        const val COLUMN_TRIP_FOREIGN_KEY: String = "TRIP_FOREIGN_KEY"
 
         const val PARTICIPANT_EXPENSE_TABLE: String = "PARTICIPANT_EXPENSE_TABLE"
         const val COLUMN_PARTICIPANT_ID: String = "PARTICIPANT_ID"
@@ -56,12 +56,12 @@ open class DataBaseHelper(
 
         val createParticipantTableStatement =
             "CREATE TABLE $PARTICIPANT_TABLE (ID INTEGER PRIMARY KEY AUTOINCREMENT, $COLUMN_PARTICIPANT_NAME TEXT, " +
-                    "$COLUMN_PARTICIPANT_TRIP INTEGER REFERENCES $TRIP_TABLE ON DELETE CASCADE ON UPDATE CASCADE)"
+                    "$COLUMN_TRIP_FOREIGN_KEY INTEGER REFERENCES $TRIP_TABLE ON DELETE CASCADE ON UPDATE CASCADE)"
         db.execSQL(createParticipantTableStatement)
 
         val createExpenseTableStatement =
             "CREATE TABLE $EXPENSE_TABLE (ID INTEGER PRIMARY KEY AUTOINCREMENT, $COLUMN_EXPENSE_NAME TEXT, " +
-                    "$COLUMN_EXPENSE_AMOUNT REAL, $COLUMN_EXPENSE_TRIP INTEGER REFERENCES $TRIP_TABLE ON DELETE CASCADE ON UPDATE CASCADE)"
+                    "$COLUMN_EXPENSE_AMOUNT REAL, $COLUMN_TRIP_FOREIGN_KEY INTEGER REFERENCES $TRIP_TABLE ON DELETE CASCADE ON UPDATE CASCADE)"
         db.execSQL(createExpenseTableStatement)
 
         val createExpenseParticipantTable =
