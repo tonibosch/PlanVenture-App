@@ -7,8 +7,23 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import com.example.planventure.entity.Expense
 import com.example.planventure.entity.Trip
+import com.example.planventure.interfaces_abstracts.CRUDRepository
+import com.example.planventure.interfaces_abstracts.IRepository
 import com.example.planventure.interfaces_abstracts.SQLiteRepository
 
+/**
+ * Expense.kt
+ * Repository to store and receive date from the EXPENSE_TABLE in the database
+ * Extends SQLiteRepository to access reading and writing functions
+ * @property getExpensesByTrip(t : Trip): ArrayList<Expense>
+ * @property buildObjectFromCursor(c: Cursor): Expense
+ * @property buildContentValues(e: Expense): ContentValues
+ *
+ * @constructor (context: Context)
+ *
+ * @see IRepository
+ * @see SQLiteRepository
+ */
 @RequiresApi(Build.VERSION_CODES.P)
 class ExpenseRepository(context: Context): SQLiteRepository<Expense, Int>(context, EXPENSE_TABLE) {
 
@@ -18,10 +33,12 @@ class ExpenseRepository(context: Context): SQLiteRepository<Expense, Int>(contex
      * @return ArrayList of Expenses that belong to a trip
      */
     fun getExpensesByTrip(t : Trip): ArrayList<Expense> {
-        // Query to get all Expenses from the expense table filtered by the trip they belong to
-        val queryString = "SELECT * FROM $EXPENSE_TABLE WHERE $COLUMN_TRIP_FOREIGN_KEY = ${t.getId()}"
+        /*
+         * Query to get all Expenses from the expense table filtered by the trip they belong to
+         */
+        val query = "SELECT * FROM $EXPENSE_TABLE WHERE $COLUMN_TRIP_FOREIGN_KEY = ${t.getId()}"
 
-        return read(queryString)
+        return read(query)
     }
 
     override fun buildObjectFromCursor(c: Cursor): Expense {

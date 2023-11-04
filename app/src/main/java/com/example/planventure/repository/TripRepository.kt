@@ -8,31 +8,64 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import com.example.planventure.entity.Trip
 import com.example.planventure.enumerations.TRIP_STATE
+import com.example.planventure.interfaces_abstracts.IRepository
+import com.example.planventure.interfaces_abstracts.Query
 import com.example.planventure.interfaces_abstracts.SQLiteRepository
 import java.text.SimpleDateFormat
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 
+/**
+ * TripRepository.kt
+ * Repository to store and receive date from the TRIP_TABLE in the database
+ * Extends SQLiteRepository to access reading and writing functions
+ * @property addToDB(p: Pair<Trip, Int>): Boolean
+ * @property getNumberOfColumns(): Int
+ * @property getTripsByState(s: TRIP_STATE): ArrayList<Trip>
+ * @property getTripByParticipantId(id: Int): Trip?
+ * @property finishTripById(id: Int): Boolean
+ * @property buildObjectFromCursor(c: Cursor): Trip
+ * @property mapQueryToList(query: Query): ArrayList<Trip>
+ * @property buildContentValues(e: Trip): ContentValues
+ * @property parseDateString(ds: String): String
+ * @property appendParticipants(t: Trip)
+ * @property appendExpenses(t: Trip)
+ *
+ * @constructor (context: Context)
+ *
+ * @see IRepository
+ * @see SQLiteRepository
+ */
 @RequiresApi(Build.VERSION_CODES.P)
 @SuppressLint("SimpleDateFormat")
 class TripRepository(private val context: Context) : SQLiteRepository<Trip, Int>(context, TRIP_TABLE) {
 
     override fun addToDB(p: Pair<Trip, Int>): Boolean {
 
-        // put all data into content values
+        /*
+         * put all data into content values
+         */
         val cv = buildContentValues(p.first)
 
-        // append all related participants from the ArrayList participants in Trip to the DB
+        /*
+         * append all related participants from the ArrayList participants in Trip to the DB
+         */
         val participantRepository = ParticipantRepository(context)
-        for (pa in p.first.getParticipants()) participantRepository.addToDB(Pair(pa, pa.getId().toInt()))
+        for (participant in p.first.getParticipants())
+            participantRepository.addToDB(Pair(participant, participant.getId().toInt()))
 
-        // append all related expenses from the ArrayList expenses in Trip to the DB
+        /*
+         * append all related expenses from the ArrayList expenses in Trip to the DB
+         */
         val expenseRepository = ExpenseRepository(context)
-        for (e in p.first.getExpenses()) expenseRepository.addToDB(Pair(e, e.getId().toInt()))
+        for (e in p.first.getExpenses())
+            expenseRepository.addToDB(Pair(e, e.getId().toInt()))
 
-        // insert the values into the DB and return the result
-        // result is either successful or fail
+        /*
+         * insert the values into the DB and return the result
+         * result is either successful or fail
+         */
         return create(cv)
     }
 
@@ -41,13 +74,19 @@ class TripRepository(private val context: Context) : SQLiteRepository<Trip, Int>
      * @return number of columns in the trip table
      */
     fun getNumberOfColumns(): Int {
-        // Query to count the number of columns
-        val queryString = "SELECT COUNT(*) FROM pragma_table_info(\"$TRIP_TABLE\")"
+        /*
+         * Query to count the number of columns
+         */
+        val query = "SELECT COUNT(*) FROM pragma_table_info(\"$TRIP_TABLE\")"
 
-        // execute the query
-        val cursor = rdb.rawQuery(queryString, null)
+        /*
+         * execute the query
+         */
+        val cursor = rdb.rawQuery(query, null)
 
-        // if there is a result, get the first value from the result
+        /*
+         * if there is a result, get the first value from the result
+         */
         val number = if (cursor.moveToFirst())
             cursor.getInt(0)
         else
@@ -63,10 +102,12 @@ class TripRepository(private val context: Context) : SQLiteRepository<Trip, Int>
      * @return List of objects mapped from the database via ER mapping
      */
     fun getTripsByState(s: TRIP_STATE): ArrayList<Trip> {
-        // Query to get all Trips from the trip table filtered by their state
-        val queryString = "SELECT * FROM $TRIP_TABLE WHERE $COLUMN_TRIP_STATE = \"$s\""
+        /*
+         * Query to get all Trips from the trip table filtered by their state
+         */
+        val query = "SELECT * FROM $TRIP_TABLE WHERE $COLUMN_TRIP_STATE = \"$s\""
 
-        return read(queryString)
+        return read(query)
     }
 
     /**
@@ -87,9 +128,11 @@ class TripRepository(private val context: Context) : SQLiteRepository<Trip, Int>
      * @return boolean that shows whether operation was successful or not
      */
     fun finishTripById(id: Int): Boolean {
-        // Query to update the state of a trip with designated id to new state
-        val stringQuery = "UPDATE $TRIP_TABLE SET $COLUMN_TRIP_STATE = 'FINISHED' WHERE ID = $id"
-        return execute(stringQuery)
+        /*
+         * Query to update the state of a trip with designated id to new state
+         */
+        val string = "UPDATE $TRIP_TABLE SET $COLUMN_TRIP_STATE = 'FINISHED' WHERE ID = $id"
+        return execute(string)
     }
 
     override fun buildObjectFromCursor(c: Cursor): Trip {
@@ -123,26 +166,38 @@ class TripRepository(private val context: Context) : SQLiteRepository<Trip, Int>
         )
     }
 
-    override fun mapQueryToList(query: String): ArrayList<Trip> {
+    override fun mapQueryToList(query: Query): ArrayList<Trip> {
         val returnList = ArrayList<Trip>()
 
-        // execute the query and get the cursor
+        /*
+         * execute the query and get the cursor
+         */
         val cursor = rdb.rawQuery(query, null)
 
-        // get cursor values if cursor is not empty
+        /*
+         * get cursor values if cursor is not empty
+         */
         if (cursor.moveToFirst()) {
 
-            // while there is data left in the cursor
+            /*
+             * while there is data left in the cursor
+             */
             do {
 
-                // build the trip from the cursor values
+                /*
+                 * build the trip from the cursor values
+                 */
                 val trip = buildObjectFromCursor(cursor)
                 appendParticipants(trip)
                 appendExpenses(trip)
                 returnList.add(trip)
+
             } while (cursor.moveToNext())
+
         } else {
-            // failure. Do not add anything to list
+            /*
+             * failure. Do not add anything to list
+             */
         }
         cursor.close()
         return returnList
@@ -166,13 +221,19 @@ class TripRepository(private val context: Context) : SQLiteRepository<Trip, Int>
      * @return date in string format 'yyyy-MM-dd'
      */
     private fun parseDateString(ds: String): String {
-        // create a formatter of desired format
+        /*
+         * create a formatter of desired format
+         */
         val dtf = DateTimeFormatter.ofPattern("EEE MMM dd HH:mm:ss zzz yyyy", Locale.ENGLISH)
 
-        // put date string and formatter string in ZonedDateTime variable to enable parsing
+        /*
+         * put date string and formatter string in ZonedDateTime variable to enable parsing
+         */
         val t = ZonedDateTime.parse(ds, dtf)
 
-        // get the first 10 characters of the resulting string after formatting
+        /*
+         * get the first 10 characters of the resulting string after formatting
+         */
         return t.format(DateTimeFormatter.ISO_ZONED_DATE_TIME).substring(0, 10)
     }
 
@@ -183,10 +244,14 @@ class TripRepository(private val context: Context) : SQLiteRepository<Trip, Int>
     private fun appendParticipants(t: Trip) {
         val participantRepository = ParticipantRepository(context)
 
-        // get list of participants related to a trip
+        /*
+         * get list of participants related to a trip
+         */
         val partList = participantRepository.getParticipantsByTrip(t)
 
-        // set the trips participant list to the new one
+        /*
+         * set the trips participant list to the new one
+         */
         t.setParticipants(partList)
     }
 
@@ -197,10 +262,14 @@ class TripRepository(private val context: Context) : SQLiteRepository<Trip, Int>
     private fun appendExpenses(t: Trip) {
         val expenseRepository = ExpenseRepository(context)
 
-        // get list of expenses related to a trip
+        /*
+         * get list of expenses related to a trip
+         */
         val expList = expenseRepository.getExpensesByTrip(t)
 
-        // set the trips expenses list to the new one
+        /*
+         * set the trips expenses list to the new one
+         */
         t.setExpenses(expList)
     }
 

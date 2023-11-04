@@ -5,8 +5,26 @@ import android.content.Context
 import android.database.Cursor
 import android.os.Build
 import androidx.annotation.RequiresApi
+import com.example.planventure.interfaces_abstracts.IRepository
 import com.example.planventure.interfaces_abstracts.SQLiteRepository
 
+/**
+ * ParticipantParticipantRepository.kt
+ * Repository to store and receive date from the PARTICIPANT_PARTICIPANT_TABLE in the database
+ * Extends SQLiteRepository to access reading and writing functions
+ * @property getById(id: Long): Triple<Int, Int, Float>?
+ * @property updateById(id: Long, e: Triple<Int, Int, Float>): Boolean
+ * @property deleteById(id: Int): Boolean
+ * @property getByParticipant1And2Id(p1id: Long, p2id: Long): ArrayList<Triple<Int, Int, Float>>
+ * @property deleteByParticipant1and2Id(p1id: Long, p2id: Long): Boolean
+ * @property buildContentValues(e: Triple<Int, Int, Float>): ContentValues
+ * @property buildObjectFromCursor(c: Cursor): Triple<Int, Int, Float>
+ *
+ * @constructor (context: Context)
+ *
+ * @see IRepository
+ * @see SQLiteRepository
+ */
 @RequiresApi(Build.VERSION_CODES.P)
 class ParticipantParticipantRepository(context: Context):
     SQLiteRepository<Triple<Int, Int, Float>, Int>(context, PARTICIPANT_PARTICIPANT_TABLE){
@@ -48,9 +66,11 @@ class ParticipantParticipantRepository(context: Context):
      * @return ArrayList of Triples with participants and paid amount
      */
     fun getByParticipant1And2Id(p1id: Long, p2id: Long): ArrayList<Triple<Int, Int, Float>> {
-        // Query to get all rows with given participant ids
-        val queryString = "SELECT * FROM ${PARTICIPANT_PARTICIPANT_TABLE}_TABLE WHERE $COLUMN_PARTICIPANT_ID = $p1id AND $COLUMN_EXPENSE_ID = $p2id"
-        return read(queryString)
+        /*
+         * Query to get all rows with given participant ids
+         */
+        val query = "SELECT * FROM ${PARTICIPANT_PARTICIPANT_TABLE}_TABLE WHERE $COLUMN_PARTICIPANT_ID = $p1id AND $COLUMN_EXPENSE_ID = $p2id"
+        return read(query)
     }
 
     /**
@@ -60,9 +80,11 @@ class ParticipantParticipantRepository(context: Context):
      * @return either success or fail
      */
     fun deleteByParticipant1and2Id(p1id: Long, p2id: Long): Boolean {
-        // Query to delete all rows with given participant ids
-        val stringQuery = "DELETE FROM $PARTICIPANT_PARTICIPANT_TABLE WHERE $COLUMN_PARTICIPANT_ID = $p1id AND $COLUMN_EXPENSE_ID = $p2id"
-        return delete(stringQuery)
+        /*
+         * Query to delete all rows with given participant ids
+         */
+        val string = "DELETE FROM $PARTICIPANT_PARTICIPANT_TABLE WHERE $COLUMN_PARTICIPANT_ID = $p1id AND $COLUMN_EXPENSE_ID = $p2id"
+        return delete(string)
     }
 
     override fun buildObjectFromCursor(c: Cursor): Triple<Int, Int, Float> {

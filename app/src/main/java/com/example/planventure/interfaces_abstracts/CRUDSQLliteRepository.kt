@@ -8,6 +8,29 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import com.example.planventure.database.DataBaseHelper
 
+/**
+ * CRUDSQLiteRepository.kt
+ * Abstract class to implement CRUD operations on local SQLite database
+ * Extends DatabaseHelper to get access to local local SQLite database and accompanying functions.
+ * Inherits from CRUDRepository to implement CRUD operations
+ * @property wdb writable DB reference to perform writing operations on the DB like update, delete, insert, ...
+ * @property rdb readable DB reference to perform reading operations on the DB
+ *
+ * @property create(cv: ContentValues): Boolean
+ * @property read(q: String): ArrayList<T>
+ * @property update(id: Long, cv: ContentValues): Boolean
+ * @property delete(q: String): Boolean
+ * @property execute(q: String): Boolean
+ * @property mapQueryToList(query: String): ArrayList<T>
+ * @property buildObjectFromCursor(c: Cursor): T
+ * @property buildContentValues(e: T): ContentValues
+ * @property closeAndReturn(c: Cursor):Boolean
+ *
+ * @constructor (context: Context, table: String)
+ *
+ * @see CRUDRepository
+ * @see DataBaseHelper
+ */
 @RequiresApi(Build.VERSION_CODES.P)
 abstract class CRUDSQLiteRepository<T>(context: Context, private val table: String): CRUDRepository<T>, DataBaseHelper(context){
 
@@ -23,15 +46,17 @@ abstract class CRUDSQLiteRepository<T>(context: Context, private val table: Stri
 
 
     override fun create(cv: ContentValues): Boolean{
-        // insert the values into the DB and return the result
-        // result is either successful of fail
+        /*
+         * insert the values into the DB and return the result
+         * result is either successful of fail
+         */
         return when (wdb.insert(table, null, cv)) {
             -1L  -> false
             else -> true
         }
     }
 
-    override fun read(q: String): ArrayList<T>{
+    override fun read(q: Query): ArrayList<T>{
         return mapQueryToList(q)
     }
 
@@ -46,12 +71,12 @@ abstract class CRUDSQLiteRepository<T>(context: Context, private val table: Stri
          * when the operation was successful return true else return false
          */
         return when(wdb.update(table, cv, "ID=?", arrayOf(id.toString()))) {
-            -1  -> false
+            -1   -> false
             else -> true
         }
     }
 
-    override fun delete(q: String): Boolean{
+    override fun delete(q: Query): Boolean{
         return execute(q)
     }
 
@@ -60,7 +85,7 @@ abstract class CRUDSQLiteRepository<T>(context: Context, private val table: Stri
      * @param q : Query to execute
      * @return either success or fail
      */
-    fun execute(q: String): Boolean{
+    fun execute(q: Query): Boolean {
         val cursor = wdb.rawQuery(q, null)
         return closeAndReturn(cursor)
     }
@@ -71,21 +96,29 @@ abstract class CRUDSQLiteRepository<T>(context: Context, private val table: Stri
      * @param query :String with the SQL-Query
      * @return ArrayList<T> List with all found objects
      */
-    open fun mapQueryToList(query: String): ArrayList<T>{
+    open fun mapQueryToList(q: Query): ArrayList<T>{
         val l: ArrayList<T> = ArrayList()
 
-        // execute query and get cursor
-        val cursor = rdb.rawQuery(query, null)
+        /*
+         * execute query and get cursor
+         */
+        val cursor = rdb.rawQuery(q, null)
 
-        // if the cursor contains data
+        /*
+         * if the cursor contains data
+         */
         if(cursor.moveToFirst()){
 
-            // extract data while the cursor has data
+            /*
+             * extract data while the cursor has data
+             */
             do {
                 l.add(buildObjectFromCursor(cursor))
             }while (cursor.moveToNext())
         }else{
-            // failure. Do not add anything to list
+            /*
+             * failure. Do not add anything to list
+             */
         }
         cursor.close()
         return l

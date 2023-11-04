@@ -2,6 +2,14 @@ package com.example.planventure.interfaces_abstracts
 
 import android.content.ContentValues
 
+/**
+ * CRUDRepository.kt
+ * Interface to collect CRUD functions
+ * @property create(cv: ContentValues): Boolean
+ * @property read(q: String): ArrayList<T>
+ * @property update(id: Long, cv: ContentValues): Boolean
+ * @property delete(q: String): Boolean
+ */
 interface CRUDRepository<T> {
 
     /**
@@ -16,7 +24,7 @@ interface CRUDRepository<T> {
      * @param q :Query string that is supposed to be executed
      * @return either success or fail
      */
-    fun read(q: String): ArrayList<T>
+    fun read(q: Query): ArrayList<T>
 
     /**
      * updates existing data on the database
@@ -31,6 +39,6 @@ interface CRUDRepository<T> {
      * @param q :Query string that is supposed to be executed
      * @return either success or fail
      */
-    fun delete(q: String): Boolean
+    fun delete(q: Query): Boolean
 
 }

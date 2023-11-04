@@ -5,8 +5,27 @@ import android.content.Context
 import android.database.Cursor
 import android.os.Build
 import androidx.annotation.RequiresApi
+import com.example.planventure.interfaces_abstracts.IRepository
 import com.example.planventure.interfaces_abstracts.SQLiteRepository
 
+
+/**
+ * ParticipantExpenseRepository.kt
+ * Repository to store and receive date from the PARTICIPANT_EXPENSE_TABLE in the database
+ * Extends SQLiteRepository to access reading and writing functions
+ * @property getById(id: Long): Triple<Int, Int, Float>?
+ * @property updateById(id: Long, e: Triple<Int, Int, Float>): Boolean
+ * @property deleteById(id: Int): Boolean
+ * @property getByParticipantExpenseId(pid: Long, eid: Long): ArrayList<Triple<Int, Int, Float>>
+ * @property deleteByExpenseParticipantId(eid: Int, pid: Int): Boolean
+ * @property buildContentValues(e: Triple<Int, Int, Float>): ContentValues
+ * @property buildObjectFromCursor(c: Cursor): Triple<Int, Int, Float>
+ *
+ * @constructor (context: Context)
+ *
+ * @see IRepository
+ * @see SQLiteRepository
+ */
 @RequiresApi(Build.VERSION_CODES.P)
 class ParticipantExpenseRepository(context: Context):
     SQLiteRepository<Triple<Int, Int, Float>, Int>(context, PARTICIPANT_EXPENSE_TABLE) {
@@ -49,9 +68,11 @@ class ParticipantExpenseRepository(context: Context):
      * @return ArrayList of Triples with participant id, expense id and paid amount
      */
     fun getByParticipantExpenseId(pid: Long, eid: Long): ArrayList<Triple<Int, Int, Float>> {
-        // Query to get all rows with given participant ids
-        val queryString = "SELECT * FROM $PARTICIPANT_EXPENSE_TABLE WHERE $COLUMN_PARTICIPANT_ID = $pid AND $COLUMN_EXPENSE_ID = $eid"
-        return read(queryString)
+        /*
+         * Query to get all rows with given participant ids
+         */
+        val query = "SELECT * FROM $PARTICIPANT_EXPENSE_TABLE WHERE $COLUMN_PARTICIPANT_ID = $pid AND $COLUMN_EXPENSE_ID = $eid"
+        return read(query)
     }
 
     /**
@@ -61,9 +82,11 @@ class ParticipantExpenseRepository(context: Context):
      * @return either success or fail
      */
     fun deleteByExpenseParticipantId(eid: Int, pid: Int): Boolean {
-        // Query to delete all rows with given participant id and expense id
-        val stringQuery = "DELETE FROM $PARTICIPANT_EXPENSE_TABLE WHERE $COLUMN_PARTICIPANT_ID = $pid AND $COLUMN_EXPENSE_ID = $eid"
-        return delete(stringQuery)
+        /*
+         * Query to delete all rows with given participant id and expense id
+         */
+        val string = "DELETE FROM $PARTICIPANT_EXPENSE_TABLE WHERE $COLUMN_PARTICIPANT_ID = $pid AND $COLUMN_EXPENSE_ID = $eid"
+        return delete(string)
     }
 
     override fun buildContentValues(e: Triple<Int, Int, Float>): ContentValues {

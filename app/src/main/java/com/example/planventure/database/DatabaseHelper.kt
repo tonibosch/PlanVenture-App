@@ -5,7 +5,19 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.os.Build
 import androidx.annotation.RequiresApi
+import com.example.planventure.interfaces_abstracts.CRUDRepository
 
+/**
+ * DataBaseHelper.kt
+ * Abstract class to implement local SQLite database
+ * Extends DatabaseHelper to get access to local local SQLite database and accompanying functions.
+ * @property onCreate(db: SQLiteDatabase)
+ * @property onUpgrade(db: SQLiteDatabase, p1: Int, p2: Int)
+ *
+ * @constructor (context: Context)
+ *
+ * @see SQLiteOpenHelper
+ */
 @RequiresApi(Build.VERSION_CODES.P)
 open class DataBaseHelper(
     context: Context

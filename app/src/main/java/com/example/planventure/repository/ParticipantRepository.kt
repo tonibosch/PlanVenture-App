@@ -7,8 +7,23 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import com.example.planventure.entity.Participant
 import com.example.planventure.entity.Trip
+import com.example.planventure.interfaces_abstracts.IRepository
 import com.example.planventure.interfaces_abstracts.SQLiteRepository
 
+/**
+ * ParticipantRepository.kt
+ * Repository to store and receive date from the PARTICIPANT_TABLE in the database
+ * Extends SQLiteRepository to access reading and writing functions
+ * @property getParticipantsByTrip(t : Trip): ArrayList<Participant>
+ * @property getTripIdByParticipantId(id: Int): Long
+ * @property buildObjectFromCursor(c: Cursor): Participant
+ * @property buildContentValues(e: Participant): ContentValues
+ *
+ * @constructor (context: Context)
+ *
+ * @see IRepository
+ * @see SQLiteRepository
+ */
 @RequiresApi(Build.VERSION_CODES.P)
 class ParticipantRepository(context: Context): SQLiteRepository<Participant, Int>(context, PARTICIPANT_TABLE) {
 
@@ -18,10 +33,12 @@ class ParticipantRepository(context: Context): SQLiteRepository<Participant, Int
      * @return ArrayList of Participants that belong to a trip
      */
     fun getParticipantsByTrip(t : Trip): ArrayList<Participant> {
-        // Query to get all Participants from the participant table filtered by the trip they belong to
-        val queryString = "SELECT * FROM $PARTICIPANT_TABLE WHERE $COLUMN_TRIP_FOREIGN_KEY = ${t.getId()}"
+        /*
+         * Query to get all Participants from the participant table filtered by the trip they belong to
+         */
+        val query = "SELECT * FROM $PARTICIPANT_TABLE WHERE $COLUMN_TRIP_FOREIGN_KEY = ${t.getId()}"
 
-        return read(queryString)
+        return read(query)
     }
 
     /**
@@ -30,14 +47,20 @@ class ParticipantRepository(context: Context): SQLiteRepository<Participant, Int
      * @return id of the desired trip
      */
     fun getTripIdByParticipantId(id: Int): Long {
-        // Query to get the trip id of a participant id
-        val queryString= "SELECT $COLUMN_TRIP_FOREIGN_KEY FROM $PARTICIPANT_TABLE WHERE ID = $id"
+        /*
+         * Query to get the trip id of a participant id
+         */
+        val query = "SELECT $COLUMN_TRIP_FOREIGN_KEY FROM $PARTICIPANT_TABLE WHERE ID = $id"
 
-        // execute Query and store result in cursor
-        val cursor = rdb.rawQuery(queryString,null)
+        /*
+         * execute Query and store result in cursor
+         */
+        val cursor = rdb.rawQuery(query,null)
 
-        // if the cursor contains data extract the data,  store and return it
-        // else store and return 0
+        /*
+         * if the cursor contains data extract the data,  store and return it
+         * else store and return 0
+         */
         val tid = if(cursor.moveToFirst()) cursor.getInt(0).toLong() else 0
         cursor.close()
         return tid

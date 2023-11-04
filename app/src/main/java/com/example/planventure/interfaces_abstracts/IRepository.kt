@@ -2,8 +2,14 @@ package com.example.planventure.interfaces_abstracts
 
 /**
  * IRepository.kt
- * Interface to collect the main functions of a repository
- * Ensures access to basic CRUD operations
+ * Interface to collect the main functions of a repository.
+ * Extends access to basic CRUD operations.
+ * @property addToDB(p: Pair<T, K>): Boolean
+ * @property findAll(): ArrayList<T>
+ * @property getById(id: Long): T?
+ * @property updateById(id: Long, e: T): Boolean
+ * @property deleteAll(): Boolean
+ * @property deleteById(id: Int): Boolean
  */
 interface IRepository<T, K> {
 
