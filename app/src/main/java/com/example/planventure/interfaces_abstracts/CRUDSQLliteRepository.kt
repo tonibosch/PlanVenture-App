@@ -93,7 +93,7 @@ abstract class CRUDSQLiteRepository<T>(context: Context, private val table: Stri
     /**
      * Used to execute a reading Query operation and store the DB output in a List.
      * Needs to be adjusted manually by the inheriting class.
-     * @param query :String with the SQL-Query
+     * @param q :String with the SQL-Query
      * @return ArrayList<T> List with all found objects
      */
     open fun mapQueryToList(q: Query): ArrayList<T>{
