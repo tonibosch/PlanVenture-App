@@ -73,7 +73,6 @@ class TripInformationActivity : AppCompatActivity() {
         binding.tripDescriptionEditTextTripInformation.text = Editable.Factory.getInstance().newEditable(trip?.getDescription())
 
         //Define buttons behavior
-
         //Configure the "Back" button to navigate to the previous screen when the user presses it.
         binding.backButtonTripInfo.setOnClickListener {
             this.finish()
@@ -94,6 +93,7 @@ class TripInformationActivity : AppCompatActivity() {
             }
         }
 
+        //Configure the button to change the status. If it is in Planning it becomes Started, and if it is in Started it becomes Finished.
         binding.buttonChangeState.setOnClickListener {
             val formatter = SimpleDateFormat("yyyy-MM-dd")
             if(currentStatus == TRIP_STATE.PLANNING) {
@@ -115,17 +115,20 @@ class TripInformationActivity : AppCompatActivity() {
             }
         }
 
+        //Configure the button to select the dates of the trip. Clicking the button opens a calendar for the user to select the dates.
         binding.dateRangePickerButtonTripInformation.setOnClickListener {
             val datePicker = DatePicker(supportFragmentManager, binding.startDateTextViewTripInformation, binding.endDateTextViewTripInformation)
             datePicker.showDateRangePicker()
         }
 
+        //Configure the "Expenses" button to navigate to the screen where the expenses will be listed.
         binding.ExpensesButton.setOnClickListener {
             val intent = Intent(this, ExpenseActivity::class.java)
             intent.putExtra(TRIP_ID_TRIP_PARTICIPANTS, tripId)
             startActivity(intent)
         }
 
+        //Configure the button to update the trip. Clicking the button updates the information in the DB and navigates to the screen with all the trips listed. If there is an error a Toast message will be displayed.
         binding.updateTripButton.setOnClickListener {
             setResult(Activity.RESULT_OK)
             try {
@@ -152,16 +155,17 @@ class TripInformationActivity : AppCompatActivity() {
             }
         }
 
+        //Configure the "Expenses" button to navigate to the screen where the participants of the trip will be listed.
         binding.gotoParticipantsButtonTripInformation.setOnClickListener {
             val intent = Intent(applicationContext, TripParticipantsActivity::class.java)
             intent.putExtra(TRIP_ID_TRIP_PARTICIPANTS, tripId)
             startActivity(intent)
         }
 
+        //Configure the "Cancel" button to navigate to the previous screen without save any changes when the user presses it.
         binding.cancelButtonTripInformation.setOnClickListener{
             this.finish()
         }
-
     }
     /**
      * Disables the editing of trip information fields.

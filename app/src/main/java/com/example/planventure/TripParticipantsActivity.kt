@@ -48,12 +48,12 @@ class TripParticipantsActivity : AppCompatActivity() {
         val trip = tripService.getTripById(tripId)
 
         //Define buttons behavior
-
         //Configure the "Back" button to navigate to the previous screen when the user presses it.
         binding.backButtonTripParticipants.setOnClickListener {
             this.finish()
         }
 
+        //Configures the button to add a participant to the trip. If there is no error, the participant is created and appears on the screen. If there is an error a Toast message will be displayed.
         binding.addParticipantButtonParticipants.setOnClickListener {
             try {
                 val participant: Participant = Participant(1, binding.addParticipantEditTextParticipants.text.toString())

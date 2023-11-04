@@ -40,6 +40,7 @@ class CreateTripActivity : AppCompatActivity() {
         tripService = TripService(applicationContext)
 
         //Define buttons behavior
+        //Configures the button to create a new trip. If there is no error, the trip is created and the user navigates to the screen with all trips listed. If there is an error a Toast message will be displayed.
         binding.saveButton.setOnClickListener {
 
             setResult(Activity.RESULT_OK)
@@ -61,6 +62,7 @@ class CreateTripActivity : AppCompatActivity() {
             }
         }
 
+        //Configure the "Cancel" button to navigate to the previous screen without save any changes when the user presses it.
         binding.cancelButton.setOnClickListener {
             this.finish()
         }
@@ -70,6 +72,7 @@ class CreateTripActivity : AppCompatActivity() {
             this.finish()
         }
 
+        //Configure the button to select the dates of the trip. Clicking the button opens a calendar for the user to select the dates.
         binding.dateRangePickerButton.setOnClickListener {
             val datePicker = DatePicker(supportFragmentManager,binding.startDateTextView, binding.endDateTextView)
             datePicker.showDateRangePicker()
