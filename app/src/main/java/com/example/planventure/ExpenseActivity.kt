@@ -36,6 +36,8 @@ class ExpenseActivity : AppCompatActivity() {
         expenseService = ExpenseService(applicationContext)
         expenseAdapter = ExpenseAdapter(expenseService.getAllExpenses(), applicationContext)
 
+        val tripId = intent.getLongExtra(TripInformationActivity.TRIP_ID_TRIP_PARTICIPANTS, 0)
+
         binding.recyclerViewAllExpenses.adapter = expenseAdapter
         binding.recyclerViewAllExpenses.layoutManager = LinearLayoutManager(this)
 
@@ -45,6 +47,7 @@ class ExpenseActivity : AppCompatActivity() {
 
         binding.addExpenseButton.setOnClickListener {
             val intent = Intent(this, CreateExpenseActivity::class.java)
+            intent.putExtra(TripInformationActivity.TRIP_ID_TRIP_PARTICIPANTS, tripId)
             startActivity(intent)
         }
     }
