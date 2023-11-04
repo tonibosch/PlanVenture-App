@@ -11,45 +11,37 @@ import android.widget.ImageButton
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import com.example.planventure.Exception.EmptyDataException
+import com.example.planventure.databinding.ActivityCreateExpenseBinding
+import com.example.planventure.databinding.ActivityCreateTripBinding
 import com.example.planventure.entity.Expense
 import com.example.planventure.service.ExpenseService
 import com.example.planventure.service.TripService
 
 class CreateExpenseActivity : AppCompatActivity() {
 
-    private lateinit var backButton: ImageButton
+    private lateinit var binding: ActivityCreateExpenseBinding
     private lateinit var expenseService: ExpenseService
     private lateinit var tripService: TripService
-    private lateinit var expenseName: EditText
-    private lateinit var expenseAmount: EditText
-    private lateinit var createExpensesBtn: Button
-
-
-
 
     @RequiresApi(Build.VERSION_CODES.P)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_create_expense)
+        binding = ActivityCreateExpenseBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
+
         expenseService = ExpenseService(applicationContext)
         tripService = TripService(applicationContext)
-
-        backButton = findViewById(R.id.backButton_CreateExpenses)
-
-        backButton.setOnClickListener{
-            this.finish()
-        }
-
-        expenseName = findViewById(R.id.expenseName_editText)
-        expenseAmount = findViewById(R.id.expenseAmount_editText)
 
         val tripId = intent.getLongExtra(TripInformationActivity.TRIP_ID_TRIP_PARTICIPANTS, 0)
         val trip = tripService.getTripById(tripId)
 
-        createExpensesBtn = findViewById(R.id.createExpenseButton_CreateExpenses)
+        binding.backButtonCreateExpenses.setOnClickListener{
+            this.finish()
+        }
 
-        createExpensesBtn.setOnClickListener {
-            Log.d("NEW EXPENSE", "Name: ${expenseName.text}, Amount: ${expenseAmount.text}")
+        binding.createExpenseButtonCreateExpenses.setOnClickListener {
+            Log.d("NEW EXPENSE", "Name: ${binding.expenseNameEditText.text}, Amount: ${binding.expenseAmountEditText.text}")
             this.finish()
             /**
             setResult(Activity.RESULT_OK)
@@ -65,8 +57,5 @@ class CreateExpenseActivity : AppCompatActivity() {
             }
             */
         }
-
-
-
     }
 }

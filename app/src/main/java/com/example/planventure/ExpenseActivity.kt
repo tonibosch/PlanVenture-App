@@ -10,18 +10,16 @@ import android.widget.ImageButton
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.planventure.databinding.ActivityAllExpenseBinding
+import com.example.planventure.databinding.ActivityCreateExpenseBinding
 import com.example.planventure.service.ExpenseService
 import com.example.planventure.service.TripService
 import com.example.planventure.utility.ExpenseAdapter
 
 class ExpenseActivity : AppCompatActivity() {
 
-    private lateinit var backButton: ImageButton
-    private lateinit var addExpenseButton: Button
-    private lateinit var recyclerView: RecyclerView
+    private lateinit var binding:ActivityAllExpenseBinding
     private lateinit var expenseAdapter: ExpenseAdapter
-
-
     // Services
     private lateinit var expenseService: ExpenseService
 
@@ -29,32 +27,23 @@ class ExpenseActivity : AppCompatActivity() {
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_all_expense)
-
-        backButton = findViewById(R.id.backButton_Expenses)
+        binding = ActivityAllExpenseBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
 
         expenseService = ExpenseService(applicationContext)
         expenseAdapter = ExpenseAdapter(expenseService.getAllExpenses(), applicationContext)
 
+        binding.recyclerViewAllExpenses.adapter = expenseAdapter
+        binding.recyclerViewAllExpenses.layoutManager = LinearLayoutManager(this)
 
-        recyclerView = findViewById(R.id.recyclerView_all_expenses)
-
-        recyclerView.adapter = expenseAdapter
-        recyclerView.layoutManager = LinearLayoutManager(this)
-
-
-        backButton.setOnClickListener{
+        binding.backButtonExpenses.setOnClickListener{
             this.finish()
         }
 
-        addExpenseButton = findViewById(R.id.addExpenseButton)
-
-        addExpenseButton.setOnClickListener {
+        binding.addExpenseButton.setOnClickListener {
             val intent = Intent(this, CreateExpenseActivity::class.java)
             startActivity(intent)
         }
-
-
-
     }
 }

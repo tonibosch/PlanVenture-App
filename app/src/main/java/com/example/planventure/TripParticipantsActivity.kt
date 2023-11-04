@@ -12,6 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.planventure.Exception.EmptyDataException
 import com.example.planventure.Exception.MaxParticipantsOverflow
+import com.example.planventure.databinding.ActivityCreateExpenseBinding
+import com.example.planventure.databinding.ActivityTripParticipantsBinding
 import com.example.planventure.entity.Participant
 import com.example.planventure.service.ParticipantService
 import com.example.planventure.service.TripService
@@ -20,19 +22,17 @@ import java.util.ArrayList
 
 class TripParticipantsActivity : AppCompatActivity() {
 
+    private lateinit var binding:ActivityTripParticipantsBinding
     private lateinit var participantService: ParticipantService
     private lateinit var tripService: TripService
     private lateinit var participantsAdapter: ParticipantsAdapter
-    private lateinit var addButton: Button
-    private lateinit var addTextEdit: EditText
-    private lateinit var participantRecyclerView: RecyclerView
-    private lateinit var backButton: ImageButton
-
 
     @RequiresApi(Build.VERSION_CODES.P)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_trip_participants)
+        binding = ActivityTripParticipantsBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
 
         val tripId = intent.getLongExtra(TripInformationActivity.TRIP_ID_TRIP_PARTICIPANTS, 0)
 
@@ -41,30 +41,21 @@ class TripParticipantsActivity : AppCompatActivity() {
 
         participantsAdapter.updateParticipants(tripId)
         tripService = TripService(applicationContext)
-
-        addButton = findViewById(R.id.addParticipant_Button_participants)
-        addTextEdit = findViewById(R.id.addParticipant_editText_participants)
-        backButton = findViewById(R.id.backButton_TripParticipants)
-
-
-        participantRecyclerView = findViewById(R.id.participant_recyclerView_participants)
-        participantRecyclerView.adapter = participantsAdapter
-        participantRecyclerView.layoutManager = LinearLayoutManager(this)
-
         val trip = tripService.getTripById(tripId)
 
-        backButton.setOnClickListener {
+        binding.participantRecyclerViewParticipants.adapter = participantsAdapter
+        binding.participantRecyclerViewParticipants.layoutManager = LinearLayoutManager(this)
+
+        binding.backButtonTripParticipants.setOnClickListener {
             this.finish()
         }
 
-        addButton.setOnClickListener {
+        binding.addParticipantButtonParticipants.setOnClickListener {
             try {
-                val participant: Participant =
-                    Participant(1, addTextEdit.text.toString())
+                val participant: Participant = Participant(1, binding.addParticipantEditTextParticipants.text.toString())
                 if (trip != null) {
                     participantService.addParticipantToDb(participant, trip)
-                    addTextEdit.text.clear()
-
+                    binding.addParticipantEditTextParticipants.text.clear()
                 }
             } catch (e:EmptyDataException){
                 Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()

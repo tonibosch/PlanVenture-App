@@ -14,6 +14,8 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import com.example.planventure.Exception.EmptyDataException
 import com.example.planventure.Exception.MaxParticipantsOverflow
+import com.example.planventure.databinding.ActivityCreateTripBinding
+import com.example.planventure.databinding.ActivityTripParticipantsBinding
 import com.example.planventure.service.TripService
 import com.example.planventure.utility.DatePicker
 import com.google.android.material.datepicker.MaterialDatePicker
@@ -23,16 +25,7 @@ import java.util.Locale
 
 class CreateTripActivity : AppCompatActivity() {
 
-    private lateinit var tripName: EditText
-    private lateinit var location: EditText
-    private lateinit var maxNumberOfParts: EditText
-    private lateinit var addButton: Button
-    private lateinit var cancelButton: Button
-    private lateinit var backButton: ImageButton
-    private lateinit var dateRangePickerButton: Button
-    private lateinit var tvStartDate: TextView
-    private lateinit var tvEndDate: TextView
-
+    private lateinit var binding: ActivityCreateTripBinding
     //services
     private lateinit var tripService: TripService
 
@@ -40,35 +33,25 @@ class CreateTripActivity : AppCompatActivity() {
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_create_trip)
-
-        tripName = findViewById(R.id.tripName_editText)
-        location = findViewById(R.id.location_editText)
-        maxNumberOfParts = findViewById(R.id.maxPartNumber_editText)
-        addButton = findViewById(R.id.saveButton)
-        cancelButton = findViewById(R.id.cancelButton)
-        backButton = findViewById(R.id.backButton)
-        dateRangePickerButton = findViewById(R.id.dateRangePickerButton)
-        tvStartDate = findViewById(R.id.startDate_textView)
-        tvEndDate = findViewById(R.id.endDate_textView)
+        binding = ActivityCreateTripBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
 
         tripService = TripService(applicationContext)
 
-        addButton.setOnClickListener {
+        binding.saveButton.setOnClickListener {
 
             setResult(Activity.RESULT_OK)
             try {
                 //creates list with data for the trip
                 val myData = mutableListOf<String>()
-                myData.add(tripName.text.toString())
-                myData.add(tvStartDate.text.toString())
-                myData.add(tvEndDate.text.toString())
-                myData.add(location.text.toString())
-                myData.add(maxNumberOfParts.text.toString())
+                myData.add(binding.tripNameEditText.text.toString())
+                myData.add(binding.startDateTextView.text.toString())
+                myData.add(binding.endDateTextView.text.toString())
+                myData.add(binding.locationEditText.text.toString())
+                myData.add(binding.maxPartNumberEditText.text.toString())
                 myData.add("Enter a description")
-                tripService.addTrip(
-                    myData
-                )
+                tripService.addTrip(myData)
                 this.finish()
             } catch (e: EmptyDataException) { // catches Exception and makes toast out of it
                 Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
@@ -77,27 +60,17 @@ class CreateTripActivity : AppCompatActivity() {
             }
         }
 
-
-        cancelButton.setOnClickListener {
-            // Only for checking ... needs to be deleted later
-            /* tripService.deleteAllTrips()
-            val trips = tripService.getAllTrips()
-            Log.d("ALL_TRIPS", trips.size.toString())
-            for (t in trips) Log.d("TRIP", t.toString())
-             */
+        binding.cancelButton.setOnClickListener {
             this.finish()
         }
 
-        backButton.setOnClickListener {
+        binding.backButton.setOnClickListener {
             this.finish()
         }
 
-        dateRangePickerButton.setOnClickListener {
-            val datePicker = DatePicker(supportFragmentManager,tvStartDate, tvEndDate)
+        binding.dateRangePickerButton.setOnClickListener {
+            val datePicker = DatePicker(supportFragmentManager,binding.startDateTextView, binding.endDateTextView)
             datePicker.showDateRangePicker()
         }
     }
-
-
-
 }
