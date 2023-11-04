@@ -33,6 +33,7 @@ class TripInformationActivity : AppCompatActivity() {
     }
 
     private lateinit var binding: ActivityTripInformationBinding
+    //Services
     private lateinit var tripService: TripService
     private lateinit var participantService: ParticipantService
 
@@ -56,6 +57,7 @@ class TripInformationActivity : AppCompatActivity() {
         binding.maxPartNumberEditTextTripInformation.text = Editable.Factory.getInstance().newEditable(trip?.getMaxNumberOfParticipants().toString())
         binding.tripDescriptionEditTextTripInformation.text = Editable.Factory.getInstance().newEditable(trip?.getDescription())
 
+        //Define buttons behavior
         binding.backButtonTripInfo.setOnClickListener {
             this.finish()
         }

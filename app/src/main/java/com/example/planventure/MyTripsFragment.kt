@@ -17,6 +17,7 @@ import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.planventure.databinding.FragmentMyTripsBinding
 import com.example.planventure.entity.Trip
 import com.example.planventure.enumerations.TRIP_STATE
 import com.example.planventure.service.TripService
@@ -27,17 +28,13 @@ import java.util.ArrayList
 @RequiresApi(Build.VERSION_CODES.P)
 class MyTripsFragment : Fragment() {
 
-    private lateinit var button: Button
-    private lateinit var spinnerStatus: Spinner
+    private lateinit var binding: FragmentMyTripsBinding
     private var statusSelected = "ALL"
-
-    //services
-    private lateinit var tripService: TripService
-
-    private lateinit var recyclerView: RecyclerView
     private var trips: ArrayList<Trip> = ArrayList()
+    //Services
+    private lateinit var tripService: TripService
+    //Adapters
     private lateinit var tripAdapter: TripAdapter
-
 
     companion object {
         private const val CREATE_TRIP_REQUEST = 1 // You can choose any integer value
@@ -48,19 +45,19 @@ class MyTripsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_my_trips, container, false)
+        binding = FragmentMyTripsBinding.inflate(inflater, container, false)
+        val view = binding.root
+
         tripService = TripService(view.context)
 
 
-        recyclerView = view.findViewById(R.id.recyclerView)
-        recyclerView.setHasFixedSize(true)
-        recyclerView.layoutManager = LinearLayoutManager(view.context)
+        binding.recyclerView.setHasFixedSize(true)
+        binding.recyclerView.layoutManager = LinearLayoutManager(view.context)
 
         //tripService.upgrade()
 
         //Configure button Create Trip
-        button = view.findViewById(R.id.button2)
-        button.setOnClickListener {
+        binding.button2.setOnClickListener {
             val intent = Intent(container!!.context, CreateTripActivity::class.java)
             startActivityForResult(intent, CREATE_TRIP_REQUEST)
             //Log.d("Columns in trip_table", "Number: ${tripService.getNumberOfColumns()}")
@@ -68,7 +65,6 @@ class MyTripsFragment : Fragment() {
 
 
         //Configure Spinner Trip Status
-        spinnerStatus = view.findViewById(R.id.spinnerStatus)
         val listTripStatus = arrayOf(
             "ALL",
             TRIP_STATE.PLANNING.toString(),
@@ -77,14 +73,12 @@ class MyTripsFragment : Fragment() {
         )
         var adapter: ArrayAdapter<String> =
             ArrayAdapter(container!!.context, android.R.layout.simple_spinner_item, listTripStatus)
-        spinnerStatus.adapter = adapter
-        spinnerStatus?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        binding.spinnerStatus.adapter = adapter
+        binding.spinnerStatus?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                statusSelected = spinnerStatus.selectedItem.toString()
-                Log.d("statusSelected", statusSelected)
+                Log.d("statusSelected", binding.spinnerStatus.selectedItem.toString())
                 refreshTripList()
             }
-
             override fun onNothingSelected(p0: AdapterView<*>?) {}
         }
 
@@ -122,8 +116,8 @@ class MyTripsFragment : Fragment() {
             }
         }
         val touchHelper = ItemTouchHelper(swipegesture)
-        touchHelper.attachToRecyclerView(recyclerView)
-        recyclerView.adapter = tripAdapter
+        touchHelper.attachToRecyclerView(binding.recyclerView)
+        binding.recyclerView.adapter = tripAdapter
         tripAdapter.onItemClick = {
             val intent = Intent(this.context, TripInformationActivity::class.java)
             intent.putExtra(TRIP_ID_TRIP_INFORMATION, it.getId())

@@ -5,13 +5,18 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.example.planventure.databinding.FragmentMyTripsBinding
+import com.example.planventure.databinding.FragmentPublicTripsBinding
 
 class PublicTripsFragment : Fragment() {
+    private lateinit var binding: FragmentPublicTripsBinding
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_public_trips, container, false)
+        binding = FragmentPublicTripsBinding.inflate(inflater, container, false)
+        return binding.root
     }
 }
