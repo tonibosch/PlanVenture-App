@@ -19,7 +19,7 @@ class ExpenseRepository(context: Context): SQLiteRepository<Expense, Int>(contex
      */
     fun getExpensesByTrip(t : Trip): ArrayList<Expense> {
         // Query to get all Expenses from the expense table filtered by the trip they belong to
-        val queryString = "SELECT * FROM $EXPENSE_TABLE WHERE $COLUMN_EXPENSE_TRIP = ${t.getId()}"
+        val queryString = "SELECT * FROM $EXPENSE_TABLE WHERE $COLUMN_TRIP_FOREIGN_KEY = ${t.getId()}"
 
         return read(queryString)
     }

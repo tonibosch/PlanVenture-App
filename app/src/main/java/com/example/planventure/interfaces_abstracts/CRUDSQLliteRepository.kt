@@ -45,7 +45,7 @@ abstract class CRUDSQLiteRepository<T>(context: Context, private val table: Stri
          * - array of where arguments that are placed behind the where clause
          * when the operation was successful return true else return false
          */
-        return when(wdb.update(TRIP_TABLE, cv, "ID=?", arrayOf(id.toString()))) {
+        return when(wdb.update(table, cv, "ID=?", arrayOf(id.toString()))) {
             -1  -> false
             else -> true
         }

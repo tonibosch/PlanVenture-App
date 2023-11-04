@@ -19,7 +19,7 @@ class ParticipantRepository(context: Context): SQLiteRepository<Participant, Int
      */
     fun getParticipantsByTrip(t : Trip): ArrayList<Participant> {
         // Query to get all Participants from the participant table filtered by the trip they belong to
-        val queryString = "SELECT * FROM $PARTICIPANT_TABLE WHERE $COLUMN_PARTICIPANT_TRIP = ${t.getId()}"
+        val queryString = "SELECT * FROM $PARTICIPANT_TABLE WHERE $COLUMN_TRIP_FOREIGN_KEY = ${t.getId()}"
 
         return read(queryString)
     }
@@ -31,7 +31,7 @@ class ParticipantRepository(context: Context): SQLiteRepository<Participant, Int
      */
     fun getTripIdByParticipantId(id: Int): Long {
         // Query to get the trip id of a participant id
-        val queryString= "SELECT $COLUMN_PARTICIPANT_TRIP FROM $PARTICIPANT_TABLE WHERE ID = $id"
+        val queryString= "SELECT $COLUMN_TRIP_FOREIGN_KEY FROM $PARTICIPANT_TABLE WHERE ID = $id"
 
         // execute Query and store result in cursor
         val cursor = rdb.rawQuery(queryString,null)
