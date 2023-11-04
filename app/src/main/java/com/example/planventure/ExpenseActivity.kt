@@ -22,6 +22,7 @@ class ExpenseActivity : AppCompatActivity() {
     private lateinit var expenseAdapter: ExpenseAdapter
     // Services
     private lateinit var expenseService: ExpenseService
+    private lateinit var tripService: TripService
 
     @RequiresApi(Build.VERSION_CODES.P)
     @SuppressLint("MissingInflatedId")
@@ -30,6 +31,11 @@ class ExpenseActivity : AppCompatActivity() {
         binding = ActivityAllExpenseBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
+
+        tripService = TripService(applicationContext)
+
+        val tripId = intent.getLongExtra(TripInformationActivity.TRIP_ID_TRIP_PARTICIPANTS, 0)
+        val trip = tripService.getTripById(tripId)
 
         expenseService = ExpenseService(applicationContext)
         expenseAdapter = ExpenseAdapter(expenseService.getAllExpenses(), applicationContext)
@@ -43,6 +49,9 @@ class ExpenseActivity : AppCompatActivity() {
 
         binding.addExpenseButton.setOnClickListener {
             val intent = Intent(this, CreateExpenseActivity::class.java)
+            if (trip != null) {
+                intent.putExtra(TripInformationActivity.TRIP_ID_TRIP_PARTICIPANTS, trip.getId())
+            }
             startActivity(intent)
         }
     }
