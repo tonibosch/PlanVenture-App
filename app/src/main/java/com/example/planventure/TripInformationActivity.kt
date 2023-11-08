@@ -8,14 +8,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.util.Log
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageButton
-import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import com.example.planventure.Exception.EmptyDataException
-import com.example.planventure.databinding.ActivityCreateTripBinding
 import com.example.planventure.databinding.ActivityTripInformationBinding
 import com.example.planventure.entity.Trip
 import com.example.planventure.enumerations.TRIP_STATE

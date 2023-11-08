@@ -17,17 +17,21 @@ class ExpenseService(applicationContext: Context) {
         return expenseRepository.findAll()
     }
 
-    fun getAllExpences(): ArrayList<Expense>{
-        return expenseRepository.findAll()
-    }
 
     fun addExpenseToDb(expense: Expense, trip: Trip?) {
-        TODO("Not yet implemented")
+        if (trip != null) {
+            expenseRepository.addToDB(Pair(expense,trip.getId().toInt()))
+        }
     }
 
     fun getExpenseById(id: Long): Expense? {
         return expenseRepository.getById(id)
     }
+
+    fun getExpenseId(): Int {
+        return expenseRepository.findAll().size + 1
+    }
+
 
 
 }

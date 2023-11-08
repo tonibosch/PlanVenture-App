@@ -29,10 +29,21 @@ class ParticipantService(
             throw EmptyDataException("name can not be empty")
         } else if (getParticipantsByTrip(t).size + 1 > t.getMaxNumberOfParticipants()) {
             throw MaxParticipantsOverflow("reached maximum number of Participants")
-        } else {
+        } /*else if (checkParticipantInTrip(t, p.getName())){
+            throw MultipleNamesExeption("name is already in the trip")
+        }*/
+        else {
             participantRepository.addToDB(Pair(p, t.getId().toInt()))
             participantsAdapter?.updateParticipants(t.getId())
         }
+    }
+
+    private fun checkParticipantInTrip(t: Trip, pName: String): Boolean {
+        val participantNames = ArrayList<String>()
+        t.getParticipants().forEach {
+            participantNames.add(it.getName())
+        }
+        return !participantNames.contains(pName)
     }
 
     fun getParticipantsByTrip(t: Trip): ArrayList<Participant> {
@@ -60,6 +71,11 @@ class ParticipantService(
         } else {
             throw Error("trip can not be empty")
         }
+    }
+
+    fun getParticipantByName(pName:String,t:Trip):Participant{
+        val participants = participantRepository.getParticipantsByTrip(t)
+        return participants.filter { it.getName() == pName }[0]
     }
 
 }

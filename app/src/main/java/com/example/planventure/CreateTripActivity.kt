@@ -5,23 +5,13 @@ import android.app.Activity
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageButton
-import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import com.example.planventure.Exception.EmptyDataException
 import com.example.planventure.Exception.MaxParticipantsOverflow
 import com.example.planventure.databinding.ActivityCreateTripBinding
-import com.example.planventure.databinding.ActivityTripParticipantsBinding
 import com.example.planventure.service.TripService
 import com.example.planventure.utility.DatePicker
-import com.google.android.material.datepicker.MaterialDatePicker
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 
 class CreateTripActivity : AppCompatActivity() {
 

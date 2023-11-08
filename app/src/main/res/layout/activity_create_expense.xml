@@ -10,12 +10,15 @@
         android:id="@+id/tripInformationHeader3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="72dp"
+        android:layout_marginTop="16dp"
         android:text="New Expense"
         android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/divider"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.126" />
 
     <ImageButton
         android:id="@+id/backButton_CreateExpenses"
@@ -35,10 +38,12 @@
         android:layout_marginTop="36dp"
         android:text="Name:"
         android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/divider"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.187"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tripInformationHeader3" />
+        app:layout_constraintTop_toBottomOf="@+id/tripInformationHeader3"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/textView7"
@@ -47,10 +52,12 @@
         android:layout_marginTop="24dp"
         android:text="Amount:"
         android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/divider"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.196"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+        app:layout_constraintTop_toBottomOf="@+id/textView3"
+        app:layout_constraintVertical_bias="0.0" />
 
     <EditText
         android:id="@+id/expenseName_editText"
@@ -61,8 +68,12 @@
         android:ems="10"
         android:hint="Enter a name"
         android:inputType="text"
+        app:layout_constraintBottom_toTopOf="@+id/divider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.369"
         app:layout_constraintStart_toEndOf="@+id/textView3"
-        app:layout_constraintTop_toBottomOf="@+id/tripInformationHeader3" />
+        app:layout_constraintTop_toBottomOf="@+id/tripInformationHeader3"
+        app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/createExpenseButton_CreateExpenses"
@@ -78,13 +89,13 @@
         android:id="@+id/expenseAmount_editText"
         android:layout_width="155dp"
         android:layout_height="42dp"
-        android:layout_marginStart="14dp"
+        android:layout_marginStart="12dp"
         android:layout_marginTop="16dp"
         android:ems="10"
         android:hint="Enter an amount"
         android:inputType="numberDecimal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.023"
         app:layout_constraintStart_toEndOf="@+id/textView7"
         app:layout_constraintTop_toBottomOf="@+id/expenseName_editText" />
 
@@ -95,8 +106,41 @@
         android:layout_marginTop="16dp"
         android:text="EUR"
         android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/divider"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.45"
         app:layout_constraintStart_toEndOf="@+id/expenseAmount_editText"
-        app:layout_constraintTop_toBottomOf="@+id/expenseName_editText" />
+        app:layout_constraintTop_toBottomOf="@+id/expenseName_editText"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <Spinner
+        android:id="@+id/ParticipantSpinner"
+        android:layout_width="338dp"
+        android:layout_height="46dp"
+        android:layout_marginTop="29dp"
+        app:layout_constraintBottom_toTopOf="@+id/divider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/expenseAmount_editText" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="409dp"
+        android:layout_height="4dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintBottom_toTopOf="@+id/createExpenseButton_CreateExpenses"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/Participant_Expense_RV"
+        android:layout_width="375dp"
+        android:layout_height="254dp"
+        app:layout_constraintBottom_toTopOf="@+id/createExpenseButton_CreateExpenses"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/divider"
+        tools:ignore="MissingConstraints" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

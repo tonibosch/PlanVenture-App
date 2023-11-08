@@ -6,7 +6,6 @@ import android.util.Log
 import androidx.annotation.RequiresApi
 import com.example.planventure.Exception.MaxParticipantsOverflow
 import com.example.planventure.Exception.EmptyDataException
-import com.example.planventure.entity.Participant
 import com.example.planventure.entity.Trip
 import com.example.planventure.enumerations.TRIP_STATE
 import com.example.planventure.repository.ParticipantRepository

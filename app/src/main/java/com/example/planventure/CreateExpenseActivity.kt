@@ -1,21 +1,23 @@
 package com.example.planventure
 
-import android.app.Activity
+import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.Telephony.Mms.Part
 import android.util.Log
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageButton
-import android.widget.Toast
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import androidx.annotation.RequiresApi
-import com.example.planventure.Exception.EmptyDataException
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.planventure.databinding.ActivityCreateExpenseBinding
-import com.example.planventure.databinding.ActivityCreateTripBinding
 import com.example.planventure.entity.Expense
+import com.example.planventure.entity.Participant
 import com.example.planventure.service.ExpenseService
+import com.example.planventure.service.ParticipantService
 import com.example.planventure.service.TripService
+import com.example.planventure.utility.ExpensePartcipantAdapter
 
 /**
  * An activity for creating new expenses related to a trip.
@@ -29,10 +31,17 @@ import com.example.planventure.service.TripService
  */
 class CreateExpenseActivity : AppCompatActivity() {
 
+    private lateinit var participants: ArrayList<String>
+
     private lateinit var binding: ActivityCreateExpenseBinding
+
     //Services
     private lateinit var expenseService: ExpenseService
     private lateinit var tripService: TripService
+    private lateinit var participantService: ParticipantService
+
+    //Adapter
+    private lateinit var expenseParticipantAdapter: ExpensePartcipantAdapter
 
     /**
      * Initializes the activity's view and sets up UI components.
@@ -46,33 +55,62 @@ class CreateExpenseActivity : AppCompatActivity() {
 
         expenseService = ExpenseService(applicationContext)
         tripService = TripService(applicationContext)
+        participantService = ParticipantService(applicationContext)
 
+        expenseParticipantAdapter =
+            ExpensePartcipantAdapter(ArrayList(), applicationContext)
+        binding.ParticipantExpenseRV.adapter = expenseParticipantAdapter
+        binding.ParticipantExpenseRV.layoutManager =
+            LinearLayoutManager(applicationContext)
+
+        participants = ArrayList()
         val tripId = intent.getLongExtra(TripInformationActivity.TRIP_ID_TRIP_PARTICIPANTS, 0)
         val trip = tripService.getTripById(tripId)
+        if (trip != null) {
+            participantService.getParticipantsByTrip(trip).forEach {
+                participants.add(it.getName())
+            }
+        }
+        Log.d("TESTTEST", participants.toString())
 
+
+        //Define Spinner
+        var spinnerAdapter: ArrayAdapter<String> =
+            ArrayAdapter(this, android.R.layout.simple_spinner_item, participants)
+        binding.ParticipantSpinner.adapter = spinnerAdapter
+        binding.ParticipantSpinner?.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                    if (trip != null) {
+                        val tripParticipants = participantService.getParticipantsByTrip(trip)
+                        tripParticipants.remove(participantService.
+                        getParticipantByName(binding.ParticipantSpinner.selectedItem.toString(),trip))
+
+                        Log.d("TEST", tripParticipants.toString())
+                        expenseParticipantAdapter.updateParticipants(tripParticipants)
+                    }
+                }
+
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+                }
+            }
         //Define buttons behavior
 
         //Configure the "Back" button to navigate to the previous screen when the user presses it.
-        binding.backButtonCreateExpenses.setOnClickListener{
+        binding.backButtonCreateExpenses.setOnClickListener {
             this.finish()
         }
 
         binding.createExpenseButtonCreateExpenses.setOnClickListener {
-            Log.d("NEW EXPENSE", "Name: ${binding.expenseNameEditText.text}, Amount: ${binding.expenseAmountEditText.text}")
-            this.finish()
-            /**
-            setResult(Activity.RESULT_OK)
-            try {
-                val expense: Expense =
-                    Expense(expenseService.getSize() + 1, expenseName.text.toString(), expenseAmount.text.toString().toFloat())
-                if (expense != null) {
-                    expenseService.addExpenseToDb(expense, trip)
-                }
-                this.finish()
-            } catch (e: EmptyDataException) { // catches Exception and makes toast out of it
-                Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
-            }
-            */
+            var expenseId = expenseService.getExpenseId().toLong()
+            var expense = Expense(
+                expenseId,
+                binding.expenseNameEditText.text.toString(),
+                binding.expenseAmountEditText.text.toString().toFloat()
+            )
+            expenseService.addExpenseToDb(expense, trip)
+            val intent = Intent(this, ExpenseActivity::class.java)
+            startActivity(intent)
         }
     }
 }
