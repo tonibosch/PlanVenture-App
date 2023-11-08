@@ -102,7 +102,7 @@ class CreateExpenseActivity : AppCompatActivity() {
         }
 
         binding.createExpenseButtonCreateExpenses.setOnClickListener {
-            var expenseId = expenseService.getExpenseId().toLong()
+            var expenseId = -1L
             var expense = Expense(
                 expenseId,
                 binding.expenseNameEditText.text.toString(),
