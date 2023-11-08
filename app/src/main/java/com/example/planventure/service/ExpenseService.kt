@@ -17,6 +17,10 @@ class ExpenseService(applicationContext: Context) {
         return expenseRepository.findAll()
     }
 
+    fun getAllExpensesById(id: Long): ArrayList<Expense>{
+        return expenseRepository.getExpensesById(id)
+    }
+
 
     fun addExpenseToDb(expense: Expense, trip: Trip?) {
         if (trip != null) {
