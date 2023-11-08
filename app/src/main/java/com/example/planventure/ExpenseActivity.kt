@@ -33,10 +33,11 @@ class ExpenseActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
-        expenseService = ExpenseService(applicationContext)
-        expenseAdapter = ExpenseAdapter(expenseService.getAllExpenses(), applicationContext)
-
         val tripId = intent.getLongExtra(TripInformationActivity.TRIP_ID_TRIP_PARTICIPANTS, 0)
+
+        expenseService = ExpenseService(applicationContext)
+        expenseAdapter = ExpenseAdapter(expenseService.getAllExpensesById(tripId), applicationContext)
+
 
         binding.recyclerViewAllExpenses.adapter = expenseAdapter
         binding.recyclerViewAllExpenses.layoutManager = LinearLayoutManager(this)
