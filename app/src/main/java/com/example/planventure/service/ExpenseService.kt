@@ -28,10 +28,6 @@ class ExpenseService(applicationContext: Context) {
         return expenseRepository.getById(id)
     }
 
-    fun getExpenseId(): Int {
-        return expenseRepository.findAll().size + 1
-    }
-
 
 
 }

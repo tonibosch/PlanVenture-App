@@ -61,7 +61,7 @@ class TripInformationActivity : AppCompatActivity() {
         val trip = tripService.getTripById(tripId)
 
         binding.tripNameEditTextTripInformation.text = Editable.Factory.getInstance().newEditable(trip?.getName())
-        binding.endDateTextViewTripInformation.text = Editable.Factory.getInstance().newEditable(convertDate(trip?.getStartDate().toString()))
+        binding.startDateTextViewTripInformation.text = Editable.Factory.getInstance().newEditable(convertDate(trip?.getStartDate().toString()))
         binding.endDateTextViewTripInformation.text = Editable.Factory.getInstance().newEditable(convertDate(trip?.getEndDate().toString()))
         binding.locationEditTextTripInformation.text = Editable.Factory.getInstance().newEditable(trip?.getLocation())
         binding.maxPartNumberEditTextTripInformation.text = Editable.Factory.getInstance().newEditable(trip?.getMaxNumberOfParticipants().toString())

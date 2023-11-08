@@ -41,6 +41,17 @@ class ExpenseRepository(context: Context): SQLiteRepository<Expense, Int>(contex
         return read(query)
     }
 
+    /**
+     * returns all expenses that relate to a certain trip id
+     * @param id :Trip id
+     * @return ArrayList of Expenses that belong to a trip's id
+     */
+    fun getExpensesById(id: Long): ArrayList<Expense> {
+        val query = "SELECT * FROM $EXPENSE_TABLE WHERE $COLUMN_TRIP_FOREIGN_KEY = $id"
+
+        return read(query)
+    }
+
     override fun buildObjectFromCursor(c: Cursor): Expense {
         val id = c.getInt(0)
         val name = c.getString(1)
