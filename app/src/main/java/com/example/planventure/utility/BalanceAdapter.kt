@@ -37,7 +37,7 @@ class BalanceAdapter(
         holder.itemView.apply{
             //ExpenseName represents the who owes who
             findViewById<TextView>(R.id.expenseName).text =
-                "${currentDebt.first} owes ${currentDebt.second}:"
+                "${currentDebt.second} owes ${currentDebt.first}:"
 
             //ExpenseAmount represents how much is owed
             findViewById<TextView>(R.id.expenseAmount).text =

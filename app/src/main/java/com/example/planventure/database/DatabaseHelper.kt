@@ -92,12 +92,6 @@ open class DataBaseHelper(
             "INSERT INTO $TRIP_TABLE VALUES (1, \"TEST_TRIP\", \"Wed Oct 18 00:00:00 GMT 2023\", \"Wed Oct 18 00:00:00 GMT 2023\", \"NTNU\", 5, \"Trip to the NTNU\", \"PLANNING\")"
         db.execSQL(createTripStatement)
 
-        /*
-        val createExpenseStatement =
-            "INSERT INTO $EXPENSE_TABLE VALUES (1, \"MUSEUM\", 15, 1)"
-        db.execSQL(createExpenseStatement)
-        */
-
     }
 
     /**

@@ -1,6 +1,7 @@
 package com.example.planventure
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -64,11 +65,6 @@ class ExpenseInformationActivity : AppCompatActivity() {
         }
 
         binding.backButtonExpenseInformation.setOnClickListener{
-            this.finish()
-        }
-
-        binding.deleteExpenseButton.setOnClickListener{
-            expenseService.deleteExpense(expense)
             this.finish()
         }
 
