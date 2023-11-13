@@ -1,5 +1,6 @@
 package com.example.planventure.utility
 
+import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
 import android.content.Intent
@@ -40,6 +41,7 @@ class ExpenseAdapter (
         return expenses.size
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ExpensesViewHolder, position: Int) {
         val currentExpense = expenses[position]
 
@@ -49,7 +51,7 @@ class ExpenseAdapter (
                 "Name: \t" + currentExpense.getName()
 
             findViewById<TextView>(R.id.expenseAmount).text =
-                "Amount: \t" + currentExpense.getAmount().toString()
+                "Amount: \t${String.format("%.2f",currentExpense.getAmount())}€"
 
             // Make the expense clickable
             findViewById<MaterialToolbar>(R.id.materialToolbar)

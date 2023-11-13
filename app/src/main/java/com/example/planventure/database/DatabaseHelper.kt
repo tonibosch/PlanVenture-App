@@ -85,16 +85,19 @@ open class DataBaseHelper(
         val createParticipantParticipantTable =
             "CREATE TABLE $PARTICIPANT_PARTICIPANT_TABLE ($COLUMN_PARTICIPANT_1_ID INTEGER REFERENCES $PARTICIPANT_TABLE ON DELETE CASCADE ON UPDATE CASCADE, " +
                     "$COLUMN_PARTICIPANT_2_ID INTEGER REFERENCES $PARTICIPANT_TABLE ON DELETE CASCADE ON UPDATE CASCADE, " +
-                    "$COLUMN_PAID_AMOUNT NUMBER)"
+                    "$COLUMN_PAID_AMOUNT NUMBERS)"
         db.execSQL(createParticipantParticipantTable)
 
         val createTripStatement =
             "INSERT INTO $TRIP_TABLE VALUES (1, \"TEST_TRIP\", \"Wed Oct 18 00:00:00 GMT 2023\", \"Wed Oct 18 00:00:00 GMT 2023\", \"NTNU\", 5, \"Trip to the NTNU\", \"PLANNING\")"
         db.execSQL(createTripStatement)
 
+        /*
         val createExpenseStatement =
             "INSERT INTO $EXPENSE_TABLE VALUES (1, \"MUSEUM\", 15, 1)"
         db.execSQL(createExpenseStatement)
+        */
+
     }
 
     /**

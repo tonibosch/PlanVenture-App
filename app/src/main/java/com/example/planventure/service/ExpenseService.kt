@@ -9,6 +9,7 @@ import com.example.planventure.entity.Participant
 import com.example.planventure.entity.Trip
 import com.example.planventure.repository.ExpenseRepository
 import com.example.planventure.repository.ParticipantExpenseRepository
+import com.example.planventure.repository.ParticipantParticipantRepository
 
 @RequiresApi(Build.VERSION_CODES.P)
 class ExpenseService(applicationContext: Context) {
@@ -16,6 +17,7 @@ class ExpenseService(applicationContext: Context) {
 
     private val expenseRepository = ExpenseRepository(applicationContext)
     private val participantExpenseRepository = ParticipantExpenseRepository(applicationContext)
+    private val participantParticipantRepository = ParticipantParticipantRepository(applicationContext)
     fun getAllExpenses(): ArrayList<Expense> {
         return expenseRepository.findAll()
     }
@@ -47,8 +49,10 @@ class ExpenseService(applicationContext: Context) {
     ) {
         if (expense != null) {
 
+            var isInTrip = paidByContained(participants, paidBy!!)
             if (paidBy != null && !paidByContained(participants, paidBy)) {
                 participants.add(paidBy)
+                isInTrip = false
             }
 
             participants.forEach {
@@ -67,7 +71,35 @@ class ExpenseService(applicationContext: Context) {
                                 it.getId().toInt(),
                                 expense.getId().toInt(),
                                 0f),
-                            -1))
+                            -1)
+                    )
+                }
+            }
+            if(isInTrip){
+                for (p in participants){
+                    if (paidBy != null) {
+                        if(p.getId() == paidBy.getId()) continue
+                    }
+                    participantParticipantRepository.addToDB(Pair(
+                        Triple(
+                            paidBy.getId().toInt(),
+                            p.getId().toInt(),
+                            expense.getAmount() / participants.size),
+                        -1)
+                    )
+                }
+            }else{
+                for (p in participants){
+                    if (paidBy != null) {
+                        if(p.getId() == paidBy.getId()) continue
+                    }
+                    participantParticipantRepository.addToDB(Pair(
+                        Triple(
+                            paidBy.getId().toInt(),
+                            p.getId().toInt(),
+                            expense.getAmount() / (participants.size - 1)),
+                        -1)
+                    )
                 }
             }
         }

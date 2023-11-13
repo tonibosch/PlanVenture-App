@@ -52,5 +52,11 @@ class ExpenseActivity : AppCompatActivity() {
             intent.putExtra(TripInformationActivity.TRIP_ID_TRIP_PARTICIPANTS, tripId)
             startActivity(intent)
         }
+
+        binding.balanceButton.setOnClickListener {
+            val intent = Intent(this, BalanceActivity::class.java)
+            intent.putExtra(TripInformationActivity.TRIP_ID_TRIP_PARTICIPANTS, tripId)
+            startActivity(intent)
+        }
     }
 }

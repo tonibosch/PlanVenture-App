@@ -48,6 +48,8 @@ class TripService(
         }
     }
 
+
+
     fun getAllTrips(): List<Trip> {
         return tripRepository.findAll()
     }

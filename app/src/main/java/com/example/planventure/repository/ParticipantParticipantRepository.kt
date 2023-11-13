@@ -62,16 +62,21 @@ class ParticipantParticipantRepository(context: Context):
     /**
      * gets the triple with participant 1 id, participant 2 id, and paid amount
      * @param p1id : foreign key of the first participant
-     * @param p2id : foreign key of the second participant
      * @return ArrayList of Triples with participants and paid amount
      */
-    fun getByParticipant1And2Id(p1id: Long, p2id: Long): ArrayList<Triple<Int, Int, Float>> {
+    fun getByParticipant1Id(p1id: Long): ArrayList<Triple<Int, Int, Float>> {
         /*
          * Query to get all rows with given participant ids
          */
-        val query = "SELECT * FROM ${PARTICIPANT_PARTICIPANT_TABLE}_TABLE WHERE $COLUMN_PARTICIPANT_ID = $p1id AND $COLUMN_EXPENSE_ID = $p2id"
+        val query = "SELECT * FROM $PARTICIPANT_PARTICIPANT_TABLE WHERE $COLUMN_PARTICIPANT_ID = $p1id"
         return read(query)
     }
+
+    /*
+    fun getP1Ids(): ArrayList<Int>{
+        val query = "SELECT $COLUMN_PARTICIPANT_1_ID FROM $PARTICIPANT_PARTICIPANT_TABLE"
+    }
+     */
 
     /**
      * deletes all rows filtered by the given participant ids
