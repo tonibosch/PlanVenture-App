@@ -16,6 +16,7 @@ class ExpensePartcipantAdapter (
 ) : RecyclerView.Adapter<ExpensePartcipantAdapter.ParticipantViewHolder>(){
     class ParticipantViewHolder(view: View) : RecyclerView.ViewHolder(view)
     private var checkedParticipants = ArrayList<Participant>()
+    var paidBy: Participant? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ParticipantViewHolder {
         return ParticipantViewHolder((
@@ -36,16 +37,16 @@ class ExpensePartcipantAdapter (
     }
 
     override fun onBindViewHolder(holder: ParticipantViewHolder, position: Int) {
-        val currentParitcipant = participants[position]
+        val currentParticipant = participants[position]
 
         holder.itemView.apply{
-            findViewById<TextView>(R.id.ExpenseParticipantTV).text = currentParitcipant.getName()
+            findViewById<TextView>(R.id.ExpenseParticipantTV).text = currentParticipant.getName()
             var checkbox = findViewById<CheckBox>(R.id.ExpenseParticipantCB)
             checkbox.setOnCheckedChangeListener { _, isChecked ->
                 if(isChecked){
-                    checkedParticipants.remove(currentParitcipant)
+                    checkedParticipants.add(currentParticipant)
                 } else{
-                    checkedParticipants.add(currentParitcipant)
+                    checkedParticipants.remove(currentParticipant)
                 }
             }
         }

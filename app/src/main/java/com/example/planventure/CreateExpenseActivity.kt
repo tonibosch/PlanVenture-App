@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.Telephony.Mms.Part
 import android.util.Log
 import android.view.View
 import android.widget.AdapterView
@@ -13,7 +12,6 @@ import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.planventure.databinding.ActivityCreateExpenseBinding
 import com.example.planventure.entity.Expense
-import com.example.planventure.entity.Participant
 import com.example.planventure.service.ExpenseService
 import com.example.planventure.service.ParticipantService
 import com.example.planventure.service.TripService
@@ -71,8 +69,6 @@ class CreateExpenseActivity : AppCompatActivity() {
                 participants.add(it.getName())
             }
         }
-        Log.d("TESTTEST", participants.toString())
-
 
         //Define Spinner
         var spinnerAdapter: ArrayAdapter<String> =
@@ -81,14 +77,14 @@ class CreateExpenseActivity : AppCompatActivity() {
         binding.ParticipantSpinner?.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                    if (trip != null) {
-                        val tripParticipants = participantService.getParticipantsByTrip(trip)
-                        tripParticipants.remove(participantService.
-                        getParticipantByName(binding.ParticipantSpinner.selectedItem.toString(),trip))
+                    expenseParticipantAdapter.paidBy = participantService.getParticipantByName(
+                        binding.ParticipantSpinner.selectedItem.toString(),
+                        trip!!
+                    )
+                    val tripParticipants = participantService.getParticipantsByTrip(trip)
 
-                        Log.d("TEST", tripParticipants.toString())
-                        expenseParticipantAdapter.updateParticipants(tripParticipants)
-                    }
+                    expenseParticipantAdapter.updateParticipants(tripParticipants)
+
                 }
 
                 override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -109,7 +105,15 @@ class CreateExpenseActivity : AppCompatActivity() {
                 binding.expenseAmountEditText.text.toString().toFloat()
             )
             expenseService.addExpenseToDb(expense, trip)
+            expenseService.addExpenseParticipantsToDb(trip?.let { it1 ->
+                expenseService.getExpenseByName(
+                    expense.getName(),
+                    it1
+                )
+            }, expenseParticipantAdapter.getCheckedParticipants(),
+                expenseParticipantAdapter.paidBy)
             val intent = Intent(this, ExpenseActivity::class.java)
+            intent.putExtra(TripInformationActivity.TRIP_ID_TRIP_PARTICIPANTS,tripId)
             startActivity(intent)
         }
     }
