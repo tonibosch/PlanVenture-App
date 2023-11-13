@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "379410894919",
+    "project_id": "plan-venture",
+    "storage_bucket": "plan-venture.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:379410894919:android:eb9f3c2eb8aca2d01da162",
+        "android_client_info": {
+          "package_name": "com.example.planventure"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBQcOQIJy11Ho33QbaUmsgmRwc92qmBHIA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -5,55 +5,35 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+import com.example.planventure.databinding.FragmentConfigurationBinding
+import com.example.planventure.databinding.FragmentPublicTripsBinding
 
 /**
- * A simple [Fragment] subclass.
- * Use the [ConfigurationFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
+* A fragment for configuring application settings and preferences. Not yet implemented as it is an application running locally.
+*
+* This fragment serves as the user interface for configuring various application settings
+* and preferences. It inflates the layout for the configuration screen and provides
+* UI components for users to adjust settings.
+*
+* @property binding The binding object for the fragment's layout.
+*/
 class ConfigurationFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private lateinit var binding: FragmentConfigurationBinding
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
-
+    /**
+     * Initializes the fragment's view and sets up UI components.
+     *
+     * @param inflater The layout inflater to inflate the fragment's layout.
+     * @param container The parent view that the fragment's UI should be attached to.
+     * @param savedInstanceState The saved instance state, if any.
+     * @return The root view of the fragment.
+     */
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_configuration, container, false)
-    }
-
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ConfigurationFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ConfigurationFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+        binding = FragmentConfigurationBinding.inflate(inflater, container, false)
+        return binding.root
     }
 }
