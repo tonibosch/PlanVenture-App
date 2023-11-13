@@ -21,7 +21,7 @@ import com.example.planventure.interfaces_abstracts.CRUDRepository
 @RequiresApi(Build.VERSION_CODES.P)
 open class DataBaseHelper(
     context: Context
-) : SQLiteOpenHelper(context, "planventure.db", null, 8) {
+) : SQLiteOpenHelper(context, "planventure.db", null, 9) {
 
     companion object {
         const val TRIP_TABLE: String = "TRIP_TABLE"

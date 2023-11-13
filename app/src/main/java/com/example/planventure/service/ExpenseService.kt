@@ -2,7 +2,6 @@ package com.example.planventure.service
 
 import android.content.Context
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import com.example.planventure.entity.Expense
 import com.example.planventure.entity.Participant
@@ -115,6 +114,12 @@ class ExpenseService(applicationContext: Context) {
             }
         }
         return false
+    }
+
+    fun deleteExpense(expense: Expense?) {
+        if (expense != null) {
+            expenseRepository.deleteById(expense.getId().toInt())
+        }
     }
 }
 

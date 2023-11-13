@@ -5,8 +5,10 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import com.example.planventure.Exception.EmptyDataException
 import com.example.planventure.Exception.MaxParticipantsOverflow
+import com.example.planventure.entity.Expense
 import com.example.planventure.entity.Participant
 import com.example.planventure.entity.Trip
+import com.example.planventure.repository.ParticipantExpenseRepository
 import com.example.planventure.repository.ParticipantRepository
 import com.example.planventure.repository.TripRepository
 import com.example.planventure.utility.ParticipantsAdapter
@@ -19,6 +21,7 @@ class ParticipantService(
 
     private val participantRepository = ParticipantRepository(applicationContext)
     private val tripRepository = TripRepository(applicationContext)
+    private val participantExpenseRepository = ParticipantExpenseRepository(applicationContext)
 
     /**
      * add participant to the database after checking if there is still space for more participants and if
@@ -77,5 +80,19 @@ class ParticipantService(
         val participants = participantRepository.getParticipantsByTrip(t)
         return participants.filter { it.getName() == pName }[0]
     }
+
+    fun getParticipantsByExpense(expense: Expense): ArrayList<Pair<Participant?, Boolean>>{
+        var listOfParticipant = ArrayList<Pair<Participant?, Boolean>>()
+        participantExpenseRepository.getByExpenseId(expense.getId()).forEach{
+            if(it.third == 0f){
+                listOfParticipant.add(Pair(participantRepository.getById(it.first.toLong()),false))
+            } else {
+                listOfParticipant.add(Pair(participantRepository.getById(it.first.toLong()),true))
+            }
+        }
+        return listOfParticipant
+    }
+
+
 
 }
