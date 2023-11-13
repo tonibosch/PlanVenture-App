@@ -7,7 +7,6 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
-import android.util.Log
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import com.example.planventure.Exception.EmptyDataException
@@ -47,7 +46,7 @@ class TripInformationActivity : AppCompatActivity() {
      *
      * @param savedInstanceState The saved instance state, if any.
      */
-    @SuppressLint("MissingInflatedId")
+    @SuppressLint("MissingInflatedId", "SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityTripInformationBinding.inflate(layoutInflater)
@@ -74,7 +73,6 @@ class TripInformationActivity : AppCompatActivity() {
         }
 
         var currentStatus = trip?.getState()
-        Log.d("CURRENT STATUS", "${currentStatus.toString()}")
 
         when (currentStatus) {
             TRIP_STATE.PLANNING -> binding.buttonChangeState.text = "START"

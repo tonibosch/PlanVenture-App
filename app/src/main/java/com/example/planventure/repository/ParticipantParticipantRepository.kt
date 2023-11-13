@@ -15,7 +15,7 @@ import com.example.planventure.interfaces_abstracts.SQLiteRepository
  * @property getById(id: Long): Triple<Int, Int, Float>?
  * @property updateById(id: Long, e: Triple<Int, Int, Float>): Boolean
  * @property deleteById(id: Int): Boolean
- * @property getByParticipant1And2Id(p1id: Long, p2id: Long): ArrayList<Triple<Int, Int, Float>>
+ * @property getByParticipant1Id(p1id: Long): ArrayList<Triple<Int, Int, Float>>
  * @property deleteByParticipant1and2Id(p1id: Long, p2id: Long): Boolean
  * @property buildContentValues(e: Triple<Int, Int, Float>): ContentValues
  * @property buildObjectFromCursor(c: Cursor): Triple<Int, Int, Float>
@@ -71,12 +71,6 @@ class ParticipantParticipantRepository(context: Context):
         val query = "SELECT * FROM $PARTICIPANT_PARTICIPANT_TABLE WHERE $COLUMN_PARTICIPANT_ID = $p1id"
         return read(query)
     }
-
-    /*
-    fun getP1Ids(): ArrayList<Int>{
-        val query = "SELECT $COLUMN_PARTICIPANT_1_ID FROM $PARTICIPANT_PARTICIPANT_TABLE"
-    }
-     */
 
     /**
      * deletes all rows filtered by the given participant ids

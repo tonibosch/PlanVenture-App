@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -15,7 +14,7 @@ import com.example.planventure.entity.Expense
 import com.example.planventure.service.ExpenseService
 import com.example.planventure.service.ParticipantService
 import com.example.planventure.service.TripService
-import com.example.planventure.utility.ExpensePartcipantAdapter
+import com.example.planventure.utility.ExpenseParticipantAdapter
 
 /**
  * An activity for creating new expenses related to a trip.
@@ -39,7 +38,7 @@ class CreateExpenseActivity : AppCompatActivity() {
     private lateinit var participantService: ParticipantService
 
     //Adapter
-    private lateinit var expenseParticipantAdapter: ExpensePartcipantAdapter
+    private lateinit var expenseParticipantAdapter: ExpenseParticipantAdapter
 
     /**
      * Initializes the activity's view and sets up UI components.
@@ -56,7 +55,7 @@ class CreateExpenseActivity : AppCompatActivity() {
         participantService = ParticipantService(applicationContext)
 
         expenseParticipantAdapter =
-            ExpensePartcipantAdapter(ArrayList(), applicationContext)
+            ExpenseParticipantAdapter(ArrayList())
         binding.ParticipantExpenseRV.adapter = expenseParticipantAdapter
         binding.ParticipantExpenseRV.layoutManager =
             LinearLayoutManager(applicationContext)
@@ -71,10 +70,10 @@ class CreateExpenseActivity : AppCompatActivity() {
         }
 
         //Define Spinner
-        var spinnerAdapter: ArrayAdapter<String> =
+        val spinnerAdapter: ArrayAdapter<String> =
             ArrayAdapter(this, android.R.layout.simple_spinner_item, participants)
         binding.ParticipantSpinner.adapter = spinnerAdapter
-        binding.ParticipantSpinner?.onItemSelectedListener =
+        binding.ParticipantSpinner.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
                     expenseParticipantAdapter.paidBy = participantService.getParticipantByName(
@@ -98,8 +97,8 @@ class CreateExpenseActivity : AppCompatActivity() {
         }
 
         binding.createExpenseButtonCreateExpenses.setOnClickListener {
-            var expenseId = -1L
-            var expense = Expense(
+            val expenseId = -1L
+            val expense = Expense(
                 expenseId,
                 binding.expenseNameEditText.text.toString(),
                 binding.expenseAmountEditText.text.toString().toFloat()

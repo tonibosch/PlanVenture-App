@@ -5,7 +5,6 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.os.Build
 import androidx.annotation.RequiresApi
-import com.example.planventure.interfaces_abstracts.CRUDRepository
 
 /**
  * DataBaseHelper.kt
@@ -21,7 +20,7 @@ import com.example.planventure.interfaces_abstracts.CRUDRepository
 @RequiresApi(Build.VERSION_CODES.P)
 open class DataBaseHelper(
     context: Context
-) : SQLiteOpenHelper(context, "planventure.db", null, 9) {
+) : SQLiteOpenHelper(context, "planventure.db", null, 10) {
 
     companion object {
         const val TRIP_TABLE: String = "TRIP_TABLE"
@@ -87,10 +86,6 @@ open class DataBaseHelper(
                     "$COLUMN_PARTICIPANT_2_ID INTEGER REFERENCES $PARTICIPANT_TABLE ON DELETE CASCADE ON UPDATE CASCADE, " +
                     "$COLUMN_PAID_AMOUNT NUMBERS)"
         db.execSQL(createParticipantParticipantTable)
-
-        val createTripStatement =
-            "INSERT INTO $TRIP_TABLE VALUES (1, \"TEST_TRIP\", \"Wed Oct 18 00:00:00 GMT 2023\", \"Wed Oct 18 00:00:00 GMT 2023\", \"NTNU\", 5, \"Trip to the NTNU\", \"PLANNING\")"
-        db.execSQL(createTripStatement)
 
     }
 

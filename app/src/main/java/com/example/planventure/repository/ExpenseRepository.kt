@@ -7,7 +7,6 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import com.example.planventure.entity.Expense
 import com.example.planventure.entity.Trip
-import com.example.planventure.interfaces_abstracts.CRUDRepository
 import com.example.planventure.interfaces_abstracts.IRepository
 import com.example.planventure.interfaces_abstracts.SQLiteRepository
 

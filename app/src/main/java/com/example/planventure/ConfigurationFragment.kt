@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.planventure.databinding.FragmentConfigurationBinding
-import com.example.planventure.databinding.FragmentPublicTripsBinding
 
 /**
 * A fragment for configuring application settings and preferences. Not yet implemented as it is an application running locally.
@@ -31,7 +30,7 @@ class ConfigurationFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         binding = FragmentConfigurationBinding.inflate(inflater, container, false)
         return binding.root

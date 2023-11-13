@@ -11,8 +11,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.Button
-import android.widget.Spinner
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -65,7 +63,7 @@ class MyTripsFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentMyTripsBinding.inflate(inflater, container, false)
         val view = binding.root
 
@@ -89,10 +87,10 @@ class MyTripsFragment : Fragment() {
             TRIP_STATE.STARTED.toString(),
             TRIP_STATE.FINISHED.toString()
         )
-        var adapter: ArrayAdapter<String> =
+        val adapter: ArrayAdapter<String> =
             ArrayAdapter(container!!.context, android.R.layout.simple_spinner_item, listTripStatus)
         binding.spinnerStatus.adapter = adapter
-        binding.spinnerStatus?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        binding.spinnerStatus.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
                 Log.d("statusSelected", binding.spinnerStatus.selectedItem.toString())
                 refreshTripList()
@@ -121,15 +119,17 @@ class MyTripsFragment : Fragment() {
      * Refreshes the list of trips based on the selected trip status filter.
      */
     private fun refreshTripList() {
-        if (statusSelected == TRIP_STATE.PLANNING.toString()) trips = tripService.getTripsByState(TRIP_STATE.PLANNING)
-        else if (statusSelected == TRIP_STATE.STARTED.toString()) trips = tripService.getTripsByState(TRIP_STATE.STARTED)
-        else if (statusSelected == TRIP_STATE.FINISHED.toString()) trips = tripService.getTripsByState(TRIP_STATE.FINISHED)
-        else trips = tripService.getAllTrips() as ArrayList<Trip>
+        trips = when (statusSelected) {
+            TRIP_STATE.PLANNING.toString() -> tripService.getTripsByState(TRIP_STATE.PLANNING)
+            TRIP_STATE.STARTED.toString() -> tripService.getTripsByState(TRIP_STATE.STARTED)
+            TRIP_STATE.FINISHED.toString() -> tripService.getTripsByState(TRIP_STATE.FINISHED)
+            else -> tripService.getAllTrips() as ArrayList<Trip>
+        }
 
         tripAdapter = TripAdapter(trips, this.requireContext())
 
         //Configure the swipe actions
-        val swipegesture = object : SwipeGesture(this.requireContext()){
+        val swipeGesture = object : SwipeGesture(this.requireContext()){
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 when(direction){
                     ItemTouchHelper.LEFT -> {
@@ -142,7 +142,7 @@ class MyTripsFragment : Fragment() {
                 }
             }
         }
-        val touchHelper = ItemTouchHelper(swipegesture)
+        val touchHelper = ItemTouchHelper(swipeGesture)
         touchHelper.attachToRecyclerView(binding.recyclerView)
         binding.recyclerView.adapter = tripAdapter
         tripAdapter.onItemClick = {

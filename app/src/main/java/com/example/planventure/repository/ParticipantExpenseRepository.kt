@@ -63,7 +63,6 @@ class ParticipantExpenseRepository(context: Context):
 
     /**
      * gets the triple with participant id, expense id and paid amount
-     * @param pid : foreign key of the participant
      * @param eid : foreign key of the expense
      * @return ArrayList of Triples with participant id, expense id and paid amount
      */

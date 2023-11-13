@@ -1,7 +1,6 @@
 package com.example.planventure
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -50,14 +49,14 @@ class ExpenseInformationActivity : AppCompatActivity() {
         val expense = expenseService.getExpenseById(expenseId)
         if (expense != null) {
             binding.nameOfExpense.text = "Name: ${expense.getName()}"
-            binding.amountExpense.text = "Amount: ${expense.getAmount()}€"
+            binding.amountExpense.text = "Amount: ${String.format("%.2f",expense.getAmount())}€"
 
             val participantList = participantService.getParticipantsByExpense(expense)
             participantList.forEach{
                 if(it.second){
                     binding.paidBy.text = "Paid by: ${it.first?.getName()}"
                 }
-                var participant = TextView(applicationContext)
+                val participant = TextView(applicationContext)
                 participant.text = it.first?.getName()
                 participant.textSize = 20f
                 binding.linearLayout.addView(participant)

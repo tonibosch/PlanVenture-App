@@ -4,14 +4,9 @@ import android.annotation.SuppressLint
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.planventure.databinding.ActivityBalanceBinding
-import com.example.planventure.databinding.ActivityCreateTripBinding
-import com.example.planventure.databinding.FragmentMyTripsBinding
-import com.example.planventure.repository.ParticipantExpenseRepository
 import com.example.planventure.repository.ParticipantParticipantRepository
 import com.example.planventure.repository.ParticipantRepository
 import com.example.planventure.repository.TripRepository
@@ -44,7 +39,7 @@ class BalanceActivity : AppCompatActivity() {
 
         val tripId = intent.getLongExtra(TripInformationActivity.TRIP_ID_TRIP_PARTICIPANTS, 0)
 
-        balanceAdapter = BalanceAdapter(getDepths(tripId), applicationContext)
+        balanceAdapter = BalanceAdapter(getDepths(tripId))
 
         binding.depthRV.adapter = balanceAdapter
         binding.depthRV.layoutManager = LinearLayoutManager(this)
@@ -54,10 +49,6 @@ class BalanceActivity : AppCompatActivity() {
         }
 
         binding.textView12.text = "Balances"
-
-
-
-
 
     }
 

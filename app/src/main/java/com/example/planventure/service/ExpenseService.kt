@@ -17,14 +17,10 @@ class ExpenseService(applicationContext: Context) {
     private val expenseRepository = ExpenseRepository(applicationContext)
     private val participantExpenseRepository = ParticipantExpenseRepository(applicationContext)
     private val participantParticipantRepository = ParticipantParticipantRepository(applicationContext)
-    fun getAllExpenses(): ArrayList<Expense> {
-        return expenseRepository.findAll()
-    }
 
     fun getAllExpensesById(id: Long): ArrayList<Expense> {
         return expenseRepository.getExpensesById(id)
     }
-
 
     fun addExpenseToDb(expense: Expense, trip: Trip?) {
         if (trip != null) {
@@ -49,13 +45,13 @@ class ExpenseService(applicationContext: Context) {
         if (expense != null) {
 
             var isInTrip = paidByContained(participants, paidBy!!)
-            if (paidBy != null && !paidByContained(participants, paidBy)) {
+            if (!isInTrip) {
                 participants.add(paidBy)
                 isInTrip = false
             }
 
             participants.forEach {
-                if (it.getName() == paidBy?.getName()) {
+                if (it.getName() == paidBy.getName()) {
                     participantExpenseRepository.addToDB(
                         Pair(
                             Triple(
@@ -76,9 +72,8 @@ class ExpenseService(applicationContext: Context) {
             }
             if(isInTrip){
                 for (p in participants){
-                    if (paidBy != null) {
-                        if(p.getId() == paidBy.getId()) continue
-                    }
+                    if(p.getId() == paidBy.getId()) continue
+
                     participantParticipantRepository.addToDB(Pair(
                         Triple(
                             paidBy.getId().toInt(),
@@ -89,9 +84,8 @@ class ExpenseService(applicationContext: Context) {
                 }
             }else{
                 for (p in participants){
-                    if (paidBy != null) {
-                        if(p.getId() == paidBy.getId()) continue
-                    }
+                    if(p.getId() == paidBy.getId()) continue
+
                     participantParticipantRepository.addToDB(Pair(
                         Triple(
                             paidBy.getId().toInt(),
@@ -116,10 +110,12 @@ class ExpenseService(applicationContext: Context) {
         return false
     }
 
-    fun deleteExpense(expense: Expense?) {
-        if (expense != null) {
-            expenseRepository.deleteById(expense.getId().toInt())
+    fun getTotal(tripId: Long): Float{
+        var totalAmount = 0f
+        getAllExpensesById(tripId).forEach{
+            totalAmount += it.getAmount()
         }
+        return totalAmount
     }
 }
 

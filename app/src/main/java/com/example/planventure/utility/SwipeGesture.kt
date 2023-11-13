@@ -1,5 +1,6 @@
 package com.example.planventure.utility
 
+//noinspection SuspiciousImport
 import android.R
 import android.content.Context
 import android.graphics.Canvas
@@ -11,8 +12,8 @@ import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
 
 abstract class SwipeGesture(context: Context): ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
 
-    val deleteColor = ContextCompat.getColor(context,R.color.holo_red_light)
-    val archiveColor = ContextCompat.getColor(context,R.color.holo_green_light)
+    private val deleteColor = ContextCompat.getColor(context,R.color.holo_red_light)
+    private val archiveColor = ContextCompat.getColor(context,R.color.holo_green_light)
     //val deleteIcon = R.drawable.baseline_delete_24
     //val archiveIcon = R.drawable.baseline_archive_24
     override fun onMove(recyclerView: RecyclerView,viewHolder: RecyclerView.ViewHolder,target: RecyclerView.ViewHolder): Boolean {

@@ -5,13 +5,9 @@ import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
-import android.widget.ImageButton
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.planventure.databinding.ActivityAllExpenseBinding
-import com.example.planventure.databinding.ActivityCreateExpenseBinding
 import com.example.planventure.service.ExpenseService
 import com.example.planventure.service.TripService
 import com.example.planventure.utility.ExpenseAdapter
@@ -26,7 +22,7 @@ class ExpenseActivity : AppCompatActivity() {
     //Adapters
 
     @RequiresApi(Build.VERSION_CODES.P)
-    @SuppressLint("MissingInflatedId")
+    @SuppressLint("MissingInflatedId", "SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAllExpenseBinding.inflate(layoutInflater)
@@ -36,7 +32,7 @@ class ExpenseActivity : AppCompatActivity() {
         val tripId = intent.getLongExtra(TripInformationActivity.TRIP_ID_TRIP_PARTICIPANTS, 0)
 
         expenseService = ExpenseService(applicationContext)
-        expenseAdapter = ExpenseAdapter(expenseService.getAllExpensesById(tripId), applicationContext)
+        expenseAdapter = ExpenseAdapter(expenseService.getAllExpensesById(tripId))
 
 
         binding.recyclerViewAllExpenses.adapter = expenseAdapter
@@ -58,5 +54,8 @@ class ExpenseActivity : AppCompatActivity() {
             intent.putExtra(TripInformationActivity.TRIP_ID_TRIP_PARTICIPANTS, tripId)
             startActivity(intent)
         }
+
+        var totalAmount = expenseService.getTotal(tripId)
+        binding.totalAmount.text = "Total: ${String.format("%.2f",totalAmount)}€"
     }
 }

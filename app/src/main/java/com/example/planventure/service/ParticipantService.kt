@@ -33,7 +33,7 @@ class ParticipantService(
         } else if (getParticipantsByTrip(t).size + 1 > t.getMaxNumberOfParticipants()) {
             throw MaxParticipantsOverflow("reached maximum number of Participants")
         } /*else if (checkParticipantInTrip(t, p.getName())){
-            throw MultipleNamesExeption("name is already in the trip")
+            throw MultipleNamesException("name is already in the trip")
         }*/
         else {
             participantRepository.addToDB(Pair(p, t.getId().toInt()))
@@ -51,15 +51,6 @@ class ParticipantService(
 
     fun getParticipantsByTrip(t: Trip): ArrayList<Participant> {
         return participantRepository.getParticipantsByTrip(t)
-    }
-
-    fun getAllParticipants(): ArrayList<String> {
-        val temp = participantRepository.findAll()
-        val participants = ArrayList<String>()
-        temp.forEach {
-            participants.add(it.getName())
-        }
-        return participants
     }
 
     fun deleteParticipantById(id: Long, tripId: Long) {
@@ -82,7 +73,7 @@ class ParticipantService(
     }
 
     fun getParticipantsByExpense(expense: Expense): ArrayList<Pair<Participant?, Boolean>>{
-        var listOfParticipant = ArrayList<Pair<Participant?, Boolean>>()
+        val listOfParticipant = ArrayList<Pair<Participant?, Boolean>>()
         participantExpenseRepository.getByExpenseId(expense.getId()).forEach{
             if(it.third == 0f){
                 listOfParticipant.add(Pair(participantRepository.getById(it.first.toLong()),false))

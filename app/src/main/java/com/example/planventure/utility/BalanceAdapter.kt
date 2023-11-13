@@ -1,7 +1,6 @@
 package com.example.planventure.utility
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,13 +10,11 @@ import com.example.planventure.R
 
 class BalanceAdapter(
     private var debts: ArrayList<Triple<String,String,Float>>,
-    private val applicationContext: Context,
-
-) : RecyclerView.Adapter<BalanceAdapter.BalancesViewHolder>(){
+    ) : RecyclerView.Adapter<BalanceAdapter.BalancesViewHolder>(){
     class BalancesViewHolder(view: View) : RecyclerView.ViewHolder(view)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BalancesViewHolder {
-        return BalanceAdapter.BalancesViewHolder(
+        return BalancesViewHolder(
             LayoutInflater.from(parent.context).inflate(
                 R.layout.fragment_each_expense,
                 parent,

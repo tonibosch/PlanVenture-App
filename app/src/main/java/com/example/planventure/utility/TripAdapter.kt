@@ -1,5 +1,6 @@
 package com.example.planventure.utility
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Build
 import android.view.LayoutInflater
@@ -15,7 +16,11 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 @RequiresApi(Build.VERSION_CODES.P)
-class TripAdapter(var mList: ArrayList<Trip>, private val applicationContext: Context): RecyclerView.Adapter<TripAdapter.TripViewHolder>() {
+@SuppressLint("NotifyDataSetChanged")
+class TripAdapter(
+    private var mList: ArrayList<Trip>,
+    applicationContext: Context
+    ): RecyclerView.Adapter<TripAdapter.TripViewHolder>() {
 
     private val tripService = TripService(applicationContext)
 
@@ -36,6 +41,7 @@ class TripAdapter(var mList: ArrayList<Trip>, private val applicationContext: Co
         return mList.size
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: TripViewHolder, position: Int) {
         val trip = mList[position]
         holder.name.text = "        ${trip.getName()}"

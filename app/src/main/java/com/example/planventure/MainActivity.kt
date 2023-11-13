@@ -3,7 +3,6 @@ package com.example.planventure
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.widget.Button
 import androidx.annotation.RequiresApi
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
@@ -11,7 +10,6 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import com.example.planventure.database.DataBaseHelper
 import com.example.planventure.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {

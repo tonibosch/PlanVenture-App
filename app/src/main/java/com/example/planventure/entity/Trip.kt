@@ -25,43 +25,43 @@ import java.util.Date
  * @see TRIP_STATE
  */
 class Trip(
-    /*
+    /**
      * id to identify trip in database
      */
     private var id: Long,
-    /*
+    /**
      * name to identify trip in UI
      */
     private var name: String,
-    /*
+    /**
      * date when the trip begins with format yyyy-MM-dd
      */
     private var startDate: Date,
-    /*
+    /**
      * date when the trip ends with format yyyy-MM-dd
      */
     private var endDate: Date,
-    /*
+    /**
      * location as String where the trip is supposed to take place
      */
     private var location: String,
-    /*
+    /**
      * maximum number of participants, that is allowed to participate at the trip
      */
     private var maxNumberOfParticipants: Int,
-    /*
+    /**
      * small description of the trip and how the trip will look like
      */
     private var description: String,
-    /*
+    /**
      * list of all participating persons
      */
     private var participants: ArrayList<Participant>,
-    /*
+    /**
      * list of all expenses that occurred during the trip
      */
     private var expenses: ArrayList<Expense>,
-    /*
+    /**
      * State of the trip.
      * Can be planning, started or finished
      */
