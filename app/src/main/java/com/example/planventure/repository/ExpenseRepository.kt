@@ -51,6 +51,29 @@ class ExpenseRepository(context: Context): SQLiteRepository<Expense, Int>(contex
         return read(query)
     }
 
+    fun storePayer(b: Boolean, e: Expense): Boolean{
+        val query = "UPDATE $EXPENSE_TABLE SET $COLUMN_EXPENSE_PAYER_PARTICIPATES = ${
+            if(b) 1 else 0
+        } WHERE ID = ${e.getId()}"
+        return execute(query)
+    }
+
+    fun getPayer(e: Expense): Boolean{
+        val query = "SELECT $COLUMN_EXPENSE_PAYER_PARTICIPATES FROM $EXPENSE_TABLE WHERE ID = ${e.getId()}"
+        val cursor = rdb.rawQuery(query, null)
+
+        /*
+         * if there is a result, get the first value from the result
+         */
+        val number = if (cursor.moveToFirst())
+            cursor.getInt(0)
+        else
+            0
+
+        cursor.close()
+        return number == 1
+    }
+
     override fun buildObjectFromCursor(c: Cursor): Expense {
         val id = c.getInt(0)
         val name = c.getString(1)
@@ -66,6 +89,7 @@ class ExpenseRepository(context: Context): SQLiteRepository<Expense, Int>(contex
         val cv = ContentValues()
         cv.put(COLUMN_EXPENSE_NAME, e.getName())
         cv.put(COLUMN_EXPENSE_AMOUNT, e.getAmount())
+        cv.put(COLUMN_EXPENSE_PAYER_PARTICIPATES, 1)
         return cv
     }
 }

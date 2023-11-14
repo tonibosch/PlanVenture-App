@@ -59,6 +59,7 @@ class ExpenseService(applicationContext: Context) {
                 if (!isInTrip) {
                     participants.add(paidBy)
                     isInTrip = false
+                    expenseRepository.storePayer(false, expense)
                 }
 
                 participants.forEach {
@@ -85,43 +86,40 @@ class ExpenseService(applicationContext: Context) {
                         )
                     }
                 }
-                if (isInTrip) {
-                    for (p in participants) {
-                        if (p.getId() == paidBy.getId()) continue
 
-                        participantParticipantRepository.addToDB(
-                            Pair(
-                                Triple(
-                                    paidBy.getId().toInt(),
-                                    p.getId().toInt(),
-                                    expense.getAmount() / participants.size
-                                ),
-                                -1
-                            )
-                        )
-                    }
-                } else {
-                    for (p in participants) {
-                        if (p.getId() == paidBy.getId()) continue
-
-                        participantParticipantRepository.addToDB(
-                            Pair(
-                                Triple(
-                                    paidBy.getId().toInt(),
-                                    p.getId().toInt(),
-                                    expense.getAmount() / (participants.size - 1)
-                                ),
-                                -1
-                            )
-                        )
-                    }
-                }
+                addDebtsToDB(participants, isInTrip, paidBy, expense)
             }
         } catch (e: Error) {
             throw e
         }
     }
 
+    private fun addDebtsToDB(
+        participants: ArrayList<Participant>,
+        inTrip: Boolean,
+        paidBy: Participant,
+        expense: Expense
+    ) {
+        for (p in participants) {
+            if (p.getId() == paidBy.getId()) continue
+
+            participantParticipantRepository.addToDB(
+                Pair(
+                    Triple(
+                        paidBy.getId().toInt(),
+                        p.getId().toInt(),
+                        expense.getAmount() / if(inTrip)participants.size else (participants.size - 1)
+                    ),
+                    -1
+                )
+            )
+        }
+    }
+
+
+    fun getIfPayerParticipated(e: Expense): Boolean{
+        return expenseRepository.getPayer(e)
+    }
 
     private fun paidByContained(
         participants: ArrayList<Participant>,
@@ -155,7 +153,7 @@ class ExpenseService(applicationContext: Context) {
         if (p.isEmpty()) {
             throw EmptyDataException("Please check at least on participant")
         } else if (p.size == 1 && p[0].getId() == paidBy?.getId()) {
-            throw EmptyDataException("Please check at least on participant other than the one who paid")
+            throw EmptyDataException("Please check at least one participant other than the one who paid")
         }
     }
 }

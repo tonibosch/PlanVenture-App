@@ -52,12 +52,13 @@ class ExpenseInformationActivity : AppCompatActivity() {
             binding.amountExpense.text = "Amount: ${String.format("%.2f",expense.getAmount())}€"
 
             val participantList = participantService.getParticipantsByExpense(expense)
-            participantList.forEach{
-                if(it.second){
-                    binding.paidBy.text = "Paid by: ${it.first?.getName()}"
+            for(p in participantList){
+                if(p.second){
+                    binding.paidBy.text = "Paid by: ${p.first?.getName()}"
+                    if(!expenseService.getIfPayerParticipated(expense)) continue
                 }
                 val participant = TextView(applicationContext)
-                participant.text = it.first?.getName()
+                participant.text = p.first?.getName()
                 participant.textSize = 20f
                 binding.linearLayout.addView(participant)
             }

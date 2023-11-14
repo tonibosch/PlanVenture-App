@@ -20,7 +20,7 @@ import androidx.annotation.RequiresApi
 @RequiresApi(Build.VERSION_CODES.P)
 open class DataBaseHelper(
     context: Context
-) : SQLiteOpenHelper(context, "planventure.db", null, 12) {
+) : SQLiteOpenHelper(context, "planventure.db", null, 13) {
 
     companion object {
         const val TRIP_TABLE: String = "TRIP_TABLE"
@@ -38,6 +38,7 @@ open class DataBaseHelper(
         const val EXPENSE_TABLE: String = "EXPENSE_TABLE"
         const val COLUMN_EXPENSE_NAME: String = "EXPENSE_NAME"
         const val COLUMN_EXPENSE_AMOUNT: String = "EXPENSE_AMOUNT"
+        const val COLUMN_EXPENSE_PAYER_PARTICIPATES: String = "EXPENSE_PAYER_PARTICIPATES"
 
         const val COLUMN_TRIP_FOREIGN_KEY: String = "TRIP_FOREIGN_KEY"
 
@@ -72,7 +73,8 @@ open class DataBaseHelper(
 
         val createExpenseTableStatement =
             "CREATE TABLE $EXPENSE_TABLE (ID INTEGER PRIMARY KEY AUTOINCREMENT, $COLUMN_EXPENSE_NAME TEXT, " +
-                    "$COLUMN_EXPENSE_AMOUNT REAL, $COLUMN_TRIP_FOREIGN_KEY INTEGER REFERENCES $TRIP_TABLE ON DELETE CASCADE ON UPDATE CASCADE)"
+                    "$COLUMN_EXPENSE_AMOUNT REAL, $COLUMN_TRIP_FOREIGN_KEY INTEGER REFERENCES $TRIP_TABLE ON DELETE CASCADE ON UPDATE CASCADE," +
+                    "$COLUMN_EXPENSE_PAYER_PARTICIPATES INTEGER)"
         db.execSQL(createExpenseTableStatement)
 
         val createExpenseParticipantTable =
