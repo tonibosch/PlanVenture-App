@@ -65,7 +65,7 @@ class ExpenseActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        var totalAmount = expenseService.getTotal(tripId)
+        val totalAmount = expenseService.getTotal(tripId)
         binding.totalAmount.text = "Total: ${String.format("%.2f", totalAmount)}€"
     }
 }
