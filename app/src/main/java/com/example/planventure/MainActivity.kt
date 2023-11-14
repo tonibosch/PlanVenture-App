@@ -25,8 +25,6 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        supportActionBar?.hide()
-
         val navView: BottomNavigationView = binding.navView
 
         val navController = findNavController(R.id.mainContainer)
@@ -37,6 +35,7 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+        supportActionBar?.title = "PlanVenture"
     }
 
 }
