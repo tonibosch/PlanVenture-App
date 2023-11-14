@@ -21,8 +21,8 @@ class ExpenseService(applicationContext: Context) {
     private val participantParticipantRepository =
         ParticipantParticipantRepository(applicationContext)
 
-    fun getAllExpensesById(id: Long): ArrayList<Expense> {
-        return expenseRepository.getExpensesById(id)
+    fun getAllExpensesByTripId(id: Long): ArrayList<Expense> {
+        return expenseRepository.getExpensesByTripId(id)
     }
 
     fun addExpenseToDb(name: String, amount: String, trip: Trip?) {
@@ -135,7 +135,7 @@ class ExpenseService(applicationContext: Context) {
 
     fun getTotal(tripId: Long): Float {
         var totalAmount = 0f
-        getAllExpensesById(tripId).forEach {
+        getAllExpensesByTripId(tripId).forEach {
             totalAmount += it.getAmount()
         }
         return totalAmount

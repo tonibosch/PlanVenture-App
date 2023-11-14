@@ -37,7 +37,7 @@ class ExpenseActivity : AppCompatActivity() {
         val trip = tripService.getTripById(tripId)
 
         expenseService = ExpenseService(applicationContext)
-        expenseAdapter = ExpenseAdapter(expenseService.getAllExpensesById(tripId))
+        expenseAdapter = ExpenseAdapter(expenseService.getAllExpensesByTripId(tripId))
 
 
         binding.recyclerViewAllExpenses.adapter = expenseAdapter
