@@ -16,8 +16,10 @@
     <string name="create_your_trip">Create your trip</string>
     <string name="destination">Destination:</string>
     <string name="end_date">End Date:</string>
-    <string name="number_participants">Number participants:</string>
+    <string name="number_participants">Number of participants:</string>
     <string name="name">Name:</string>
     <string name="start_date">Start Date:</string>
     <string name="enter_the_name">Enter the name</string>
+    <string name="enter_the_description">Enter the description</string>
+
 </resources>

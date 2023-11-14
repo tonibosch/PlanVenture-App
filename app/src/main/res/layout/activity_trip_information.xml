@@ -9,28 +9,24 @@
 
     <Button
         android:id="@+id/updateTripButton"
-        android:layout_width="wrap_content"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="100dp"
-        android:layout_marginBottom="160dp"
+        android:layout_marginEnd="88dp"
+        android:layout_marginBottom="92dp"
         android:text="Update"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/cancelButton_trip_information" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <Button
         android:id="@+id/cancelButton_trip_information"
         android:layout_width="100sp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="100dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="160dp"
+        android:layout_marginStart="88dp"
+        android:layout_marginBottom="92dp"
         android:backgroundTint="@color/white"
         android:text="@string/cancel"
         android:textColor="#28B67E"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/updateTripButton"
         app:layout_constraintStart_toStartOf="parent"
         app:strokeColor="#28B67E"
         app:strokeWidth="1sp" />
@@ -52,16 +48,28 @@
 
     <EditText
         android:id="@+id/maxPartNumber_editText_tripInformation"
-        android:layout_width="100dp"
+        android:layout_width="115dp"
         android:layout_height="45dp"
         android:layout_marginStart="7dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="52dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="37dp"
         android:ems="10"
         android:inputType="numberSigned"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView9"
+        app:layout_constraintTop_toBottomOf="@+id/location_editText_tripInformation" />
+
+    <TextView
+        android:id="@+id/textView9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Number of participants:"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.207"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/location_editText_tripInformation" />
 
     <ImageButton
@@ -80,7 +88,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Trip Information"
-        android:textSize="24sp"
+        android:layout_marginTop="25dp"
+        android:textSize="35sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.445"
@@ -92,13 +102,13 @@
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="44dp"
+        android:layout_marginTop="30dp"
         android:text="Name:"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.11"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/backButton_TripInfo" />
+        app:layout_constraintTop_toBottomOf="@+id/tripInformationHeader" />
 
     <TextView
         android:id="@+id/Description"
@@ -148,23 +158,11 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
-    <TextView
-        android:id="@+id/textView9"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:text="Number of participants:"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.202"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/location_editText_tripInformation" />
-
     <EditText
         android:id="@+id/tripName_editText_tripInformation"
         android:layout_width="275dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="9dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="15dp"
         android:ems="10"
         android:hint="@string/enter_the_name"
@@ -182,6 +180,7 @@
         android:layout_marginTop="4dp"
         android:layout_marginEnd="25dp"
         android:ems="10"
+        android:hint="@string/enter_the_description"
         android:inputType="text"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -228,25 +227,21 @@
 
     <Button
         android:id="@+id/gotoParticipants_Button_tripInformation"
-        android:layout_width="wrap_content"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="42dp"
+        android:layout_marginStart="38dp"
         android:layout_marginTop="39dp"
-        android:layout_marginBottom="26dp"
         android:text="participants"
-        app:layout_constraintBottom_toTopOf="@+id/cancelButton_trip_information"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView9" />
 
     <Button
         android:id="@+id/ExpensesButton"
-        android:layout_width="wrap_content"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="29dp"
-        android:layout_marginEnd="42dp"
-        android:layout_marginBottom="26dp"
+        android:layout_marginEnd="38dp"
         android:text="Expenses"
-        app:layout_constraintBottom_toTopOf="@+id/updateTripButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/maxPartNumber_editText_tripInformation" />
 
@@ -254,11 +249,12 @@
         android:id="@+id/buttonChangeState"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="41dp"
+        android:layout_marginStart="13dp"
         android:layout_marginTop="5dp"
         android:layout_marginEnd="20dp"
         android:text="Status"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.684"
         app:layout_constraintStart_toEndOf="@+id/tripInformationHeader"
         app:layout_constraintTop_toTopOf="parent" />
 
