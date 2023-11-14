@@ -8,6 +8,7 @@ import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.planventure.Exception.EmptyDataException
 import com.example.planventure.Exception.MaxParticipantsOverflow
+import com.example.planventure.Exception.MultipleNamesException
 import com.example.planventure.databinding.ActivityTripParticipantsBinding
 import com.example.planventure.entity.Participant
 import com.example.planventure.service.ParticipantService
@@ -59,6 +60,8 @@ class TripParticipantsActivity : AppCompatActivity() {
             } catch (e:EmptyDataException){
                 Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
             } catch (e:MaxParticipantsOverflow){
+                Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
+            } catch (e: MultipleNamesException){
                 Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
             }
         }

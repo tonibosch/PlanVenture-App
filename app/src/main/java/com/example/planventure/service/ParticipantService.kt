@@ -5,6 +5,7 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import com.example.planventure.Exception.EmptyDataException
 import com.example.planventure.Exception.MaxParticipantsOverflow
+import com.example.planventure.Exception.MultipleNamesException
 import com.example.planventure.entity.Expense
 import com.example.planventure.entity.Participant
 import com.example.planventure.entity.Trip
@@ -32,9 +33,9 @@ class ParticipantService(
             throw EmptyDataException("name can not be empty")
         } else if (getParticipantsByTrip(t).size + 1 > t.getMaxNumberOfParticipants()) {
             throw MaxParticipantsOverflow("reached maximum number of Participants")
-        } /*else if (checkParticipantInTrip(t, p.getName())){
+        } else if (checkParticipantInTrip(t, p.getName())){
             throw MultipleNamesException("name is already in the trip")
-        }*/
+        }
         else {
             participantRepository.addToDB(Pair(p, t.getId().toInt()))
             participantsAdapter?.updateParticipants(t.getId())
@@ -42,11 +43,12 @@ class ParticipantService(
     }
 
     private fun checkParticipantInTrip(t: Trip, pName: String): Boolean {
-        val participantNames = ArrayList<String>()
         t.getParticipants().forEach {
-            participantNames.add(it.getName())
+            if(it.getName() == pName){
+                return true
+            }
         }
-        return !participantNames.contains(pName)
+        return false
     }
 
     fun getParticipantsByTrip(t: Trip): ArrayList<Participant> {

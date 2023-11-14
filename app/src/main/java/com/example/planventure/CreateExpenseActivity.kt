@@ -7,8 +7,10 @@ import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.planventure.Exception.EmptyDataException
 import com.example.planventure.databinding.ActivityCreateExpenseBinding
 import com.example.planventure.entity.Expense
 import com.example.planventure.service.ExpenseService
@@ -97,23 +99,26 @@ class CreateExpenseActivity : AppCompatActivity() {
         }
 
         binding.createExpenseButtonCreateExpenses.setOnClickListener {
-            val expenseId = -1L
-            val expense = Expense(
-                expenseId,
-                binding.expenseNameEditText.text.toString(),
-                binding.expenseAmountEditText.text.toString().toFloat()
-            )
-            expenseService.addExpenseToDb(expense, trip)
-            expenseService.addExpenseParticipantsToDb(trip?.let { it1 ->
-                expenseService.getExpenseByName(
-                    expense.getName(),
-                    it1
+            try {
+                val name = binding.expenseNameEditText.text.toString()
+                val amount = binding.expenseAmountEditText.text.toString()
+
+                expenseService.addExpenseToDb(name, amount, trip)
+                expenseService.addExpenseParticipantsToDb(
+                    trip?.let { it1 ->
+                        expenseService.getExpenseByName(
+                            name,
+                            it1
+                        )
+                    }, expenseParticipantAdapter.getCheckedParticipants(),
+                    expenseParticipantAdapter.paidBy
                 )
-            }, expenseParticipantAdapter.getCheckedParticipants(),
-                expenseParticipantAdapter.paidBy)
-            val intent = Intent(this, ExpenseActivity::class.java)
-            intent.putExtra(TripInformationActivity.TRIP_ID_TRIP_PARTICIPANTS,tripId)
-            startActivity(intent)
+                val intent = Intent(this, ExpenseActivity::class.java)
+                intent.putExtra(TripInformationActivity.TRIP_ID_TRIP_PARTICIPANTS, tripId)
+                startActivity(intent)
+            } catch (e:EmptyDataException){
+                Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
+            }
         }
     }
 }
