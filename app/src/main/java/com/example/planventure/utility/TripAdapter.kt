@@ -15,6 +15,13 @@ import com.example.planventure.service.TripService
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+/**
+ * RecyclerView Adapter for displaying a list of trips.
+ *
+ * @constructor Creates a TripAdapter with the specified list of trips and application context.
+ * @param mList The list of trips to be displayed.
+ * @param applicationContext The application context.
+ */
 @RequiresApi(Build.VERSION_CODES.P)
 @SuppressLint("NotifyDataSetChanged")
 class TripAdapter(
@@ -24,6 +31,13 @@ class TripAdapter(
 
     private val tripService = TripService(applicationContext)
 
+    /**
+     * ViewHolder class for holding trip item views.
+     *
+     * @property name The TextView displaying the trip name.
+     * @property dates The TextView displaying the trip start and end dates.
+     * @property location The TextView displaying the trip location.
+     */
     inner class TripViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         val name: TextView = itemView.findViewById(R.id.titleTv)
         val dates: TextView = itemView.findViewById(R.id.datesTv)
@@ -53,6 +67,12 @@ class TripAdapter(
         }
     }
 
+    /**
+     * Converts a Date object to a formatted date string.
+     *
+     * @param date The Date object to be converted.
+     * @return The formatted date string (yyyy-MM-dd).
+     */
     private fun convertDate(date: Date): String? {
         return try {
             val desiredFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
@@ -63,6 +83,11 @@ class TripAdapter(
         }
     }
 
+    /**
+     * Deletes a trip at the specified position.
+     *
+     * @param position The position of the trip to be deleted.
+     */
     fun deleteTrip(position: Int){
         val id = mList[position].getId()
         mList.removeAt(position)
@@ -70,12 +95,16 @@ class TripAdapter(
         notifyDataSetChanged()
     }
 
+    /**
+     * Archives a trip at the specified position with the selected status.
+     *
+     * @param position The position of the trip to be archived.
+     * @param statusSelected The selected status.
+     */
     fun archiveTrip(position: Int, statusSelected: String){
         val id = mList[position].getId()
         if(statusSelected == "PLANNING" || statusSelected == "STARTED") mList.removeAt(position)
         tripService.finishTripById(id)
         notifyDataSetChanged()
     }
-
-
 }
