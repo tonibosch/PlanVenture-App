@@ -31,7 +31,6 @@ import java.util.ArrayList
  * information.
  *
  * @property binding The binding object for the fragment's layout.
- * @property statusSelected The currently selected trip status filter. "ALL" by default.
  * @property trips A list of trips to display.
  * @property tripService The service responsible for managing trips.
  * @property tripAdapter The adapter for displaying trips in a RecyclerView.
@@ -40,7 +39,6 @@ import java.util.ArrayList
 class MyTripsFragment : Fragment() {
 
     private lateinit var binding: FragmentMyTripsBinding
-    private var statusSelected = "ALL"
     private var trips: ArrayList<Trip> = ArrayList()
     //Services
     private lateinit var tripService: TripService
@@ -92,7 +90,6 @@ class MyTripsFragment : Fragment() {
         binding.spinnerStatus.adapter = adapter
         binding.spinnerStatus.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                Log.d("statusSelected", binding.spinnerStatus.selectedItem.toString())
                 refreshTripList()
             }
             override fun onNothingSelected(p0: AdapterView<*>?) {}
@@ -119,7 +116,7 @@ class MyTripsFragment : Fragment() {
      * Refreshes the list of trips based on the selected trip status filter.
      */
     private fun refreshTripList() {
-        trips = when (statusSelected) {
+        trips = when (binding.spinnerStatus.selectedItem.toString()) {
             TRIP_STATE.PLANNING.toString() -> tripService.getTripsByState(TRIP_STATE.PLANNING)
             TRIP_STATE.STARTED.toString() -> tripService.getTripsByState(TRIP_STATE.STARTED)
             TRIP_STATE.FINISHED.toString() -> tripService.getTripsByState(TRIP_STATE.FINISHED)
@@ -136,9 +133,8 @@ class MyTripsFragment : Fragment() {
                         tripAdapter.deleteTrip(viewHolder.adapterPosition)
                     }
                     ItemTouchHelper.RIGHT -> {
-                        tripAdapter.archiveTrip(viewHolder.adapterPosition, statusSelected)
+                        tripAdapter.archiveTrip(viewHolder.adapterPosition, binding.spinnerStatus.selectedItem.toString())
                     }
-
                 }
             }
         }
