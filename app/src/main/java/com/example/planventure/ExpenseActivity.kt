@@ -49,7 +49,7 @@ class ExpenseActivity : AppCompatActivity() {
         }
 
         binding.addExpenseButton.setOnClickListener {
-            if (trip?.getParticipants()!!.size > 2) {
+            if (trip?.getParticipants()!!.size >= 2) {
                 val intent = Intent(this, CreateExpenseActivity::class.java)
                 intent.putExtra(TripInformationActivity.TRIP_ID_TRIP_PARTICIPANTS, tripId)
                 startActivity(intent)
@@ -60,9 +60,14 @@ class ExpenseActivity : AppCompatActivity() {
         }
 
         binding.balanceButton.setOnClickListener{
-            val intent = Intent(this, BalanceActivity::class.java)
-            intent.putExtra(TripInformationActivity.TRIP_ID_TRIP_PARTICIPANTS, tripId)
-            startActivity(intent)
+            if(expenseService.getAllExpensesByTripId(tripId).size != 0) {
+                val intent = Intent(this, BalanceActivity::class.java)
+                intent.putExtra(TripInformationActivity.TRIP_ID_TRIP_PARTICIPANTS, tripId)
+                startActivity(intent)
+            } else {
+                Toast.makeText(this, "You need at least one Expense to access the balance", Toast.LENGTH_SHORT)
+                    .show()
+            }
         }
 
         val totalAmount = expenseService.getTotal(tripId)
