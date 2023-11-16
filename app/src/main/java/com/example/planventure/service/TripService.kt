@@ -10,6 +10,7 @@ import com.example.planventure.Exception.EmptyDataException
 import com.example.planventure.Exception.MaxParticipantsOverflow
 import com.example.planventure.repository.ParticipantRepository
 import com.example.planventure.repository.TripRepository
+import java.lang.Exception
 import java.text.SimpleDateFormat
 import kotlin.collections.ArrayList
 
@@ -106,6 +107,8 @@ class TripService(
             throw EmptyDataException("Please enter a number of participants")
         } else if (maxParticipants.toInt() > 20) {
             throw MaxParticipantsOverflow("A trip cannot have more than 20 participants!")
+        } else if(maxParticipants.toInt() <= 1){
+            throw Exception("A trip cannot have less than 2 Participants")
         }
     }
 

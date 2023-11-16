@@ -1,13 +1,13 @@
 package com.example.planventure
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Intent
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.planventure.databinding.ActivityAllExpenseBinding
 import com.example.planventure.service.ExpenseService
@@ -24,6 +24,7 @@ class ExpenseActivity : AppCompatActivity() {
     private lateinit var tripService: TripService
     //Adapters
 
+
     @RequiresApi(Build.VERSION_CODES.P)
     @SuppressLint("MissingInflatedId", "SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,8 +37,6 @@ class ExpenseActivity : AppCompatActivity() {
 
         val tripId = intent.getLongExtra(TripInformationActivity.TRIP_ID_TRIP_PARTICIPANTS, 0)
         val status = intent?.extras?.getString("CURRENT_STATUS").toString()
-        Log.d("STATUSSSSSS", status+" "+tripId)
-        Log.d("ID", tripId.toString())
 
         val trip = tripService.getTripById(tripId)
 
@@ -80,5 +79,22 @@ class ExpenseActivity : AppCompatActivity() {
         val totalAmount = expenseService.getTotal(tripId)
         binding.totalAmount.text = "Total: ${String.format("%.2f", totalAmount)}€"
 
+    }
+    @Deprecated("Deprecated in Java")
+    @RequiresApi(Build.VERSION_CODES.P)
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK) {
+            if (data != null) {
+                refreshExpenseList(data.getLongExtra("TRIPID",1))
+            }       //When a new trip has been created, refresh the list of trips
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.P)
+    private fun refreshExpenseList(tripId:Long){
+        expenseAdapter = ExpenseAdapter(expenseService.getAllExpensesByTripId(tripId))
+        binding.recyclerViewAllExpenses.adapter = expenseAdapter
+        binding.recyclerViewAllExpenses.layoutManager = LinearLayoutManager(this)
     }
 }

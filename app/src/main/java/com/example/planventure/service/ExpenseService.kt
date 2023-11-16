@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Build
 import androidx.annotation.RequiresApi
 import com.example.planventure.Exception.EmptyDataException
+import com.example.planventure.Exception.MultipleNamesException
 import com.example.planventure.entity.Expense
 import com.example.planventure.entity.Participant
 import com.example.planventure.entity.Trip
@@ -11,6 +12,7 @@ import com.example.planventure.repository.ExpenseRepository
 import com.example.planventure.repository.ParticipantExpenseRepository
 import com.example.planventure.repository.ParticipantParticipantRepository
 import java.lang.Error
+import java.lang.Exception
 
 @RequiresApi(Build.VERSION_CODES.P)
 class ExpenseService(applicationContext: Context) {
@@ -25,28 +27,36 @@ class ExpenseService(applicationContext: Context) {
         return expenseRepository.getExpensesByTripId(id)
     }
 
-    fun addExpenseToDb(name: String, amount: String, trip: Trip?) {
+    fun addExpenseToDb(
+        name: String,
+        amount: String,
+        trip: Trip?,
+        participants: ArrayList<Participant>,
+        paidBy: Participant?
+    ) {
         try {
             if (trip != null) {
                 checkEmptyValues(name, amount)
+                checkMultipleName(name,trip)
+                checkEmptyParticipants(participants, paidBy)
                 val expense = Expense(-1, name, amount.toFloat())
                 expenseRepository.addToDB(Pair(expense, trip.getId().toInt()))
+                addExpenseParticipantsToDb(expense,participants,paidBy)
             }
         } catch (e: Error) {
             throw e
         }
     }
 
+
+
     fun getExpenseById(id: Long): Expense? {
         return expenseRepository.getById(id)
     }
 
-    fun getExpenseByName(eName: String, t: Trip): Expense {
-        return expenseRepository.getExpensesByTrip(t).filter { it.getName() == eName }[0]
 
-    }
 
-    fun addExpenseParticipantsToDb(
+    private fun addExpenseParticipantsToDb(
         expense: Expense?,
         participants: ArrayList<Participant>,
         paidBy: Participant?
@@ -54,7 +64,7 @@ class ExpenseService(applicationContext: Context) {
         try {
             if (expense != null) {
 
-                checkEmptyParticipants(participants, paidBy)
+
                 var isInTrip = paidByContained(participants, paidBy!!)
                 if (!isInTrip) {
                     participants.add(paidBy)
@@ -146,6 +156,8 @@ class ExpenseService(applicationContext: Context) {
             throw EmptyDataException("Please enter a name")
         } else if (amount.isEmpty()) {
             throw EmptyDataException("Please enter an amount")
+        } else if (amount.toFloat() <= 0f){
+            throw Exception("Please enter a larger amount than 0")
         }
     }
 
@@ -154,6 +166,14 @@ class ExpenseService(applicationContext: Context) {
             throw EmptyDataException("Please check at least on participant")
         } else if (p.size == 1 && p[0].getId() == paidBy?.getId()) {
             throw EmptyDataException("Please check at least one participant other than the one who paid")
+        }
+    }
+
+    private fun checkMultipleName(name: String, t:Trip) {
+        expenseRepository.getExpensesByTrip(t).forEach {
+            if(it.getName() == name){
+                throw MultipleNamesException("This name already exists for this trip")
+            }
         }
     }
 }

@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -109,7 +108,7 @@ class MyTripsFragment : Fragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == CREATE_TRIP_REQUEST && resultCode == Activity.RESULT_OK) {
-            refreshTripList()           //When a new trip has been created, refresh the list of trips
+            refreshTripList()         //When a new trip has been created, refresh the list of trips
         }
     }
     /**
