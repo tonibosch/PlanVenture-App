@@ -14,7 +14,7 @@
         android:layout_marginEnd="88dp"
         android:layout_marginBottom="16dp"
         android:text="@string/update"
-        android:textColor="#4A148C"
+        android:textColor="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -200,7 +200,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="7dp"
         android:text="@string/select_datesTripInformation"
-        android:textColor="#4A148C"
+        android:textColor="#FFFFFF"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.145"
@@ -242,7 +242,7 @@
         android:layout_marginStart="38dp"
         android:layout_marginTop="39dp"
         android:text="@string/participantsTI"
-        android:textColor="#4A148C"
+        android:textColor="#FFFFFF"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView9"
         tools:ignore="TextSizeCheck" />
@@ -251,11 +251,11 @@
         android:id="@+id/ExpensesButton"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="29dp"
-        android:layout_marginEnd="38dp"
+        android:layout_marginStart="35dp"
+        android:layout_marginTop="26dp"
         android:text="@string/expenses"
-        android:textColor="#4A148C"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:textColor="#FFFFFF"
+        app:layout_constraintStart_toEndOf="@+id/gotoParticipants_Button_tripInformation"
         app:layout_constraintTop_toBottomOf="@+id/maxPartNumber_editText_tripInformation" />
 
     <Button
@@ -266,7 +266,7 @@
         android:layout_marginTop="5dp"
         android:layout_marginEnd="20dp"
         android:text="@string/status"
-        android:textColor="#4A148C"
+        android:textColor="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.684"
         app:layout_constraintStart_toEndOf="@+id/tripInformationHeader"
