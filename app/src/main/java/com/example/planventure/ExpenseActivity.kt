@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -34,6 +35,10 @@ class ExpenseActivity : AppCompatActivity() {
         tripService = TripService(applicationContext)
 
         val tripId = intent.getLongExtra(TripInformationActivity.TRIP_ID_TRIP_PARTICIPANTS, 0)
+        val status = intent?.extras?.getString("CURRENT_STATUS").toString()
+        Log.d("STATUSSSSSS", status+" "+tripId)
+        Log.d("ID", tripId.toString())
+
         val trip = tripService.getTripById(tripId)
 
         expenseService = ExpenseService(applicationContext)
@@ -47,6 +52,8 @@ class ExpenseActivity : AppCompatActivity() {
         binding.backButtonExpenses.setOnClickListener {
             this.finish()
         }
+
+        if(status == "FINISHED") binding.addExpenseButton.isEnabled = false
 
         binding.addExpenseButton.setOnClickListener {
             if (trip?.getParticipants()!!.size >= 2) {
@@ -72,5 +79,6 @@ class ExpenseActivity : AppCompatActivity() {
 
         val totalAmount = expenseService.getTotal(tripId)
         binding.totalAmount.text = "Total: ${String.format("%.2f", totalAmount)}€"
+
     }
 }

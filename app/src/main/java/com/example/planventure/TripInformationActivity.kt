@@ -78,11 +78,12 @@ class TripInformationActivity : AppCompatActivity() {
             TRIP_STATE.PLANNING -> binding.buttonChangeState.text = "START"
             TRIP_STATE.STARTED -> {
                 binding.buttonChangeState.text = "FINISH"
-                disableEditText()
+                disableChangeTripInformation()
             }
             else -> {
                 binding.buttonChangeState.text = "FINISHED"
-                disableEditText()
+                disableChangeTripInformation()
+                disableAddExpensesAndParticipants()
             }
         }
 
@@ -92,7 +93,7 @@ class TripInformationActivity : AppCompatActivity() {
             if(currentStatus == TRIP_STATE.PLANNING) {
                 binding.buttonChangeState.text = "FINISH"
                 currentStatus = TRIP_STATE.STARTED
-                disableEditText()
+                disableChangeTripInformation()
                 tripService.updateTrip(tripId, Trip(1, binding.tripNameEditTextTripInformation.text.toString(), formatter.parse(binding.startDateTextViewTripInformation.text.toString()),
                     formatter.parse(binding.endDateTextViewTripInformation.text.toString()), binding.locationEditTextTripInformation.text.toString(), binding.maxPartNumberEditTextTripInformation.text.toString().toInt(),
                     binding.tripDescriptionEditTextTripInformation.text.toString(), ArrayList(), ArrayList(),TRIP_STATE.STARTED))
@@ -101,6 +102,7 @@ class TripInformationActivity : AppCompatActivity() {
             else if(currentStatus == TRIP_STATE.STARTED){
                 binding.buttonChangeState.text = "FINISHED"
                 currentStatus = TRIP_STATE.FINISHED
+                disableAddExpensesAndParticipants()
                 tripService.updateTrip(tripId, Trip(1, binding.tripNameEditTextTripInformation.text.toString(), formatter.parse(binding.startDateTextViewTripInformation.text.toString()),
                     formatter.parse(binding.endDateTextViewTripInformation.text.toString()), binding.locationEditTextTripInformation.text.toString(), binding.maxPartNumberEditTextTripInformation.text.toString().toInt(),
                     binding.tripDescriptionEditTextTripInformation.text.toString(),ArrayList(), ArrayList(), TRIP_STATE.FINISHED))
@@ -118,6 +120,7 @@ class TripInformationActivity : AppCompatActivity() {
         binding.ExpensesButton.setOnClickListener {
             val intent = Intent(this, ExpenseActivity::class.java)
             intent.putExtra(TRIP_ID_TRIP_PARTICIPANTS, tripId)
+            intent.putExtra("CURRENT_STATUS",binding.buttonChangeState.text as String)
             startActivity(intent)
         }
 
@@ -163,13 +166,18 @@ class TripInformationActivity : AppCompatActivity() {
     /**
      * Disables the editing of trip information fields.
      */
-    private fun disableEditText() {
+    private fun disableChangeTripInformation() {
         binding.tripNameEditTextTripInformation.isEnabled = false
         binding.startDateTextViewTripInformation.isEnabled = false
         binding.endDateTextViewTripInformation.isEnabled = false
         binding.locationEditTextTripInformation.isEnabled = false
         binding.maxPartNumberEditTextTripInformation.isEnabled = false
         binding.tripDescriptionEditTextTripInformation.isEnabled = false
+        binding.dateRangePickerButtonTripInformation.isEnabled = false
+    }
+
+    private fun disableAddExpensesAndParticipants(){
+        binding.gotoParticipantsButtonTripInformation.isEnabled = false
     }
 }
 
