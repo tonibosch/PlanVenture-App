@@ -73,7 +73,7 @@ class MyTripsFragment : Fragment() {
         //tripService.upgrade()
 
         //Configure the button to navigate to the screen to create a new trip.
-        binding.button2.setOnClickListener {
+        binding.buttonCreateTrip.setOnClickListener {
             val intent = Intent(container!!.context, CreateTripActivity::class.java)
             startActivityForResult(intent, CREATE_TRIP_REQUEST)
         }

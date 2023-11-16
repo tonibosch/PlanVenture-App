@@ -12,6 +12,6 @@
         android:layout_height="match_parent"
         android:textSize="35sp"
         android:textStyle="bold"
-        android:text="Public Trips" />
+        android:text="@string/public_trips" />
 
 </FrameLayout>

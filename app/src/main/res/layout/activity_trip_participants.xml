@@ -10,7 +10,8 @@
     <ScrollView
         android:layout_width="418dp"
         android:layout_height="733dp"
-        tools:layout_editor_absoluteY="-2dp">
+        tools:layout_editor_absoluteY="-2dp"
+        tools:ignore="MissingConstraints">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -26,14 +27,15 @@
                 android:contentDescription="@string/a_button_to_go_back_to_the_home_screen"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="?attr/actionModeCloseDrawable" />
+                app:srcCompat="?attr/actionModeCloseDrawable"
+                tools:ignore="RedundantDescriptionCheck" />
 
             <TextView
                 android:id="@+id/participantsHeader"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
                 android:gravity="center_horizontal|center_vertical"
-                android:text="Participants"
+                android:text="@string/participants"
                 android:textSize="35sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -57,9 +59,11 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginBottom="23dp"
+                    android:autofillHints=""
                     android:ems="10"
-                    android:hint="Enter name..."
+                    android:hint="@string/enter_name"
                     android:inputType="text"
+                    android:minHeight="48dp"
                     android:text="" />
 
                 <Button
@@ -67,7 +71,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:text="add" />
+                    android:text="@string/add"
+                    android:textColor="#4A148C" />
 
             </LinearLayout>
 

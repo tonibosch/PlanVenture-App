@@ -13,7 +13,8 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="88dp"
         android:layout_marginBottom="92dp"
-        android:text="Update"
+        android:text="@string/update"
+        android:textColor="#4A148C"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -25,7 +26,7 @@
         android:layout_marginBottom="92dp"
         android:backgroundTint="@color/white"
         android:text="@string/cancel"
-        android:textColor="#28B67E"
+        android:textColor="#2E7D32"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:strokeColor="#28B67E"
@@ -44,28 +45,31 @@
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView8"
-        app:layout_constraintTop_toBottomOf="@+id/endDate_textView_tripInformation" />
+        app:layout_constraintTop_toBottomOf="@+id/endDate_textView_tripInformation"
+        android:autofillHints="" />
 
     <EditText
         android:id="@+id/maxPartNumber_editText_tripInformation"
         android:layout_width="115dp"
-        android:layout_height="45dp"
+        android:layout_height="48dp"
         android:layout_marginStart="7dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="37dp"
+        android:autofillHints=""
         android:ems="10"
         android:inputType="numberSigned"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView9"
-        app:layout_constraintTop_toBottomOf="@+id/location_editText_tripInformation" />
+        app:layout_constraintTop_toBottomOf="@+id/location_editText_tripInformation"
+        tools:ignore="SpeakableTextPresentCheck" />
 
     <TextView
         android:id="@+id/textView9"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:text="Number of participants:"
+        android:text="@string/number_of_participants"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.207"
@@ -81,13 +85,14 @@
         android:contentDescription="@string/a_button_to_go_back_to_the_home_screen"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="?attr/actionModeCloseDrawable" />
+        app:srcCompat="?attr/actionModeCloseDrawable"
+        tools:ignore="RedundantDescriptionCheck" />
 
     <TextView
         android:id="@+id/tripInformationHeader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Trip Information"
+        android:text="@string/trip_information"
         android:layout_marginTop="25dp"
         android:textSize="35sp"
         android:textStyle="bold"
@@ -103,7 +108,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        android:text="Name:"
+        android:text="@string/nameTI"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.11"
@@ -115,7 +120,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
-        android:text="Description:"
+        android:text="@string/description"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.128"
@@ -127,7 +132,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="11dp"
-        android:text="Start Date:"
+        android:text="@string/start_dateTI"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.126"
@@ -139,7 +144,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="End Date:"
+        android:text="@string/end_dateTI"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.122"
@@ -151,7 +156,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:text="Destination:"
+        android:text="@string/destinationTI"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.131"
@@ -170,7 +175,8 @@
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView4"
-        app:layout_constraintTop_toBottomOf="@+id/tripInformationHeader" />
+        app:layout_constraintTop_toBottomOf="@+id/tripInformationHeader"
+        android:autofillHints="" />
 
     <EditText
         android:id="@+id/tripDescription_editText_tripInformation"
@@ -185,14 +191,16 @@
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/Description"
-        app:layout_constraintTop_toBottomOf="@+id/tripName_editText_tripInformation" />
+        app:layout_constraintTop_toBottomOf="@+id/tripName_editText_tripInformation"
+        android:autofillHints="" />
 
     <Button
         android:id="@+id/dateRangePickerButton_tripInformation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="7dp"
-        android:text="Select Dates"
+        android:text="@string/select_datesTripInformation"
+        android:textColor="#4A148C"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.145"
@@ -206,11 +214,12 @@
         android:layout_marginStart="12dp"
         android:layout_marginTop="11dp"
         android:layout_marginEnd="65dp"
-        android:text="StartDate"
+        android:text="@string/startdate"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView5"
-        app:layout_constraintTop_toBottomOf="@+id/dateRangePickerButton_tripInformation" />
+        app:layout_constraintTop_toBottomOf="@+id/dateRangePickerButton_tripInformation"
+        tools:ignore="TextSizeCheck" />
 
     <TextView
         android:id="@+id/endDate_textView_tripInformation"
@@ -219,11 +228,12 @@
         android:layout_marginStart="23dp"
         android:layout_marginTop="1dp"
         android:layout_marginEnd="65dp"
-        android:text="EndDate"
+        android:text="@string/enddate"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView6"
-        app:layout_constraintTop_toBottomOf="@+id/startDate_textView_tripInformation" />
+        app:layout_constraintTop_toBottomOf="@+id/startDate_textView_tripInformation"
+        tools:ignore="TextSizeCheck" />
 
     <Button
         android:id="@+id/gotoParticipants_Button_tripInformation"
@@ -231,9 +241,11 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="38dp"
         android:layout_marginTop="39dp"
-        android:text="participants"
+        android:text="@string/participantsTI"
+        android:textColor="#4A148C"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView9" />
+        app:layout_constraintTop_toBottomOf="@+id/textView9"
+        tools:ignore="TextSizeCheck" />
 
     <Button
         android:id="@+id/ExpensesButton"
@@ -241,7 +253,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="29dp"
         android:layout_marginEnd="38dp"
-        android:text="Expenses"
+        android:text="@string/expenses"
+        android:textColor="#4A148C"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/maxPartNumber_editText_tripInformation" />
 
@@ -252,7 +265,8 @@
         android:layout_marginStart="13dp"
         android:layout_marginTop="5dp"
         android:layout_marginEnd="20dp"
-        android:text="Status"
+        android:text="@string/status"
+        android:textColor="#4A148C"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.684"
         app:layout_constraintStart_toEndOf="@+id/tripInformationHeader"

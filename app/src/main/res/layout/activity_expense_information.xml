@@ -15,21 +15,19 @@
         android:contentDescription="@string/a_button_to_go_back_to_the_home_screen"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="?attr/actionModeCloseDrawable" />
+        app:srcCompat="?attr/actionModeCloseDrawable"
+        tools:ignore="RedundantDescriptionCheck" />
 
     <TextView
         android:id="@+id/nameOfExpense"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="57dp"
+        android:layout_marginStart="32dp"
         android:layout_marginTop="100dp"
-        android:layout_marginEnd="57dp"
-        android:layout_marginBottom="37dp"
-        android:text="Name:"
+        android:layout_marginEnd="32dp"
+        android:text="@string/nameExpense"
         android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/amountExpense"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -37,15 +35,12 @@
         android:id="@+id/amountExpense"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="57dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="57dp"
-        android:layout_marginBottom="33dp"
-        android:text="Amount:"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="32dp"
+        android:text="@string/amount"
         android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/paidBy"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/nameOfExpense" />
 
@@ -53,15 +48,12 @@
         android:id="@+id/paidBy"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="57dp"
-        android:layout_marginTop="28dp"
-        android:layout_marginEnd="57dp"
-        android:layout_marginBottom="80dp"
-        android:text="Paid by:"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="32dp"
+        android:text="@string/paid_by"
         android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/participants"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/amountExpense" />
 
@@ -69,29 +61,26 @@
         android:id="@+id/participants"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="57dp"
-        android:layout_marginTop="340dp"
-        android:layout_marginEnd="57dp"
-        android:text="Participants:"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="32dp"
+        android:text="@string/participantsExp"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/paidBy" />
 
     <ScrollView
         android:id="@+id/listOfParticipants"
         android:layout_width="282dp"
         android:layout_height="334dp"
-        android:layout_marginStart="57dp"
-        android:layout_marginTop="68dp"
-        android:layout_marginEnd="57dp"
-        android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="40dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/participants">
+        app:layout_constraintTop_toBottomOf="@+id/participants"
+        tools:ignore="SpeakableTextPresentCheck">
 
         <LinearLayout
             android:id="@+id/linearLayout"
