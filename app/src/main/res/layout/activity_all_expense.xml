@@ -23,42 +23,37 @@
         android:id="@+id/balanceButton"
         android:layout_width="160dp"
         android:layout_height="50dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="16dp"
         android:text="@string/balances"
         android:textColor="#4A148C"
         android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addExpenseButton" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/totalAmount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="3dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginBottom="16dp"
         android:text="@string/total"
         android:textSize="18sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.131"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recyclerView_all_expenses" />
+        app:layout_constraintBottom_toTopOf="@+id/balanceButton"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/addExpenseButton"
         android:layout_width="160dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="16dp"
         android:text="@string/add_expenseExpensesActivity"
         android:textColor="#4A148C"
         android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/balanceButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.872"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recyclerView_all_expenses"
         tools:ignore="TextSizeCheck" />
 
     <TextView
@@ -75,11 +70,13 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView_all_expenses"
-        android:layout_width="347dp"
-        android:layout_height="417dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="32dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/addExpenseButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.474"
         app:layout_constraintStart_toStartOf="parent"
