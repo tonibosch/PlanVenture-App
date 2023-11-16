@@ -83,7 +83,7 @@ class TripInformationActivity : AppCompatActivity() {
             else -> {
                 binding.buttonChangeState.text = "FINISHED"
                 disableChangeTripInformation()
-                disableAddExpensesAndParticipants()
+                disableNavigationParticipants()
             }
         }
 
@@ -102,7 +102,7 @@ class TripInformationActivity : AppCompatActivity() {
             else if(currentStatus == TRIP_STATE.STARTED){
                 binding.buttonChangeState.text = "FINISHED"
                 currentStatus = TRIP_STATE.FINISHED
-                disableAddExpensesAndParticipants()
+                disableNavigationParticipants()
                 tripService.updateTrip(tripId, Trip(1, binding.tripNameEditTextTripInformation.text.toString(), formatter.parse(binding.startDateTextViewTripInformation.text.toString()),
                     formatter.parse(binding.endDateTextViewTripInformation.text.toString()), binding.locationEditTextTripInformation.text.toString(), binding.maxPartNumberEditTextTripInformation.text.toString().toInt(),
                     binding.tripDescriptionEditTextTripInformation.text.toString(),ArrayList(), ArrayList(), TRIP_STATE.FINISHED))
@@ -176,7 +176,10 @@ class TripInformationActivity : AppCompatActivity() {
         binding.dateRangePickerButtonTripInformation.isEnabled = false
     }
 
-    private fun disableAddExpensesAndParticipants(){
+    /**
+     * Disable navigation to the activity to add more participants.
+     */
+    private fun disableNavigationParticipants(){
         binding.gotoParticipantsButtonTripInformation.isEnabled = false
     }
 }
