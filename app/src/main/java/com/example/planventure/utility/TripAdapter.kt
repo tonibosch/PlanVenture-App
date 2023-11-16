@@ -42,6 +42,7 @@ class TripAdapter(
         val name: TextView = itemView.findViewById(R.id.titleTv)
         val dates: TextView = itemView.findViewById(R.id.datesTv)
         val location: TextView = itemView.findViewById(R.id.locationTv)
+        val status: TextView = itemView.findViewById(R.id.statusTv)
     }
 
     var onItemClick : ((Trip) -> Unit)? = null
@@ -61,6 +62,7 @@ class TripAdapter(
         holder.name.text = "        ${trip.getName()}"
         holder.dates.text = "        From " + convertDate(trip.getStartDate())+" to " + convertDate(trip.getEndDate())
         holder.location.text = "        Location: ${trip.getLocation()}"
+        holder.status.text = "        Status: ${trip.getState()}"
 
         holder.itemView.setOnClickListener {
             onItemClick?.invoke(trip)
