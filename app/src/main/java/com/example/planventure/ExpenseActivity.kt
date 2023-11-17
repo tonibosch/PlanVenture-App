@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -41,11 +42,8 @@ class ExpenseActivity : AppCompatActivity() {
         val trip = tripService.getTripById(tripId)
 
         expenseService = ExpenseService(applicationContext)
-        expenseAdapter = ExpenseAdapter(expenseService.getAllExpensesByTripId(tripId))
 
-
-        binding.recyclerViewAllExpenses.adapter = expenseAdapter
-        binding.recyclerViewAllExpenses.layoutManager = LinearLayoutManager(this)
+        loadExpenseList(tripId)
 
         //Configure the "Back" button to navigate to the previous screen when the user presses it.
         binding.backButtonExpenses.setOnClickListener {
@@ -86,13 +84,13 @@ class ExpenseActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
             if (data != null) {
-                refreshExpenseList(data.getLongExtra("TRIPID",1))
-            }       //When a new trip has been created, refresh the list of trips
+                loadExpenseList(data.getLongExtra(TripInformationActivity.TRIP_ID_TRIP_PARTICIPANTS,0))
+            }
         }
     }
 
     @RequiresApi(Build.VERSION_CODES.P)
-    private fun refreshExpenseList(tripId:Long){
+    private fun loadExpenseList(tripId:Long){
         expenseAdapter = ExpenseAdapter(expenseService.getAllExpensesByTripId(tripId))
         binding.recyclerViewAllExpenses.adapter = expenseAdapter
         binding.recyclerViewAllExpenses.layoutManager = LinearLayoutManager(this)

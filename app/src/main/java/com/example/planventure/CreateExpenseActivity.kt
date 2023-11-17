@@ -113,7 +113,7 @@ class CreateExpenseActivity : AppCompatActivity() {
 
                 setResult(RESULT_OK)
                 intent = Intent(this, ExpenseActivity::class.java)
-                intent.putExtra("TRIPID", tripId)
+                intent.putExtra(TripInformationActivity.TRIP_ID_TRIP_PARTICIPANTS, tripId)
                 startActivityForResult(intent,1)
             } catch (e: EmptyDataException) {
                 Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()

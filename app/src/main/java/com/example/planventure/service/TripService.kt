@@ -57,6 +57,7 @@ class TripService(
     }
 
     fun getTripById(id: Long): Trip? {
+        Log.d("TRIPID",id.toString())
         return tripRepository.getById(id)
     }
 
