@@ -1,5 +1,6 @@
 package com.example.planventure
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
@@ -41,6 +42,10 @@ class CreateExpenseActivity : AppCompatActivity() {
 
     //Adapter
     private lateinit var expenseParticipantAdapter: ExpenseParticipantAdapter
+
+    companion object{
+        const val TRIP_ID_CREATE_EXPENSE = "com.example.planventure.com.createExpense.tripid"
+    }
 
     /**
      * Initializes the activity's view and sets up UI components.
@@ -111,10 +116,8 @@ class CreateExpenseActivity : AppCompatActivity() {
                     expenseParticipantAdapter.paidBy
                 )
 
-                setResult(RESULT_OK)
-                intent = Intent(this, ExpenseActivity::class.java)
-                intent.putExtra(TripInformationActivity.TRIP_ID_TRIP_PARTICIPANTS, tripId)
-                startActivityForResult(intent,1)
+                setResult(Activity.RESULT_OK)
+                this.finish()
             } catch (e: EmptyDataException) {
                 Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
             } catch (e:MultipleNamesException){
