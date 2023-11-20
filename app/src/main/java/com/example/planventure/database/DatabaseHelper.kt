@@ -5,7 +5,6 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.os.Build
 import androidx.annotation.RequiresApi
-import com.example.planventure.interfaces_abstracts.CRUDRepository
 
 /**
  * DataBaseHelper.kt
@@ -21,7 +20,7 @@ import com.example.planventure.interfaces_abstracts.CRUDRepository
 @RequiresApi(Build.VERSION_CODES.P)
 open class DataBaseHelper(
     context: Context
-) : SQLiteOpenHelper(context, "planventure.db", null, 8) {
+) : SQLiteOpenHelper(context, "planventure.db", null, 14) {
 
     companion object {
         const val TRIP_TABLE: String = "TRIP_TABLE"
@@ -39,6 +38,7 @@ open class DataBaseHelper(
         const val EXPENSE_TABLE: String = "EXPENSE_TABLE"
         const val COLUMN_EXPENSE_NAME: String = "EXPENSE_NAME"
         const val COLUMN_EXPENSE_AMOUNT: String = "EXPENSE_AMOUNT"
+        const val COLUMN_EXPENSE_PAYER_PARTICIPATES: String = "EXPENSE_PAYER_PARTICIPATES"
 
         const val COLUMN_TRIP_FOREIGN_KEY: String = "TRIP_FOREIGN_KEY"
 
@@ -73,7 +73,8 @@ open class DataBaseHelper(
 
         val createExpenseTableStatement =
             "CREATE TABLE $EXPENSE_TABLE (ID INTEGER PRIMARY KEY AUTOINCREMENT, $COLUMN_EXPENSE_NAME TEXT, " +
-                    "$COLUMN_EXPENSE_AMOUNT REAL, $COLUMN_TRIP_FOREIGN_KEY INTEGER REFERENCES $TRIP_TABLE ON DELETE CASCADE ON UPDATE CASCADE)"
+                    "$COLUMN_EXPENSE_AMOUNT REAL, $COLUMN_TRIP_FOREIGN_KEY INTEGER REFERENCES $TRIP_TABLE ON DELETE CASCADE ON UPDATE CASCADE," +
+                    "$COLUMN_EXPENSE_PAYER_PARTICIPATES INTEGER)"
         db.execSQL(createExpenseTableStatement)
 
         val createExpenseParticipantTable =
@@ -85,16 +86,9 @@ open class DataBaseHelper(
         val createParticipantParticipantTable =
             "CREATE TABLE $PARTICIPANT_PARTICIPANT_TABLE ($COLUMN_PARTICIPANT_1_ID INTEGER REFERENCES $PARTICIPANT_TABLE ON DELETE CASCADE ON UPDATE CASCADE, " +
                     "$COLUMN_PARTICIPANT_2_ID INTEGER REFERENCES $PARTICIPANT_TABLE ON DELETE CASCADE ON UPDATE CASCADE, " +
-                    "$COLUMN_PAID_AMOUNT NUMBER)"
+                    "$COLUMN_PAID_AMOUNT NUMBERS)"
         db.execSQL(createParticipantParticipantTable)
 
-        val createTripStatement =
-            "INSERT INTO $TRIP_TABLE VALUES (1, \"TEST_TRIP\", \"Wed Oct 18 00:00:00 GMT 2023\", \"Wed Oct 18 00:00:00 GMT 2023\", \"NTNU\", 5, \"Trip to the NTNU\", \"PLANNING\")"
-        db.execSQL(createTripStatement)
-
-        val createExpenseStatement =
-            "INSERT INTO $EXPENSE_TABLE VALUES (1, \"MUSEUM\", 15, 1)"
-        db.execSQL(createExpenseStatement)
     }
 
     /**

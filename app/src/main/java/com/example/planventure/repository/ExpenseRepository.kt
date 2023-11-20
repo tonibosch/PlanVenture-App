@@ -7,7 +7,6 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import com.example.planventure.entity.Expense
 import com.example.planventure.entity.Trip
-import com.example.planventure.interfaces_abstracts.CRUDRepository
 import com.example.planventure.interfaces_abstracts.IRepository
 import com.example.planventure.interfaces_abstracts.SQLiteRepository
 
@@ -46,10 +45,58 @@ class ExpenseRepository(context: Context): SQLiteRepository<Expense, Int>(contex
      * @param id :Trip id
      * @return ArrayList of Expenses that belong to a trip's id
      */
-    fun getExpensesById(id: Long): ArrayList<Expense> {
+    fun getExpensesByTripId(id: Long): ArrayList<Expense> {
+        /*
+         * Query to get all expenses correlated to a trip
+         */
         val query = "SELECT * FROM $EXPENSE_TABLE WHERE $COLUMN_TRIP_FOREIGN_KEY = $id"
 
         return read(query)
+    }
+
+    /**
+     * stores whether the person who paid for the expense also participates or not
+     * @param b: Boolean that indicates whether person participates or not
+     * @param e: accompanying expense
+     * @return whether operation succeeded or failed
+     */
+    fun storePayer(b: Boolean, e: Expense): Boolean{
+        /*
+         * Query to set the last value of expense table
+         */
+        val query = "UPDATE $EXPENSE_TABLE SET $COLUMN_EXPENSE_PAYER_PARTICIPATES = ${
+            if(b) 1 else 0
+        } WHERE ID = ${e.getId()}"
+
+        return execute(query)
+    }
+
+    /**
+     * returns whether the person who paid for the expense also participates or not
+     * @param e: accompanying expense
+     * @return whether the person who paid for the expense also participates or not
+     */
+    fun getPayer(e: Expense): Boolean{
+        /*
+         * Query to get whether the one who paid for an expense also participated or not
+         */
+        val query = "SELECT $COLUMN_EXPENSE_PAYER_PARTICIPATES FROM $EXPENSE_TABLE WHERE ID = ${e.getId()}"
+
+        /*
+         * execute the query
+         */
+        val cursor = rdb.rawQuery(query, null)
+
+        /*
+         * if there is a result, get the first value from the result
+         */
+        val number = if (cursor.moveToFirst())
+            cursor.getInt(0)
+        else
+            0
+
+        cursor.close()
+        return number == 1
     }
 
     override fun buildObjectFromCursor(c: Cursor): Expense {
@@ -67,6 +114,7 @@ class ExpenseRepository(context: Context): SQLiteRepository<Expense, Int>(contex
         val cv = ContentValues()
         cv.put(COLUMN_EXPENSE_NAME, e.getName())
         cv.put(COLUMN_EXPENSE_AMOUNT, e.getAmount())
+        cv.put(COLUMN_EXPENSE_PAYER_PARTICIPATES, 1)
         return cv
     }
 }

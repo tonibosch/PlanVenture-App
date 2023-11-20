@@ -1,13 +1,14 @@
 package com.example.planventure
 
+import android.annotation.SuppressLint
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
 import androidx.annotation.RequiresApi
-import com.example.planventure.databinding.ActivityAllExpenseBinding
 import com.example.planventure.databinding.ActivityExpenseInformationBinding
 import com.example.planventure.service.ExpenseService
+import com.example.planventure.service.ParticipantService
 import com.example.planventure.utility.ExpenseAdapter.Companion.EXPENSE_ID
 
 /**
@@ -22,15 +23,17 @@ import com.example.planventure.utility.ExpenseAdapter.Companion.EXPENSE_ID
  */
 class ExpenseInformationActivity : AppCompatActivity() {
 
-    private lateinit var binding:ActivityExpenseInformationBinding
+    private lateinit var binding: ActivityExpenseInformationBinding
     //Services
     private lateinit var expenseService: ExpenseService
+    private lateinit var participantService: ParticipantService
 
     /**
      * Initializes the activity's view and displays information about the selected expense.
      *
      * @param savedInstanceState The saved instance state, if any.
      */
+    @SuppressLint("SetTextI18n")
     @RequiresApi(Build.VERSION_CODES.P)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,10 +42,31 @@ class ExpenseInformationActivity : AppCompatActivity() {
         setContentView(view)
 
         expenseService = ExpenseService(this)
+        participantService = ParticipantService(applicationContext)
         val expenseId = intent.getLongExtra(EXPENSE_ID, 0)
 
+
         val expense = expenseService.getExpenseById(expenseId)
-        binding.textView11.text = expense?.getName()
+        if (expense != null) {
+            binding.nameOfExpense.text = "Name: ${expense.getName()}"
+            binding.amountExpense.text = "Amount: ${String.format("%.2f",expense.getAmount())}€"
+
+            val participantList = participantService.getParticipantsByExpense(expense)
+            for(p in participantList){
+                if(p.second){
+                    binding.paidBy.text = "Paid by: ${p.first?.getName()}"
+                    if(!expenseService.getIfPayerParticipated(expense)) continue
+                }
+                val participant = TextView(applicationContext)
+                participant.text = p.first?.getName()
+                participant.textSize = 20f
+                binding.linearLayout.addView(participant)
+            }
+        }
+
+        binding.backButtonExpenseInformation.setOnClickListener{
+            this.finish()
+        }
 
     }
 }

@@ -16,7 +16,7 @@ import com.example.planventure.interfaces_abstracts.SQLiteRepository
  * @property getById(id: Long): Triple<Int, Int, Float>?
  * @property updateById(id: Long, e: Triple<Int, Int, Float>): Boolean
  * @property deleteById(id: Int): Boolean
- * @property getByParticipantExpenseId(pid: Long, eid: Long): ArrayList<Triple<Int, Int, Float>>
+ * @property getByExpenseId(pid: Long, eid: Long): ArrayList<Triple<Int, Int, Float>>
  * @property deleteByExpenseParticipantId(eid: Int, pid: Int): Boolean
  * @property buildContentValues(e: Triple<Int, Int, Float>): ContentValues
  * @property buildObjectFromCursor(c: Cursor): Triple<Int, Int, Float>
@@ -63,15 +63,14 @@ class ParticipantExpenseRepository(context: Context):
 
     /**
      * gets the triple with participant id, expense id and paid amount
-     * @param pid : foreign key of the participant
      * @param eid : foreign key of the expense
      * @return ArrayList of Triples with participant id, expense id and paid amount
      */
-    fun getByParticipantExpenseId(pid: Long, eid: Long): ArrayList<Triple<Int, Int, Float>> {
+    fun getByExpenseId(eid: Long): ArrayList<Triple<Int, Int, Float>> {
         /*
          * Query to get all rows with given participant ids
          */
-        val query = "SELECT * FROM $PARTICIPANT_EXPENSE_TABLE WHERE $COLUMN_PARTICIPANT_ID = $pid AND $COLUMN_EXPENSE_ID = $eid"
+        val query = "SELECT * FROM $PARTICIPANT_EXPENSE_TABLE WHERE $COLUMN_EXPENSE_ID = $eid"
         return read(query)
     }
 

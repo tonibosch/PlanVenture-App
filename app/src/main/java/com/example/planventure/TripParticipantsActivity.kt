@@ -8,6 +8,7 @@ import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.planventure.Exception.EmptyDataException
 import com.example.planventure.Exception.MaxParticipantsOverflow
+import com.example.planventure.Exception.MultipleNamesException
 import com.example.planventure.databinding.ActivityTripParticipantsBinding
 import com.example.planventure.entity.Participant
 import com.example.planventure.service.ParticipantService
@@ -51,7 +52,7 @@ class TripParticipantsActivity : AppCompatActivity() {
         //Configures the button to add a participant to the trip. If there is no error, the participant is created and appears on the screen. If there is an error a Toast message will be displayed.
         binding.addParticipantButtonParticipants.setOnClickListener {
             try {
-                val participant: Participant = Participant(1, binding.addParticipantEditTextParticipants.text.toString())
+                val participant = Participant(1, binding.addParticipantEditTextParticipants.text.toString())
                 if (trip != null) {
                     participantService.addParticipantToDb(participant, trip)
                     binding.addParticipantEditTextParticipants.text.clear()
@@ -59,6 +60,8 @@ class TripParticipantsActivity : AppCompatActivity() {
             } catch (e:EmptyDataException){
                 Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
             } catch (e:MaxParticipantsOverflow){
+                Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
+            } catch (e: MultipleNamesException){
                 Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
             }
         }

@@ -15,7 +15,7 @@ import com.example.planventure.interfaces_abstracts.SQLiteRepository
  * @property getById(id: Long): Triple<Int, Int, Float>?
  * @property updateById(id: Long, e: Triple<Int, Int, Float>): Boolean
  * @property deleteById(id: Int): Boolean
- * @property getByParticipant1And2Id(p1id: Long, p2id: Long): ArrayList<Triple<Int, Int, Float>>
+ * @property getByParticipant1Id(p1id: Long): ArrayList<Triple<Int, Int, Float>>
  * @property deleteByParticipant1and2Id(p1id: Long, p2id: Long): Boolean
  * @property buildContentValues(e: Triple<Int, Int, Float>): ContentValues
  * @property buildObjectFromCursor(c: Cursor): Triple<Int, Int, Float>
@@ -62,14 +62,13 @@ class ParticipantParticipantRepository(context: Context):
     /**
      * gets the triple with participant 1 id, participant 2 id, and paid amount
      * @param p1id : foreign key of the first participant
-     * @param p2id : foreign key of the second participant
      * @return ArrayList of Triples with participants and paid amount
      */
-    fun getByParticipant1And2Id(p1id: Long, p2id: Long): ArrayList<Triple<Int, Int, Float>> {
+    fun getByParticipant1Id(p1id: Long): ArrayList<Triple<Int, Int, Float>> {
         /*
          * Query to get all rows with given participant ids
          */
-        val query = "SELECT * FROM ${PARTICIPANT_PARTICIPANT_TABLE}_TABLE WHERE $COLUMN_PARTICIPANT_ID = $p1id AND $COLUMN_EXPENSE_ID = $p2id"
+        val query = "SELECT * FROM $PARTICIPANT_PARTICIPANT_TABLE WHERE $COLUMN_PARTICIPANT_ID = $p1id"
         return read(query)
     }
 

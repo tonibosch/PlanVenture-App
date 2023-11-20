@@ -11,11 +11,11 @@ package com.example.planventure.entity
  * @see Trip
  */
 class Participant(
-    /*
+    /**
      * id to identify participant in the database
      */
     private var id: Long,
-    /*
+    /**
      * name to identify participant in the UI
      */
     private var name: String

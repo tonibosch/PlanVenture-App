@@ -166,13 +166,13 @@ class TripRepository(private val context: Context) : SQLiteRepository<Trip, Int>
         )
     }
 
-    override fun mapQueryToList(query: Query): ArrayList<Trip> {
+    override fun mapQueryToList(q: Query): ArrayList<Trip> {
         val returnList = ArrayList<Trip>()
 
         /*
          * execute the query and get the cursor
          */
-        val cursor = rdb.rawQuery(query, null)
+        val cursor = rdb.rawQuery(q, null)
 
         /*
          * get cursor values if cursor is not empty

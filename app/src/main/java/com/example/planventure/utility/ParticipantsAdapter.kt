@@ -20,7 +20,7 @@ import com.example.planventure.service.TripService
  */
 class ParticipantsAdapter(
     private var participants: ArrayList<Participant>,
-    private val applicationContext: Context
+    applicationContext: Context
 ) : RecyclerView.Adapter<ParticipantsAdapter.ParticipantsViewHolder>() {
 
     private val participantService = ParticipantService(applicationContext, this)
@@ -48,7 +48,7 @@ class ParticipantsAdapter(
 
         holder.itemView.apply {
 
-            var deleteButton = findViewById<Button>(R.id.deleteParticipant_Button_fragment)
+            val deleteButton = findViewById<Button>(R.id.deleteParticipant_Button_fragment)
             findViewById<TextView>(R.id.participant_textView_fragment).text =
                 currentParticipant.getName()
 

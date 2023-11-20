@@ -1,6 +1,6 @@
 package com.example.planventure.utility
 
-import android.content.Context
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,10 +10,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.planventure.R
 import com.example.planventure.entity.Participant
 
-class ExpensePartcipantAdapter (
-    private var participants: ArrayList<Participant>,
-    private val applicationContext: Context
-) : RecyclerView.Adapter<ExpensePartcipantAdapter.ParticipantViewHolder>(){
+class ExpenseParticipantAdapter (
+    private var participants: ArrayList<Participant>
+) : RecyclerView.Adapter<ExpenseParticipantAdapter.ParticipantViewHolder>(){
     class ParticipantViewHolder(view: View) : RecyclerView.ViewHolder(view)
     private var checkedParticipants = ArrayList<Participant>()
     var paidBy: Participant? = null
@@ -41,7 +40,7 @@ class ExpensePartcipantAdapter (
 
         holder.itemView.apply{
             findViewById<TextView>(R.id.ExpenseParticipantTV).text = currentParticipant.getName()
-            var checkbox = findViewById<CheckBox>(R.id.ExpenseParticipantCB)
+            val checkbox = findViewById<CheckBox>(R.id.ExpenseParticipantCB)
             checkbox.setOnCheckedChangeListener { _, isChecked ->
                 if(isChecked){
                     checkedParticipants.add(currentParticipant)
@@ -52,6 +51,7 @@ class ExpensePartcipantAdapter (
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun updateParticipants(participants:ArrayList<Participant>){
         this.participants = participants
         checkedParticipants = ArrayList()

@@ -7,7 +7,6 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
-import android.util.Log
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import com.example.planventure.Exception.EmptyDataException
@@ -47,7 +46,7 @@ class TripInformationActivity : AppCompatActivity() {
      *
      * @param savedInstanceState The saved instance state, if any.
      */
-    @SuppressLint("MissingInflatedId")
+    @SuppressLint("MissingInflatedId", "SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityTripInformationBinding.inflate(layoutInflater)
@@ -74,17 +73,17 @@ class TripInformationActivity : AppCompatActivity() {
         }
 
         var currentStatus = trip?.getState()
-        Log.d("CURRENT STATUS", "${currentStatus.toString()}")
 
         when (currentStatus) {
             TRIP_STATE.PLANNING -> binding.buttonChangeState.text = "START"
             TRIP_STATE.STARTED -> {
                 binding.buttonChangeState.text = "FINISH"
-                disableEditText()
+                disableChangeTripInformation()
             }
             else -> {
                 binding.buttonChangeState.text = "FINISHED"
-                disableEditText()
+                disableChangeTripInformation()
+                disableNavigationParticipants()
             }
         }
 
@@ -94,7 +93,7 @@ class TripInformationActivity : AppCompatActivity() {
             if(currentStatus == TRIP_STATE.PLANNING) {
                 binding.buttonChangeState.text = "FINISH"
                 currentStatus = TRIP_STATE.STARTED
-                disableEditText()
+                disableChangeTripInformation()
                 tripService.updateTrip(tripId, Trip(1, binding.tripNameEditTextTripInformation.text.toString(), formatter.parse(binding.startDateTextViewTripInformation.text.toString()),
                     formatter.parse(binding.endDateTextViewTripInformation.text.toString()), binding.locationEditTextTripInformation.text.toString(), binding.maxPartNumberEditTextTripInformation.text.toString().toInt(),
                     binding.tripDescriptionEditTextTripInformation.text.toString(), ArrayList(), ArrayList(),TRIP_STATE.STARTED))
@@ -103,6 +102,7 @@ class TripInformationActivity : AppCompatActivity() {
             else if(currentStatus == TRIP_STATE.STARTED){
                 binding.buttonChangeState.text = "FINISHED"
                 currentStatus = TRIP_STATE.FINISHED
+                disableNavigationParticipants()
                 tripService.updateTrip(tripId, Trip(1, binding.tripNameEditTextTripInformation.text.toString(), formatter.parse(binding.startDateTextViewTripInformation.text.toString()),
                     formatter.parse(binding.endDateTextViewTripInformation.text.toString()), binding.locationEditTextTripInformation.text.toString(), binding.maxPartNumberEditTextTripInformation.text.toString().toInt(),
                     binding.tripDescriptionEditTextTripInformation.text.toString(),ArrayList(), ArrayList(), TRIP_STATE.FINISHED))
@@ -120,6 +120,7 @@ class TripInformationActivity : AppCompatActivity() {
         binding.ExpensesButton.setOnClickListener {
             val intent = Intent(this, ExpenseActivity::class.java)
             intent.putExtra(TRIP_ID_TRIP_PARTICIPANTS, tripId)
+            intent.putExtra("CURRENT_STATUS",binding.buttonChangeState.text as String)
             startActivity(intent)
         }
 
@@ -165,13 +166,21 @@ class TripInformationActivity : AppCompatActivity() {
     /**
      * Disables the editing of trip information fields.
      */
-    private fun disableEditText() {
+    private fun disableChangeTripInformation() {
         binding.tripNameEditTextTripInformation.isEnabled = false
         binding.startDateTextViewTripInformation.isEnabled = false
         binding.endDateTextViewTripInformation.isEnabled = false
         binding.locationEditTextTripInformation.isEnabled = false
         binding.maxPartNumberEditTextTripInformation.isEnabled = false
         binding.tripDescriptionEditTextTripInformation.isEnabled = false
+        binding.dateRangePickerButtonTripInformation.isEnabled = false
+    }
+
+    /**
+     * Disable navigation to the activity to add more participants.
+     */
+    private fun disableNavigationParticipants(){
+        binding.gotoParticipantsButtonTripInformation.isEnabled = false
     }
 }
 

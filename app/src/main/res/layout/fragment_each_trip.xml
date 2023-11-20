@@ -17,7 +17,7 @@
             android:id="@+id/titleTv"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Trip to Oslo"
+            android:text="@string/trip_to_oslo"
             android:textColor="@color/black"
             android:textSize="16sp"
             android:textStyle="bold"
@@ -28,7 +28,7 @@
             android:id="@+id/datesTv"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="From 12-12-2023 to 15-12-2023"
+            android:text="@string/from_12_12_2023_to_15_12_2023"
             android:textSize="16sp"
             android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="parent"
@@ -38,11 +38,22 @@
             android:id="@+id/locationTv"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Location: Oslo"
+            android:text="@string/location_oslo"
             android:textSize="16sp"
             android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/datesTv" />
+
+        <TextView
+            android:id="@+id/statusTv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/planning"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/locationTv" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

@@ -1,23 +1,19 @@
 package com.example.planventure.utility
 
-import android.app.Application
-import android.content.Context
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.planventure.ExpenseInformationActivity
-import com.example.planventure.MyTripsFragment
 import com.example.planventure.R
 import com.example.planventure.entity.Expense
 import com.google.android.material.appbar.MaterialToolbar
 
 class ExpenseAdapter (
-    private var expenses: ArrayList<Expense>,
-    private val application: Context
+    private var expenses: ArrayList<Expense>
     ): RecyclerView.Adapter<ExpenseAdapter.ExpensesViewHolder>() {
 
     companion object {
@@ -40,6 +36,7 @@ class ExpenseAdapter (
         return expenses.size
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ExpensesViewHolder, position: Int) {
         val currentExpense = expenses[position]
 
@@ -49,7 +46,7 @@ class ExpenseAdapter (
                 "Name: \t" + currentExpense.getName()
 
             findViewById<TextView>(R.id.expenseAmount).text =
-                "Amount: \t" + currentExpense.getAmount().toString()
+                "Amount: \t${String.format("%.2f",currentExpense.getAmount())}€"
 
             // Make the expense clickable
             findViewById<MaterialToolbar>(R.id.materialToolbar)

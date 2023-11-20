@@ -4,12 +4,13 @@ import android.content.Context
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
-import com.example.planventure.Exception.MaxParticipantsOverflow
-import com.example.planventure.Exception.EmptyDataException
 import com.example.planventure.entity.Trip
 import com.example.planventure.enumerations.TRIP_STATE
+import com.example.planventure.Exception.EmptyDataException
+import com.example.planventure.Exception.MaxParticipantsOverflow
 import com.example.planventure.repository.ParticipantRepository
 import com.example.planventure.repository.TripRepository
+import java.lang.Exception
 import java.text.SimpleDateFormat
 import kotlin.collections.ArrayList
 
@@ -26,10 +27,10 @@ class TripService(
      */
     fun addTrip(myData: MutableList<String>) {
         try {
-            checkMaxParticipants(myData[4].toInt())
-            checksNullValues(myData)
+            checkEmptyDates(myData[1])
             val formatter = SimpleDateFormat("yyyy-MM-dd")
-            val trip = Trip(1,
+            checkMaxParticipants(myData[4])
+            val trip = Trip(-1,
                 myData[0],
                 formatter.parse(myData[1]),
                 formatter.parse(myData[2]),
@@ -40,6 +41,8 @@ class TripService(
                 ArrayList(),
                 TRIP_STATE.PLANNING
             )
+            checksNullValues(trip)
+
             Log.d("TRIP STATE", trip.getState().toString())
             val success = tripRepository.addToDB(Pair(trip, -1))
             Log.d("TRIP DB INPUT", success.toString())
@@ -48,11 +51,13 @@ class TripService(
         }
     }
 
+
     fun getAllTrips(): List<Trip> {
         return tripRepository.findAll()
     }
 
     fun getTripById(id: Long): Trip? {
+        Log.d("TRIPID",id.toString())
         return tripRepository.getById(id)
     }
 
@@ -74,7 +79,7 @@ class TripService(
     }
 
     fun finishTripById(id:Long) {
-        val succes = tripRepository.finishTripById(id.toInt())
+        val success = tripRepository.finishTripById(id.toInt())
     }
 
     fun getNumberOfColumns(): Int{
@@ -85,22 +90,26 @@ class TripService(
     /**
      * checks for Null values and throws EmptyDataException
      */
-
-    private fun checksNullValues(myData: MutableList<String>) {
-        if (myData[0].isEmpty()) {
+    private fun checksNullValues(trip: Trip) {
+        if (trip.getName().isEmpty()) {
             throw EmptyDataException("Enter a trip name")
-        } else if (myData[1] == "Select start date") {
-            throw EmptyDataException("Select dates for the trip")
-        } else if (myData[3].isEmpty()) {
+        } else if (trip.getLocation().isEmpty()) {
             throw EmptyDataException("Enter a destination")
-        } else if (myData[4].isEmpty()) {
-            throw EmptyDataException("Enter the number of participants")
         }
     }
 
-    private fun checkMaxParticipants(maxParticipants: Int) {
-        if (maxParticipants >= 20) {
+    private fun checkEmptyDates(string:String){
+        if (string == "Select start date")
+            throw EmptyDataException("Please select a date")
+    }
+
+    private fun checkMaxParticipants(maxParticipants: String) {
+        if(maxParticipants.isEmpty()){
+            throw EmptyDataException("Please enter a number of participants")
+        } else if (maxParticipants.toInt() > 20) {
             throw MaxParticipantsOverflow("A trip cannot have more than 20 participants!")
+        } else if(maxParticipants.toInt() <= 1){
+            throw Exception("A trip cannot have less than 2 Participants")
         }
     }
 
