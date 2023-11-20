@@ -86,9 +86,6 @@ class ExpenseActivity : AppCompatActivity() {
             }
         }
 
-        val totalAmount = expenseService.getTotal(tripId)
-        binding.totalAmount.text = "Total: ${String.format("%.2f", totalAmount)}€"
-
     }
 
     @RequiresApi(Build.VERSION_CODES.P)
@@ -105,5 +102,7 @@ class ExpenseActivity : AppCompatActivity() {
         expenseAdapter = ExpenseAdapter(expenseService.getAllExpensesByTripId(tripId))
         binding.recyclerViewAllExpenses.adapter = expenseAdapter
         binding.recyclerViewAllExpenses.layoutManager = LinearLayoutManager(this)
+        val totalAmount = expenseService.getTotal(tripId)
+        binding.totalAmount.text = "Total: ${String.format("%.2f", totalAmount)}€"
     }
 }

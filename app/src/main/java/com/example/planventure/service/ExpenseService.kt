@@ -39,8 +39,9 @@ class ExpenseService(applicationContext: Context) {
                 checkEmptyValues(name, amount)
                 checkMultipleName(name,trip)
                 checkEmptyParticipants(participants, paidBy)
-                val expense = Expense(-1, name, amount.toFloat())
+                var expense = Expense(-1, name, amount.toFloat())
                 expenseRepository.addToDB(Pair(expense, trip.getId().toInt()))
+                expense = expenseRepository.getExpensesByTripIdAndExpenseName(trip.getId(), expense.getName())[0]
                 addExpenseParticipantsToDb(expense,participants,paidBy)
             }
         } catch (e: Error) {

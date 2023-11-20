@@ -55,6 +55,20 @@ class ExpenseRepository(context: Context): SQLiteRepository<Expense, Int>(contex
     }
 
     /**
+     * returns all expenses that relate to a certain trip id
+     * @param id :Trip id
+     * @param name: String with the expense name
+     * @return ArrayList of Expenses that belong to a trip's id
+     */
+    fun getExpensesByTripIdAndExpenseName(id: Long, name: String): ArrayList<Expense> {
+        /*
+         * Query to get all expenses correlated to a trip
+         */
+        val query = "SELECT * FROM $EXPENSE_TABLE WHERE $COLUMN_TRIP_FOREIGN_KEY = $id AND $COLUMN_EXPENSE_NAME = \"$name\""
+        return read(query)
+    }
+
+    /**
      * stores whether the person who paid for the expense also participates or not
      * @param b: Boolean that indicates whether person participates or not
      * @param e: accompanying expense
